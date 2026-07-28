@@ -1,10 +1,10 @@
-package Servcie.PostService.PostMicroService;
+package ServcieRegistory.SocialMediaServiceRegistory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PostMicroServiceApplicationTests {
+class SocialMediaServiceRegistoryApplicationTests {
 
 	@Test
 	void contextLoads() {
