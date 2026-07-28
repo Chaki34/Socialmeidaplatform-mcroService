@@ -12,4 +12,9 @@ public class ViewController {
     public String userSetupPage() {
         return "userSetup";
     }
+
+    @GetMapping("/feed")
+    public String userFeedPage() {
+        return "userFeed";
+    }
 }
