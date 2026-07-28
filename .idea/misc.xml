@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/UserMicroService/pom.xml" />
         <option value="$PROJECT_DIR$/PostMicroService/pom.xml" />
         <option value="$PROJECT_DIR$/SocialMediaServiceRegistory/pom.xml" />
+        <option value="$PROJECT_DIR$/UiService/pom.xml" />
       </list>
     </option>
   </component>

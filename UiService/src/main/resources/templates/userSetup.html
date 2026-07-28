@@ -298,161 +298,762 @@
 </div>
 
 <script>
+
     /* --- THREE.JS BACKGROUND --- */
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+    );
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    document.getElementById('canvas-container')
+        .appendChild(renderer.domElement);
+
+
 
     const particlesGeometry = new THREE.BufferGeometry();
+
     const posArr = new Float32Array(1500 * 3);
-    for(let i=0; i < 4500; i++) posArr[i] = (Math.random() - 0.5) * 10;
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
-    const material = new THREE.PointsMaterial({ size: 0.015, color: 0x6366f1 });
-    const particlesMesh = new THREE.Points(particlesGeometry, material);
+
+    for(let i = 0; i < 4500; i++){
+        posArr[i] = (Math.random() - 0.5) * 10;
+    }
+
+
+    particlesGeometry.setAttribute(
+        'position',
+        new THREE.BufferAttribute(posArr,3)
+    );
+
+
+    const material = new THREE.PointsMaterial({
+        size:0.015,
+        color:0x6366f1
+    });
+
+
+    const particlesMesh = new THREE.Points(
+        particlesGeometry,
+        material
+    );
+
+
     scene.add(particlesMesh);
 
-    // Add floating icons (represented by simple shapes for performance)
+
+
+    // Floating objects
+
     const shapes = [];
-    const geometry = new THREE.IcosahedronGeometry(0.2, 0);
-    for(let i=0; i<15; i++) {
-        const mat = new THREE.MeshPhongMaterial({ color: i % 2 === 0 ? 0xf43f5e : 0x6366f1, wireframe: true });
-        const mesh = new THREE.Mesh(geometry, mat);
-        mesh.position.set((Math.random()-0.5)*10, (Math.random()-0.5)*10, (Math.random()-0.5)*10);
+
+    const geometry = new THREE.IcosahedronGeometry(
+        0.2,
+        0
+    );
+
+
+    for(let i=0;i<15;i++){
+
+        const mat = new THREE.MeshPhongMaterial({
+            color:
+            i % 2 === 0
+            ? 0xf43f5e
+            : 0x6366f1,
+
+            wireframe:true
+        });
+
+
+        const mesh = new THREE.Mesh(
+            geometry,
+            mat
+        );
+
+
+        mesh.position.set(
+            (Math.random()-0.5)*10,
+            (Math.random()-0.5)*10,
+            (Math.random()-0.5)*10
+        );
+
+
         scene.add(mesh);
+
         shapes.push(mesh);
     }
-    const light = new THREE.PointLight(0xffffff, 1);
-    light.position.set(2, 3, 5);
-    scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
+
+
+
+    const light = new THREE.PointLight(
+        0xffffff,
+        1
+    );
+
+
+    light.position.set(
+        2,
+        3,
+        5
+    );
+
+
+    scene.add(
+        light,
+        new THREE.AmbientLight(
+            0xffffff,
+            0.5
+        )
+    );
+
+
     camera.position.z = 5;
 
-    function animate() {
+
+
+    function animate(){
+
         requestAnimationFrame(animate);
+
+
         particlesMesh.rotation.y += 0.001;
-        shapes.forEach(s => { s.rotation.x += 0.01; s.rotation.y += 0.01; s.position.y += Math.sin(Date.now()*0.001)*0.002; });
-        renderer.render(scene, camera);
+
+
+        shapes.forEach(shape=>{
+
+            shape.rotation.x +=0.01;
+            shape.rotation.y +=0.01;
+
+            shape.position.y +=
+            Math.sin(Date.now()*0.001)*0.002;
+
+        });
+
+
+        renderer.render(
+            scene,
+            camera
+        );
     }
+
+
     animate();
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+
+
+    window.addEventListener(
+        'resize',
+        ()=>{
+
+            camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+
+            camera.updateProjectionMatrix();
+
+
+            renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+            );
+
+        }
+    );
+
+
+
+
 
     /* --- APPLICATION LOGIC --- */
+
+
     let currentUserUuid = null;
+
     let base64Image = "";
-    const API_BASE = '/api/v1/users';
 
-    const toggleStep = (step) => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(`step-${step}`).classList.add('active');
-        document.getElementById('progress-fill').style.width = step === 1 ? '33%' : step === 2 ? '66%' : '100%';
+
+    // IMPORTANT CHANGE
+    // Request goes to UI Service Controller
+    // UI Service -> Feign -> UserMicroService
+
+    const API_BASE = '/ui/users';
+
+
+
+
+
+    const toggleStep = (step)=>{
+
+        document
+        .querySelectorAll('.section')
+        .forEach(section=>{
+            section.classList.remove('active');
+        });
+
+
+        document
+        .getElementById(`step-${step}`)
+        .classList.add('active');
+
+
+
+        document
+        .getElementById('progress-fill')
+        .style.width =
+            step===1
+            ? '33%'
+            : step===2
+            ? '66%'
+            : '100%';
+
     };
 
-    const setBtnLoading = (step, isLoading) => {
-        const btn = document.querySelector(`#step-${step} button[type="submit"]`);
-        if(!btn) return;
-        btn.disabled = isLoading;
-        btn.querySelector('span').style.display = isLoading ? 'none' : 'block';
-        if(btn.querySelector('i')) btn.querySelector('i').style.display = isLoading ? 'none' : 'block';
-        btn.querySelector('.loader').style.display = isLoading ? 'block' : 'none';
-    };
 
-    const showError = (msg) => {
-        const banner = document.getElementById('error-banner');
-        banner.innerText = msg;
-        banner.style.display = 'block';
-        setTimeout(() => banner.style.display = 'none', 5000);
-    };
 
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const fullBase64 = event.target.result;
-                base64Image = fullBase64.split(',')[1];
-                document.getElementById('image-preview').innerHTML = `<img src="${fullBase64}">`;
-            };
-            reader.readAsDataURL(file);
+
+
+
+    const setBtnLoading = (
+        step,
+        isLoading
+    )=>{
+
+
+        const btn =
+        document.querySelector(
+            `#step-${step} button[type="submit"]`
+        );
+
+
+        if(!btn)
+            return;
+
+
+        btn.disabled=isLoading;
+
+
+        btn.querySelector('span')
+        .style.display =
+        isLoading
+        ? 'none'
+        : 'block';
+
+
+
+        if(btn.querySelector('i')){
+
+            btn.querySelector('i')
+            .style.display =
+            isLoading
+            ? 'none'
+            : 'block';
+
         }
-    });
 
-    document.getElementById('form-create').onsubmit = async (e) => {
-        e.preventDefault();
-        setBtnLoading(1, true);
-        const payload = {
-            username: document.getElementById('reg-username').value,
-            email: document.getElementById('reg-email').value,
-            phoneNumber: document.getElementById('reg-phone').value
-        };
-        try {
-            const res = await fetch(API_BASE, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            if (res.ok) { currentUserUuid = data.userUuid; toggleStep(2); }
-            else { showError(data.message || "Account exists or invalid data."); }
-        } catch (err) { showError("Connection error."); }
-        finally { setBtnLoading(1, false); }
+
+
+        btn.querySelector('.loader')
+        .style.display =
+        isLoading
+        ? 'block'
+        : 'none';
+
     };
 
-    document.getElementById('form-setup').onsubmit = async (e) => {
-        e.preventDefault();
-        setBtnLoading(2, true);
-        const payload = {
-            firstName: document.getElementById('setup-fname').value,
-            lastName: document.getElementById('setup-lname').value,
-            bio: document.getElementById('setup-bio').value,
-            gender: document.getElementById('setup-gender').value,
-            dateOfBirth: document.getElementById('setup-dob').value,
-            country: document.getElementById('setup-country').value,
-            state: document.getElementById('setup-state').value || "N/A",
-            city: document.getElementById('setup-city').value,
-            language: document.getElementById('setup-lang').value,
-            profileImage: base64Image
-        };
-        try {
-            const res = await fetch(`${API_BASE}/${currentUserUuid}/profile`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            if (res.ok) { renderProfile(data); toggleStep(3); }
-            else { showError("Could not save profile."); }
-        } catch (err) { showError("Server error."); }
-        finally { setBtnLoading(2, false); }
+
+
+
+
+
+
+    const showError=(msg)=>{
+
+        const banner =
+        document.getElementById(
+            'error-banner'
+        );
+
+
+        banner.innerText=msg;
+
+        banner.style.display='block';
+
+
+        setTimeout(()=>{
+
+            banner.style.display='none';
+
+        },5000);
+
     };
 
-    const renderProfile = (user) => {
-        document.getElementById('view-name').innerText = `${user.firstName} ${user.lastName}`;
-        document.getElementById('view-handle').innerText = `@${user.username}`;
-        document.getElementById('view-bio').innerText = user.bio || "No professional bio provided yet.";
-        const avatar = document.getElementById('view-avatar');
-        avatar.innerHTML = user.profileImage ? `<img src="data:image/png;base64,${user.profileImage}">` : `<i class="fa-solid fa-user"></i>`;
-        const pills = document.getElementById('view-pills');
-        pills.innerHTML = `
-            <div class="pill"><i class="fa-solid fa-earth-americas"></i> ${user.country}</div>
-            <div class="pill"><i class="fa-solid fa-mars-double"></i> ${user.gender}</div>
-            <div class="pill"><i class="fa-solid fa-id-badge"></i> Verified</div>
+
+
+
+
+
+
+
+    /* IMAGE UPLOAD */
+
+
+    document
+    .getElementById('fileInput')
+    .addEventListener(
+        'change',
+        function(e){
+
+
+            const file =
+            e.target.files[0];
+
+
+            if(file){
+
+
+                const reader =
+                new FileReader();
+
+
+
+                reader.onload=(event)=>{
+
+
+                    const fullBase64 =
+                    event.target.result;
+
+
+                    base64Image =
+                    fullBase64.split(',')[1];
+
+
+
+                    document
+                    .getElementById('image-preview')
+                    .innerHTML =
+                    `<img src="${fullBase64}">`;
+
+                };
+
+
+                reader.readAsDataURL(file);
+
+            }
+
+        }
+    );
+
+
+
+
+
+
+
+
+
+    /* CREATE USER */
+
+
+    document
+    .getElementById('form-create')
+    .onsubmit = async(e)=>{
+
+
+        e.preventDefault();
+
+
+        setBtnLoading(1,true);
+
+
+
+        const payload={
+
+            username:
+            document.getElementById('reg-username').value,
+
+
+            email:
+            document.getElementById('reg-email').value,
+
+
+            phoneNumber:
+            document.getElementById('reg-phone').value
+
+        };
+
+
+
+        try{
+
+
+            const res =
+            await fetch(
+                API_BASE,
+                {
+
+                method:'POST',
+
+                headers:{
+                    'Content-Type':
+                    'application/json'
+                },
+
+
+                body:
+                JSON.stringify(payload)
+
+                }
+            );
+
+
+
+            const data =
+            await res.json();
+
+
+
+            if(res.ok){
+
+
+                currentUserUuid =
+                data.userUuid;
+
+
+                toggleStep(2);
+
+
+            }
+            else{
+
+
+                showError(
+                    data.message ||
+                    "Account creation failed"
+                );
+
+            }
+
+
+
+        }
+        catch(error){
+
+
+            showError(
+                "Connection error with UI Service"
+            );
+
+        }
+
+
+        finally{
+
+            setBtnLoading(1,false);
+
+        }
+
+    };
+
+
+
+
+
+
+
+
+
+    /* PROFILE SETUP */
+
+
+    document
+    .getElementById('form-setup')
+    .onsubmit = async(e)=>{
+
+
+        e.preventDefault();
+
+
+        setBtnLoading(2,true);
+
+
+
+        const payload={
+
+
+            firstName:
+            document.getElementById('setup-fname').value,
+
+
+            lastName:
+            document.getElementById('setup-lname').value,
+
+
+            bio:
+            document.getElementById('setup-bio').value,
+
+
+            gender:
+            document.getElementById('setup-gender').value,
+
+
+            dateOfBirth:
+            document.getElementById('setup-dob').value,
+
+
+            country:
+            document.getElementById('setup-country').value,
+
+
+            state:
+            document.getElementById('setup-state').value || "N/A",
+
+
+            city:
+            document.getElementById('setup-city').value,
+
+
+            language:
+            document.getElementById('setup-lang').value,
+
+
+            profileImage:
+            base64Image
+
+        };
+
+
+
+
+        try{
+
+
+            const res =
+            await fetch(
+
+                `${API_BASE}/${currentUserUuid}/profile`,
+
+                {
+
+                method:'PUT',
+
+
+                headers:{
+                    'Content-Type':
+                    'application/json'
+                },
+
+
+                body:
+                JSON.stringify(payload)
+
+                }
+
+            );
+
+
+
+
+            const data =
+            await res.json();
+
+
+
+            if(res.ok){
+
+
+                renderProfile(data);
+
+                toggleStep(3);
+
+
+            }
+            else{
+
+                showError(
+                    "Profile setup failed"
+                );
+
+            }
+
+
+        }
+        catch(error){
+
+
+            showError(
+                "Server error"
+            );
+
+        }
+
+
+        finally{
+
+            setBtnLoading(2,false);
+
+        }
+
+
+    };
+
+
+
+
+
+
+
+
+
+    const renderProfile=(user)=>{
+
+
+        document
+        .getElementById('view-name')
+        .innerText =
+        `${user.firstName} ${user.lastName}`;
+
+
+
+        document
+        .getElementById('view-handle')
+        .innerText =
+        `@${user.username}`;
+
+
+
+        document
+        .getElementById('view-bio')
+        .innerText =
+        user.bio ||
+        "No professional bio provided yet.";
+
+
+
+
+
+        const avatar =
+        document.getElementById(
+            'view-avatar'
+        );
+
+
+
+        avatar.innerHTML =
+        user.profileImage
+
+        ?
+
+        `<img src="data:image/png;base64,${user.profileImage}">`
+
+        :
+
+        `<i class="fa-solid fa-user"></i>`;
+
+
+
+
+
+
+        document
+        .getElementById('view-pills')
+        .innerHTML = `
+
+
+        <div class="pill">
+        <i class="fa-solid fa-earth-americas"></i>
+        ${user.country}
+        </div>
+
+
+        <div class="pill">
+        <i class="fa-solid fa-mars-double"></i>
+        ${user.gender}
+        </div>
+
+
+        <div class="pill">
+        <i class="fa-solid fa-id-badge"></i>
+        Verified
+        </div>
+
+
         `;
+
+
     };
 
-    function showUpdate() { toggleStep(2); }
-    function startApp() { alert("Welcome to SocialConnect Pro!"); }
-    async function confirmDelete() {
-        if (confirm("Permanently delete this professional profile?")) {
-            await fetch(`${API_BASE}/${currentUserUuid}`, { method: 'DELETE' });
-            location.reload();
-        }
+
+
+
+
+
+
+
+
+    function showUpdate(){
+
+        toggleStep(2);
+
     }
+
+
+
+    function startApp(){
+
+        alert(
+        "Welcome to SocialConnect Pro!"
+        );
+
+    }
+
+
+
+
+
+
+
+    async function confirmDelete(){
+
+
+        if(confirm(
+        "Permanently delete this professional profile?"
+        )){
+
+
+            await fetch(
+
+                `${API_BASE}/${currentUserUuid}`,
+
+                {
+
+                method:'DELETE'
+
+                }
+
+            );
+
+
+            location.reload();
+
+        }
+
+    }
+
+
 </script>
 </body>
 </html>

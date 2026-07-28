@@ -19,12 +19,22 @@
         <module name="PostMicroService" />
         <module name="UserMicroService" />
       </profile>
+      <profile name="Annotation profile for UiService" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="UiService" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="PostMicroService" options="-parameters" />
       <module name="SocialMediaServiceRegistory" options="-parameters" />
+      <module name="UiService" options="-parameters" />
       <module name="UserMicroService" options="-parameters" />
     </option>
   </component>
