@@ -1,9 +1,6 @@
 package MicroService.UserMicroService.Servicesimpols;
 
-import MicroService.UserMicroService.Dtos.CreateUserRequest;
-import MicroService.UserMicroService.Dtos.ProfileSetupRequest;
-import MicroService.UserMicroService.Dtos.UpdateUserRequest;
-import MicroService.UserMicroService.Dtos.UserResponse;
+import MicroService.UserMicroService.Dtos.*;
 
 import MicroService.UserMicroService.Entitites.ENUMS.AccountStatus;
 import MicroService.UserMicroService.Entitites.User;
@@ -193,5 +190,20 @@ public class UserServiceImpl implements UserService {
         }
 
         return response;
+    }
+
+    // Inside MicroService.UserMicroService.Servicesimpols.UserServiceImpl
+
+    @Override
+    public UserResponse login(LoginRequest request) {
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("Invalid Username or Password"));
+
+        // In a real app, use BCrypt. For now, we compare plain text as requested.
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Invalid Username or Password");
+        }
+
+        return convertToResponse(user);
     }
 }

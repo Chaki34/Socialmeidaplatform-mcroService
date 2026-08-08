@@ -83,4 +83,8 @@ public class User {
 
     @PreUpdate
     public void preUpdate() { this.updatedAt = LocalDateTime.now(); }
+
+    // Inside MicroService.UserMicroService.Entitites.User
+    @Column(nullable = false)
+    private String password; // Add this field
 }

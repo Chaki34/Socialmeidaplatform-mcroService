@@ -43,4 +43,6 @@ public class ProfileSetupRequest {
     private String city;
 
     private String language;
+
+
 }

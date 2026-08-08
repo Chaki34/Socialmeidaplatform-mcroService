@@ -39,4 +39,6 @@ public class UpdateUserRequest {
     private String city;
 
     private String language;
+
+
 }

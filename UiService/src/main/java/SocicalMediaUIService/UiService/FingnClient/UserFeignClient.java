@@ -109,4 +109,9 @@ public interface UserFeignClient {
             @PathVariable("userUuid") String userUuid
     );
 
+    // Inside SocicalMediaUIService.UiService.FingnClient.UserFeignClient
+
+    @PostMapping("/api/v1/users/login")
+    UserResponse login(@RequestBody Object loginRequest); // Using Object or create a local LoginRequest DTO
+
 }

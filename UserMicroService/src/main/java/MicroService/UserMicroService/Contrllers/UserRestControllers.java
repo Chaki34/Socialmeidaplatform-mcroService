@@ -2,10 +2,7 @@ package MicroService.UserMicroService.Contrllers;
 
 
 
-import MicroService.UserMicroService.Dtos.CreateUserRequest;
-import MicroService.UserMicroService.Dtos.ProfileSetupRequest;
-import MicroService.UserMicroService.Dtos.UpdateUserRequest;
-import MicroService.UserMicroService.Dtos.UserResponse;
+import MicroService.UserMicroService.Dtos.*;
 import MicroService.UserMicroService.Services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -99,6 +96,14 @@ public class UserRestControllers {
         userService.deleteUser(userUuid);
 
         return ResponseEntity.noContent().build();
+    }
+
+
+    // Inside MicroService.UserMicroService.Contrllers.UserRestControllers
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 
 

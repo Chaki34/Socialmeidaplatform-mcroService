@@ -183,6 +183,15 @@ public class UserUIController {
         return ResponseEntity.noContent().build();
     }
 
+    // Inside SocicalMediaUIService.UiService.Controllers.UserUIController
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody Object request) {
+        // This calls the microservice via Feign
+        UserResponse response = userFeignClient.login(request);
+        return ResponseEntity.ok(response);
+    }
+
 
 
 }

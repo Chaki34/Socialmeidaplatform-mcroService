@@ -3,10 +3,7 @@ package MicroService.UserMicroService.Services;
 
 
 
-import MicroService.UserMicroService.Dtos.CreateUserRequest;
-import MicroService.UserMicroService.Dtos.ProfileSetupRequest;
-import MicroService.UserMicroService.Dtos.UpdateUserRequest;
-import MicroService.UserMicroService.Dtos.UserResponse;
+import MicroService.UserMicroService.Dtos.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,5 +22,8 @@ public interface UserService {
     List<UserResponse> getAllUsers();
 
     void deleteUser(String userUuid);
+
+    // Inside MicroService.UserMicroService.Services.UserService
+    UserResponse login(LoginRequest request);
 
 }

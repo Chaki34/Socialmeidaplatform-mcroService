@@ -28,4 +28,6 @@ public class CreateUserRequest {
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 30)
     private String username;
+
+    @NotBlank(message = "Password is required") @Size(min = 6, max = 100) private String password;
 }

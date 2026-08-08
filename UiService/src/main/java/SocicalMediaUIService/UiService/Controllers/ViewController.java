@@ -17,4 +17,10 @@ public class ViewController {
     public String userFeedPage() {
         return "userFeed";
     }
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        // This returns the login.html Thymeleaf template
+        return "login";
+    }
 }

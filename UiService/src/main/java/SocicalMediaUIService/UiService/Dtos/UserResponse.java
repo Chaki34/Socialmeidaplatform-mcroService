@@ -4,6 +4,7 @@ package SocicalMediaUIService.UiService.Dtos;
 
 import SocicalMediaUIService.UiService.ENUMS.AccountStatus;
 import SocicalMediaUIService.UiService.ENUMS.Gender;
+import jakarta.validation.constraints.Past;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class UserResponse {
 
     private Gender gender;
 
+    @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
     private String country;
@@ -52,4 +54,7 @@ public class UserResponse {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+
+
 }
