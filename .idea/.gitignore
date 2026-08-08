@@ -1,10 +1,60 @@
-# Default ignored files
+```gitignore
+# =========================================================
+# IntelliJ IDEA
+# =========================================================
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IntelliJ generated files
 /shelf/
 /workspace.xml
-# Ignored default folder with query files
 /queries/
-# Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-# Editor-based HTTP Client requests
 /httpRequests/
+/out/
+
+# =========================================================
+# Maven
+# =========================================================
+
+# Ignore all Maven build directories
+target/
+**/target/
+
+# Ignore Maven generated files
+*.class
+*.jar
+*.war
+
+# =========================================================
+# Spring Boot / Application Logs
+# =========================================================
+
+*.log
+
+# =========================================================
+# Java
+# =========================================================
+
+*.class
+
+# =========================================================
+# OS Generated Files
+# =========================================================
+
+.DS_Store
+Thumbs.db
+
+# =========================================================
+# Temporary Files
+# =========================================================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+```
