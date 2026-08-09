@@ -1,8 +1,8 @@
-package Servcie.PostService.PostMicroService.DTOs;
+package SocicalMediaUIService.UiService.Dtos;
 
 
-import Servcie.PostService.PostMicroService.Entities.ENUMS.MediaType;
-import Servcie.PostService.PostMicroService.Entities.ENUMS.PostVisibility;
+
+import SocicalMediaUIService.UiService.ENUMS.ENUMS.*;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class UpdatePostRequest {
 
     private List<String> mediaUrls;
 
-    private MediaType mediaType;
+    private mediaType mediaType;
 
     private PostVisibility visibility;
 

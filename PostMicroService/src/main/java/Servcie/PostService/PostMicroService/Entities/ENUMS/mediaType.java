@@ -2,7 +2,7 @@ package Servcie.PostService.PostMicroService.Entities.ENUMS;
 
 
 
-public enum MediaType {
+public enum mediaType {
 
     TEXT,
 

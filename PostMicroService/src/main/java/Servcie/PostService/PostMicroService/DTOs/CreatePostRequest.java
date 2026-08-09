@@ -1,7 +1,8 @@
 package Servcie.PostService.PostMicroService.DTOs;
 
-import Servcie.PostService.PostMicroService.Entities.ENUMS.MediaType;
+
 import Servcie.PostService.PostMicroService.Entities.ENUMS.PostVisibility;
+import Servcie.PostService.PostMicroService.Entities.ENUMS.mediaType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class CreatePostRequest {
     private List<String> mediaUrls;
 
     @NotNull(message = "Media type is required")
-    private MediaType mediaType;
+    private mediaType mediaType;
 
     @NotNull(message = "Visibility is required")
     private PostVisibility visibility;

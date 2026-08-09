@@ -34,32 +34,125 @@ public class PostServiceImpl implements PostService {
     private final ModelMapper modelMapper;
 
     @Override
-    public PostResponse createPost(CreatePostRequest request,
-                                   List<MultipartFile> mediaFiles) {
+    public PostResponse createPost(
+            CreatePostRequest request,
+            List<MultipartFile> mediaFiles) {
 
-        Post post = modelMapper.map(request, Post.class);
+        System.out.println("======================================");
+        System.out.println("CREATE POST STARTED");
+        System.out.println("Caption       : " + request.getCaption());
+        System.out.println("User UUID     : " + request.getUserUuid());
+        System.out.println("Visibility    : " + request.getVisibility());
+        System.out.println("Media Type    : " + request.getMediaType());
+        System.out.println("Location      : " + request.getLocation());
+        System.out.println("Hashtags      : " + request.getHashtags());
+        System.out.println("Mentioned     : " + request.getMentionedUsers());
 
-        // Save uploaded files
-        List<String> urls = saveFiles(mediaFiles);
+        if (mediaFiles == null) {
+            System.out.println("Media files   : NULL");
+        } else {
+            System.out.println("Media files   : " + mediaFiles.size());
 
-        post.setMediaUrls(urls);
+            for (MultipartFile file : mediaFiles) {
+                System.out.println(
+                        "File          : "
+                                + file.getOriginalFilename()
+                                + " | "
+                                + file.getContentType()
+                                + " | "
+                                + file.getSize()
+                );
+            }
+        }
 
-        post.setLikeCount(0L);
-        post.setCommentCount(0L);
-        post.setShareCount(0L);
-        post.setViewCount(0L);
+        try {
 
-        post.setEdited(false);
-        post.setStatus(PostStatus.ACTIVE);
+            // ==========================================
+            // 1. MAP DTO -> ENTITY
+            // ==========================================
 
-        post.setCreatedAt(LocalDateTime.now());
-        post.setUpdatedAt(LocalDateTime.now());
+            System.out.println("STEP 1: Mapping DTO to Post");
 
-        Post savedPost = postRepository.save(post);
+            Post post = modelMapper.map(request, Post.class);
 
-        return modelMapper.map(savedPost, PostResponse.class);
+            System.out.println("STEP 1 SUCCESS");
+
+
+            // ==========================================
+            // 2. SAVE FILES
+            // ==========================================
+
+            System.out.println("STEP 2: Saving files");
+
+            List<String> urls = saveFiles(mediaFiles);
+
+            System.out.println("STEP 2 SUCCESS");
+            System.out.println("URLs: " + urls);
+
+            post.setMediaUrls(urls);
+
+
+            // ==========================================
+            // 3. DEFAULT VALUES
+            // ==========================================
+
+            System.out.println("STEP 3: Setting default values");
+
+            post.setLikeCount(0L);
+            post.setCommentCount(0L);
+            post.setShareCount(0L);
+            post.setViewCount(0L);
+
+            post.setEdited(false);
+            post.setStatus(PostStatus.ACTIVE);
+
+            post.setCreatedAt(LocalDateTime.now());
+            post.setUpdatedAt(LocalDateTime.now());
+
+            System.out.println("STEP 3 SUCCESS");
+
+
+            // ==========================================
+            // 4. SAVE MONGODB
+            // ==========================================
+
+            System.out.println("STEP 4: Saving Post to MongoDB");
+
+            Post savedPost = postRepository.save(post);
+
+            System.out.println("STEP 4 SUCCESS");
+            System.out.println("POST ID: " + savedPost.getPostId());
+
+
+            // ==========================================
+            // 5. MAP ENTITY -> RESPONSE
+            // ==========================================
+
+            System.out.println("STEP 5: Mapping Post -> PostResponse");
+
+            PostResponse response =
+                    modelMapper.map(savedPost, PostResponse.class);
+
+            System.out.println("STEP 5 SUCCESS");
+            System.out.println("CREATE POST SUCCESS");
+            System.out.println("======================================");
+
+            return response;
+
+        } catch (Exception e) {
+
+            System.err.println("======================================");
+            System.err.println("CREATE POST FAILED");
+            System.err.println("Exception: " + e.getClass().getName());
+            System.err.println("Message  : " + e.getMessage());
+
+            e.printStackTrace();
+
+            System.err.println("======================================");
+
+            throw e;
+        }
     }
-
     @Override
     public PostResponse getPostById(String postId) {
 

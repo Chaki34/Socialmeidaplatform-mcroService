@@ -1,9 +1,10 @@
 package Servcie.PostService.PostMicroService.DTOs;
 
 
-import Servcie.PostService.PostMicroService.Entities.ENUMS.MediaType;
+
 import Servcie.PostService.PostMicroService.Entities.ENUMS.PostStatus;
 import Servcie.PostService.PostMicroService.Entities.ENUMS.PostVisibility;
+import Servcie.PostService.PostMicroService.Entities.ENUMS.mediaType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class PostResponse {
 
     private List<String> mediaUrls;
 
-    private MediaType mediaType;
+    private mediaType mediaType;
 
     private PostVisibility visibility;
 

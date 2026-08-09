@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     // Physical Folder
     private static final String UPLOAD_DIRECTORY =
-            "D:/Microservices Using Springboot/Social meida platform webapp/src/main/resources/profile_images/";
+            "F:/Microservices Using Springboot/Social meida platform webapp/src/main/resources/profile_images/";
 
 
 

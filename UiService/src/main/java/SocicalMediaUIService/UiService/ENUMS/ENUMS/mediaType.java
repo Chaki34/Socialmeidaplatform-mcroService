@@ -1,8 +1,8 @@
-package Servcie.PostService.PostMicroService.Entities.ENUMS;
+package SocicalMediaUIService.UiService.ENUMS.ENUMS;
 
 
 
-public enum MediaType {
+public enum mediaType {
 
     TEXT,
 

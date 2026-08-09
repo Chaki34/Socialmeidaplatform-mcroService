@@ -1,4 +1,4 @@
-package Servcie.PostService.PostMicroService.Entities.ENUMS;
+package SocicalMediaUIService.UiService.ENUMS.ENUMS;
 
 
 

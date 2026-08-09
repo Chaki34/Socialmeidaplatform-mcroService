@@ -32,7 +32,7 @@ public class Post {
     private List<String> mediaUrls;
 
     // IMAGE, VIDEO, MIXED, TEXT
-    private MediaType mediaType;
+    private mediaType mediaType;
 
     // PUBLIC, FRIENDS, PRIVATE
     private PostVisibility visibility;

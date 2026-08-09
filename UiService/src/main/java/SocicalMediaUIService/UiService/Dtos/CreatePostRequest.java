@@ -1,10 +1,13 @@
-package Servcie.PostService.PostMicroService.DTOs;
+package SocicalMediaUIService.UiService.Dtos;
 
-import Servcie.PostService.PostMicroService.Entities.ENUMS.MediaType;
-import Servcie.PostService.PostMicroService.Entities.ENUMS.PostVisibility;
+
+
+import SocicalMediaUIService.UiService.ENUMS.ENUMS.PostVisibility;
+import SocicalMediaUIService.UiService.ENUMS.ENUMS.mediaType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ public class CreatePostRequest {
     private List<String> mediaUrls;
 
     @NotNull(message = "Media type is required")
-    private MediaType mediaType;
+    private mediaType mediaType;
 
     @NotNull(message = "Visibility is required")
     private PostVisibility visibility;
@@ -29,5 +32,7 @@ public class CreatePostRequest {
     private List<String> hashtags;
 
     private List<String> mentionedUsers;
+
+
 
 }
