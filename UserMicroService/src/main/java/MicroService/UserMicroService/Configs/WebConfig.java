@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/profile-images/**")
                 .addResourceLocations(
-                        "file:///D:/Microservices Using Springboot/Social meida platform webapp/src/main/resources/profile_images/"
+                        "file:///F:/Microservices Using Springboot/Social meida platform webapp/src/main/resources/profile_images/"
                 );
 
 

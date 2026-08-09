@@ -37,16 +37,16 @@ public class UserServiceImpl implements UserService {
 
 
 
-//    for use in phone use ip adress sothat phone  -> sent to here  - 10.58.200.219:8081/profile-images
-   private static final String IMAGE_URL =
-        "http://10.58.200.219:8081/profile-images/";
+////    for use in phone use ip adress sothat phone  -> sent to here  - 10.58.200.219:8081/profile-images
+//   private static final String IMAGE_URL =
+//        "http://10.58.200.219:8081/profile-images/";
 
 
 
 
     // URL exposed by WebConfig
-//    private static final String IMAGE_URL =
-//            "http://localhost:8081/profile-images/";
+    private static final String IMAGE_URL =
+            "http://localhost:8081/profile-images/";
 
     @Override
     public UserResponse createUser(CreateUserRequest request) {
