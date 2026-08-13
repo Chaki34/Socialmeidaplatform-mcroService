@@ -1597,6 +1597,8 @@
 
     </style>
 
+
+
  <style>
      /* =====================================================
    CLEAN PROFILE GRID (Single Media + Count Badge)
@@ -1718,6 +1720,56 @@
     .profile-grid { grid-template-columns: repeat(2, 1fr); }
 }
  </style>
+
+    <style>
+        .reorder-item {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid var(--glass-border);
+    transition: 0.3s;
+}
+
+.reorder-item img, .reorder-item video {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+.reorder-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex; flex-direction: column;
+    justify-content: space-between; padding: 5px;
+    opacity: 0; transition: 0.2s;
+}
+
+.reorder-item:hover .reorder-overlay { opacity: 1; }
+
+.reorder-number {
+    position: absolute; top: 5px; left: 5px;
+    background: var(--primary); color: white;
+    font-size: 10px; font-weight: 800;
+    width: 18px; height: 18px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+}
+
+.reorder-controls {
+    display: flex; justify-content: center; gap: 8px; margin-top: auto;
+}
+
+.reorder-btn {
+    background: white; color: black; border: none;
+    width: 24px; height: 24px; border-radius: 4px;
+    cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.reorder-btn:hover { background: var(--primary); color: white; }
+    </style>
+
 
 
 
@@ -2397,6 +2449,17 @@
                 <span>Modify your post details</span>
             </div>
             <button type="button" class="post-modal-close" id="closeEditModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- ADD THIS INSIDE #editPostModal form -->
+        <div class="post-form-group">
+            <label>MANAGE MEDIA ORDER</label>
+            <div id="editMediaReorderContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 5px; background: rgba(0,0,0,0.2); border-radius: 12px; min-height: 120px; align-items: center;">
+                <!-- Thumbnails injected by JS -->
+            </div>
+            <small style="color: var(--text-dim); font-size: 10px; margin-top: 5px; display: block;">
+                Use arrows to reorder. The first item will be your cover image.
+            </small>
         </div>
 
         <form id="editPostForm" style="padding: 22px;">
@@ -3964,7 +4027,10 @@ function editPost(id) { alert("Opening Editor for: " + id); }
 </script>
 
 <script>
-    /**
+    // State to hold the current order of media for the post being edited
+let currentEditingMediaUrls = [];
+
+/**
  * 1. OPEN EDIT MODAL & LOAD DATA
  */
 async function editPost(postId) {
@@ -3972,42 +4038,97 @@ async function editPost(postId) {
 
     try {
         const response = await fetch(`/proxy/posts/${postId}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch post: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Failed to fetch post: ${response.status}`);
 
         const post = await response.json();
 
-        // Populate Hidden Fields
+        // 1. Map Hidden & Text Fields
         document.getElementById("editPostId").value = post.postId;
         document.getElementById("editMediaType").value = post.mediaType;
-
-        // Populate Text Fields
         document.getElementById("editCaption").value = post.caption || "";
         document.getElementById("editLocation").value = post.location || "";
         document.getElementById("editVisibility").value = post.visibility || "PUBLIC";
 
-        // Convert Arrays back to Comma-Separated Strings for the inputs
+        // 2. Map Hashtags & Mentions (Arrays to Comma-Separated Strings)
         document.getElementById("editHashtags").value =
             (post.hashtags && post.hashtags.length > 0) ? post.hashtags.join(", ") : "";
 
         document.getElementById("editMentions").value =
             (post.mentionedUsers && post.mentionedUsers.length > 0) ? post.mentionedUsers.join(", ") : "";
 
-        // Open Modal and lock scroll
+        // 3. Handle Media Reordering State
+        currentEditingMediaUrls = post.mediaUrls || [];
+        renderMediaReorder();
+
+        // 4. Open Modal UI
         const modal = document.getElementById("editPostModal");
         modal.style.display = "flex";
         document.body.style.overflow = "hidden";
 
     } catch (err) {
         console.error("Error loading post:", err);
-        alert("Could not load post details. Please try again.");
+        alert("Could not load post details.");
     }
 }
 
 /**
- * 2. SUBMIT EDIT FORM
+ * 2. RENDER MEDIA THUMBNAILS WITH SWAP CONTROLS
+ */
+function renderMediaReorder() {
+    const container = document.getElementById("editMediaReorderContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (currentEditingMediaUrls.length === 0) {
+        container.innerHTML = `<p style="font-size:11px; color:var(--text-dim); margin:auto;">No media attached to this post.</p>`;
+        return;
+    }
+
+    currentEditingMediaUrls.forEach((url, index) => {
+        const isVideo = url.toLowerCase().endsWith('.mp4') || url.toLowerCase().endsWith('.webm');
+        const item = document.createElement("div");
+        item.className = "reorder-item";
+
+        item.innerHTML = `
+            <div class="reorder-number">${index + 1}</div>
+            ${isVideo ? `<video src="${url}"></video>` : `<img src="${url}">`}
+
+            <div class="reorder-overlay">
+                <div class="reorder-controls">
+                    <!-- Left Arrow: Only show if not the first item -->
+                    ${index > 0 ? `
+                        <button type="button" class="reorder-btn" onclick="swapMedia(${index}, ${index - 1})">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>` : ''}
+
+                    <!-- Right Arrow: Only show if not the last item -->
+                    ${index < currentEditingMediaUrls.length - 1 ? `
+                        <button type="button" class="reorder-btn" onclick="swapMedia(${index}, ${index + 1})">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>` : ''}
+                </div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+/**
+ * 3. SWAP POSITION LOGIC
+ */
+function swapMedia(idx1, idx2) {
+    // Swap elements in the array
+    const temp = currentEditingMediaUrls[idx1];
+    currentEditingMediaUrls[idx1] = currentEditingMediaUrls[idx2];
+    currentEditingMediaUrls[idx2] = temp;
+
+    // Re-render the UI
+    renderMediaReorder();
+}
+
+/**
+ * 4. SUBMIT EDIT FORM
  */
 document.getElementById("editPostForm").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -4026,18 +4147,21 @@ document.getElementById("editPostForm").addEventListener("submit", async functio
     formData.append("visibility", document.getElementById("editVisibility").value);
     formData.append("mediaType", document.getElementById("editMediaType").value);
 
-    // Process Hashtags: Remove '#' symbols and trim spaces
-    const hashtagInput = document.getElementById("editHashtags").value;
-    hashtagInput.split(",")
-        .map(t => t.trim().replace(/^#+/, "")) // remove leading hashtags
-        .filter(t => t.length > 0)             // remove empty entries
+    // IMPORTANT: Send the ordered list of URLs back to the backend
+    currentEditingMediaUrls.forEach(url => {
+        formData.append("mediaUrls", url);
+    });
+
+    // Process Hashtags
+    document.getElementById("editHashtags").value.split(",")
+        .map(t => t.trim().replace(/^#+/, ""))
+        .filter(t => t.length > 0)
         .forEach(t => formData.append("hashtags", t));
 
-    // Process Mentions: Trim spaces
-    const mentionInput = document.getElementById("editMentions").value;
-    mentionInput.split(",")
+    // Process Mentions
+    document.getElementById("editMentions").value.split(",")
         .map(m => m.trim())
-        .filter(m => m.length > 0)             // remove empty entries
+        .filter(m => m.length > 0)
         .forEach(m => formData.append("mentionedUsers", m));
 
     try {
@@ -4048,44 +4172,35 @@ document.getElementById("editPostForm").addEventListener("submit", async functio
 
         if (response.ok) {
             alert("Post updated successfully! ✨");
-
-            // Close Modal
             closeEditModalFunc();
-
-            // Refresh Profile Grid (Existing function in your code)
-            if (typeof openProfileView === "function") {
-                openProfileView();
-            } else {
-                location.reload(); // Fallback
-            }
+            if (typeof openProfileView === "function") openProfileView();
         } else {
-            // Attempt to get the error message from the Microservice response
             const errorText = await response.text();
-            console.error("Update failed server-side:", errorText);
-            alert(`Update failed: ${errorText || 'Internal Server Error'}`);
+            alert(`Update failed: ${errorText}`);
         }
     } catch (err) {
-        console.error("Network/Proxy Error:", err);
-        alert("Network error: Could not reach the server. Please check your connection.");
+        console.error("Network Error:", err);
+        alert("Network error: Could not reach the server.");
     } finally {
-        // Reset UI State
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHtml;
     }
 });
 
 /**
- * 3. CLOSE MODAL HELPERS
+ * 5. MODAL CLOSING & CLEANUP
  */
 function closeEditModalFunc() {
-    document.getElementById("editPostModal").style.display = "none";
-    document.body.style.overflow = ""; // restore scroll
-    document.getElementById("editPostForm").reset(); // clear form
+    const modal = document.getElementById("editPostModal");
+    if (modal) modal.style.display = "none";
+
+    document.body.style.overflow = "";
+    document.getElementById("editPostForm").reset();
+    currentEditingMediaUrls = []; // Clear state
 }
 
 document.getElementById("closeEditModal").onclick = closeEditModalFunc;
 
-// Close modal if user clicks outside the content area
 window.addEventListener("click", function(event) {
     const modal = document.getElementById("editPostModal");
     if (event.target === modal) {
