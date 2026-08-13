@@ -18,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -338,6 +336,22 @@ public class FeedController {
                                     + " - "
                                     + e.getMessage()
                     );
+        }
+    }
+
+    @GetMapping("/proxy/posts/user/{userUuid}")
+    @ResponseBody
+    public ResponseEntity<?> proxyGetPostsByUser(@PathVariable String userUuid) {
+        try {
+            // Calling the Post Microservice endpoint you provided: /api/v1/posts/user/{userUuid}
+            ResponseEntity<List> response = restTemplate.getForEntity(
+                    "http://localhost:8082/api/v1/posts/user/" + userUuid,
+                    List.class
+            );
+            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching user posts: " + e.getMessage());
         }
     }
 }

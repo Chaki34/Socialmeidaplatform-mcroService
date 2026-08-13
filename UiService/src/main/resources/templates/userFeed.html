@@ -1597,6 +1597,87 @@
 
     </style>
 
+    <style>
+        /* ================================
+   PROFILE GRID STYLES
+================================ */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-top: 10px;
+}
+
+.profile-post-item {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--glass);
+    cursor: pointer;
+}
+
+.profile-post-item img,
+.profile-post-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hover Overlay */
+.post-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.profile-post-item:hover .post-overlay {
+    opacity: 1;
+}
+
+.post-action-btn {
+    width: 110px;
+    padding: 8px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.post-action-btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-boost {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-edit-post {
+    background: white;
+    color: var(--dark-bg);
+}
+
+@media (max-width: 768px) {
+    .profile-grid { grid-template-columns: repeat(2, 1fr); }
+}
+    </style>
+
 
 </head>
 <body>
@@ -2199,6 +2280,38 @@
 
     </div>
 
+</div>
+
+
+<!-- =====================================================
+     PROFILE VIEW MODAL (Instagram Style)
+===================================================== -->
+<div class="modal-overlay" id="profileModal">
+    <div class="post-modal" style="width: 800px; max-height: 85vh;">
+        <div class="post-modal-header">
+            <h2><i class="fa-solid fa-circle-user"></i> User Profile</h2>
+            <button type="button" class="post-modal-close" id="closeProfileModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 25px; overflow-y: auto; max-height: calc(85vh - 80px);">
+            <!-- Profile Header -->
+            <div style="display: flex; gap: 30px; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 25px;">
+                <img id="m-profile-img" src="" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover;">
+                <div>
+                    <h2 id="m-profile-name" style="margin-bottom: 5px;"></h2>
+                    <p id="m-profile-username" style="color: var(--primary); font-weight: 600; margin-bottom: 10px;"></p>
+                    <p id="m-profile-bio" style="font-size: 14px; color: var(--text-dim);"></p>
+                </div>
+            </div>
+
+            <!-- Posts Grid -->
+            <h3 style="font-size: 14px; letter-spacing: 1px; color: var(--text-dim); border-top: 1px solid var(--glass-border); padding-top: 15px;">
+                <i class="fa-solid fa-table-cells"></i> POSTS
+            </h3>
+            <div id="profile-posts-grid" class="profile-grid">
+                <!-- Data from Microservice injected here -->
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -3543,6 +3656,90 @@
 
     });
 
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const profileModal = document.getElementById("profileModal");
+    const closeProfileModal = document.getElementById("closeProfileModal");
+    const profileGrid = document.getElementById("profile-posts-grid");
+
+    // 1. Identify the Sidebar Profile Button
+    const navItems = document.querySelectorAll('.nav-item');
+    let profileBtn = Array.from(navItems).find(item => item.innerHTML.includes('fa-circle-user'));
+
+    if (profileBtn) {
+        profileBtn.addEventListener("click", openProfileView);
+    }
+
+    async function openProfileView() {
+        const uuid = localStorage.getItem("currentUserUuid");
+        if (!uuid) return alert("Session expired. Please log in.");
+
+        profileModal.style.display = "flex";
+        profileGrid.innerHTML = '<div style="grid-column: 1/4; text-align:center; padding:50px; color:var(--text-dim);"><i class="fa-solid fa-spinner fa-spin"></i> Loading posts...</div>';
+
+        try {
+            // Fetch User Details (from UI Service /ui/users/{uuid})
+            const userRes = await fetch(`/ui/users/${uuid}`);
+            const user = await userRes.json();
+
+            document.getElementById("m-profile-img").src = getProfileImage(user);
+            document.getElementById("m-profile-name").innerText = `${user.firstName || ''} ${user.lastName || ''}`;
+            document.getElementById("m-profile-username").innerText = `@${user.username}`;
+            document.getElementById("m-profile-bio").innerText = user.bio || "No bio available";
+
+            // Fetch Real Posts (from the new Proxy endpoint we added to FeedController)
+            const postsRes = await fetch(`/proxy/posts/user/${uuid}`);
+            const posts = await postsRes.json();
+
+            renderProfilePosts(posts);
+
+        } catch (err) {
+            console.error("Profile Load Error:", err);
+            profileGrid.innerHTML = '<p style="grid-column: 1/4; text-align:center;">Failed to load posts.</p>';
+        }
+    }
+
+    function renderProfilePosts(posts) {
+        profileGrid.innerHTML = '';
+
+        if (!posts || posts.length === 0) {
+            profileGrid.innerHTML = '<div style="grid-column: 1/4; text-align:center; padding:40px;"><i class="fa-solid fa-camera" style="font-size:30px; margin-bottom:10px;"></i><p>No posts yet</p></div>';
+            return;
+        }
+
+        posts.forEach(post => {
+            const item = document.createElement('div');
+            item.className = 'profile-post-item';
+
+            // Get first image from mediaUrls or use a placeholder
+            const mediaUrl = (post.mediaUrls && post.mediaUrls.length > 0)
+                             ? post.mediaUrls[0]
+                             : 'https://via.placeholder.com/500?text=No+Media';
+
+            item.innerHTML = `
+                <img src="${mediaUrl}" onerror="this.src='https://via.placeholder.com/500?text=Error+Loading'">
+                <div class="post-overlay">
+                    <button class="post-action-btn btn-boost" onclick="boostPost('${post.postId}')">
+                        <i class="fa-solid fa-rocket"></i> BOOST
+                    </button>
+                    <button class="post-action-btn btn-edit-post" onclick="editPost('${post.postId}')">
+                        <i class="fa-solid fa-pen-to-square"></i> EDIT
+                    </button>
+                </div>
+            `;
+            profileGrid.appendChild(item);
+        });
+    }
+
+    closeProfileModal.onclick = () => { profileModal.style.display = "none"; document.body.style.overflow = ""; };
+});
+
+// Helper functions for the buttons
+function boostPost(id) { alert("Boosting Post: " + id); }
+function editPost(id) { alert("Opening Editor for: " + id); }
 </script>
 
 
