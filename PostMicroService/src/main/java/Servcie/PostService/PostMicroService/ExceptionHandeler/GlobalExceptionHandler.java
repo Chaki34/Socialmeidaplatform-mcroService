@@ -7,11 +7,14 @@ import Servcie.PostService.PostMicroService.Exceptions.BadRequestException;
 import Servcie.PostService.PostMicroService.Exceptions.DuplicateResourceException;
 import Servcie.PostService.PostMicroService.Exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -91,20 +94,28 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGenericException(
-            Exception ex,
-            HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
 
-        ApiError error = ApiError.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error("Internal Server Error")
-                .message(ex.getMessage())
-                .path(request.getRequestURI())
+        // Using the Builder instead of a constructor
+        ApiError apiError = ApiError.builder()
+                .timestamp(java.time.LocalDateTime.now()) // Set the current time
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value()) // int
+                .error("Internal Server Error") // String
+                .message(ex.getMessage()) // String
+                .path(request.getRequestURI()) // String
+                .validationErrors(null) // List (or Collections.emptyList())
                 .build();
 
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        // Force the response to be JSON to solve the 'video/mp4' conversion error
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(apiError);
     }
+
+
+
 
 }

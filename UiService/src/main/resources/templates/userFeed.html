@@ -1828,22 +1828,21 @@
 
             <h2 id="profile-name">Loading...</h2>
             <p id="profile-username" style="color: var(--text-dim); font-size: 0.9rem;"></p>
-            <p id="profile-bio" style="margin-top:1rem; font-size:0.85rem;"></p>
 
-            <!-- Detailed Info Section -->
-            <div class="profile-details-list">
-                <div><i class="fa-solid fa-location-dot"></i> <span id="profile-location">-</span></div>
-                <div><i class="fa-solid fa-earth-asia"></i> <span id="profile-country">-</span></div>
-                <div><i class="fa-solid fa-user"></i> <span id="profile-gender">-</span></div>
-                <div><i class="fa-solid fa-language"></i> <span id="profile-language">-</span></div>
-                <div><i class="fa-solid fa-cake-candles"></i> <span id="profile-dob">-</span></div>
-            </div>
+<!--            &lt;!&ndash; Detailed Info Section &ndash;&gt;-->
+<!--            <div class="profile-details-list">-->
+<!--                <div><i class="fa-solid fa-location-dot"></i> <span id="profile-location">-</span></div>-->
+<!--                <div><i class="fa-solid fa-earth-asia"></i> <span id="profile-country">-</span></div>-->
+<!--                <div><i class="fa-solid fa-user"></i> <span id="profile-gender">-</span></div>-->
+<!--                <div><i class="fa-solid fa-language"></i> <span id="profile-language">-</span></div>-->
+<!--                <div><i class="fa-solid fa-cake-candles"></i> <span id="profile-dob">-</span></div>-->
+<!--            </div>-->
 
-            <div class="stats-row">
-                <div class="stat-item"><b>0</b><span>Posts</span></div>
-                <div class="stat-item"><b>0</b><span>Followers</span></div>
-                <div class="stat-item"><b>0</b><span>Following</span></div>
-            </div>
+<!--            <div class="stats-row">-->
+<!--                <div class="stat-item"><b>0</b><span>Posts</span></div>-->
+<!--                <div class="stat-item"><b>0</b><span>Followers</span></div>-->
+<!--                <div class="stat-item"><b>0</b><span>Following</span></div>-->
+<!--            </div>-->
         </div>
     </aside>
 </div>
@@ -2286,31 +2285,170 @@
 <!-- =====================================================
      PROFILE VIEW MODAL (Instagram Style)
 ===================================================== -->
-<div class="modal-overlay" id="profileModal">
-    <div class="post-modal" style="width: 800px; max-height: 85vh;">
+<!-- =====================================================
+     UPDATED PROFILE VIEW MODAL (Full Details)
+===================================================== -->
+<div class="modal-overlay" id="profileModal" style="z-index: 25000;">
+    <div class="post-modal" style="width: 850px; max-height: 90vh;">
         <div class="post-modal-header">
-            <h2><i class="fa-solid fa-circle-user"></i> User Profile</h2>
+            <h2><i class="fa-solid fa-id-card"></i> Professional Profile</h2>
             <button type="button" class="post-modal-close" id="closeProfileModal"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 25px; overflow-y: auto; max-height: calc(85vh - 80px);">
-            <!-- Profile Header -->
-            <div style="display: flex; gap: 30px; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 25px;">
-                <img id="m-profile-img" src="" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover;">
-                <div>
-                    <h2 id="m-profile-name" style="margin-bottom: 5px;"></h2>
-                    <p id="m-profile-username" style="color: var(--primary); font-weight: 600; margin-bottom: 10px;"></p>
-                    <p id="m-profile-bio" style="font-size: 14px; color: var(--text-dim);"></p>
+
+        <button id="openEditProfileBtn" class="btn-submit" style="width: auto; height: 32px; padding: 0 15px; margin: 0; font-size: 11px; background: var(--glass); border: 1px solid var(--primary);">
+            <i class="fa-solid fa-user-gear"></i> Edit Profile
+        </button>
+
+        <div style="padding: 30px; overflow-y: auto; max-height: calc(90vh - 80px);">
+            <!-- Profile Info Section -->
+            <div style="display: flex; gap: 40px; border-bottom: 1px solid var(--glass-border); padding-bottom: 30px; margin-bottom: 20px;">
+                <!-- Left: Avatar & Stats -->
+                <div style="text-align: center; width: 200px;">
+                    <img id="m-profile-img" src="" style="width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; margin-bottom: 20px;">
+
+                    <div class="stats-row" style="border-top: 1px solid var(--glass-border); padding-top: 15px;">
+                        <div class="stat-item"><b id="m-stat-posts">0</b><span>Posts</span></div>
+                        <div class="stat-item"><b>0</b><span>Followers</span></div>
+                        <div class="stat-item"><b>0</b><span>Following</span></div>
+                    </div>
+                </div>
+
+                <!-- Right: Detailed Data -->
+                <div style="flex: 1;">
+                    <h1 id="m-profile-name" style="font-size: 26px; margin-bottom: 5px;"></h1>
+                    <p id="m-profile-username" style="color: var(--primary); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;"></p>
+
+                    <div id="m-profile-bio" style="background: var(--glass); padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; border: 1px solid var(--glass-border);"></div>
+
+                    <!-- Side Profile Style Details -->
+                    <div class="profile-details-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><i class="fa-solid fa-location-dot"></i> <span id="m-location">-</span></div>
+                        <div><i class="fa-solid fa-earth-asia"></i> <span id="m-country">-</span></div>
+                        <div><i class="fa-solid fa-user"></i> <span id="m-gender">-</span></div>
+                        <div><i class="fa-solid fa-language"></i> <span id="m-language">-</span></div>
+                        <div><i class="fa-solid fa-cake-candles"></i> <span id="m-dob">-</span></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Posts Grid -->
-            <h3 style="font-size: 14px; letter-spacing: 1px; color: var(--text-dim); border-top: 1px solid var(--glass-border); padding-top: 15px;">
-                <i class="fa-solid fa-table-cells"></i> POSTS
+            <h3 style="font-size: 12px; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 15px; text-transform: uppercase;">
+                <i class="fa-solid fa-table-cells"></i> My Contributions
             </h3>
-            <div id="profile-posts-grid" class="profile-grid">
-                <!-- Data from Microservice injected here -->
-            </div>
+            <div id="profile-posts-grid" class="profile-grid"></div>
         </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     EDIT POST MODAL
+===================================================== -->
+<div class="modal-overlay" id="editPostModal" style="z-index: 30000;">
+    <div class="post-modal">
+        <div class="post-modal-header">
+            <div>
+                <h2><i class="fa-solid fa-pen-to-square"></i> Edit Post</h2>
+                <span>Modify your post details</span>
+            </div>
+            <button type="button" class="post-modal-close" id="closeEditModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form id="editPostForm" style="padding: 22px;">
+            <input type="hidden" id="editPostId">
+            <input type="hidden" id="editMediaType">
+
+            <div class="post-form-group">
+                <label>CAPTION</label>
+                <textarea id="editCaption" rows="4"></textarea>
+            </div>
+
+            <div class="post-form-row">
+                <div class="post-form-group">
+                    <label>LOCATION</label>
+                    <input type="text" id="editLocation">
+                </div>
+                <div class="post-form-group">
+                    <label>VISIBILITY</label>
+                    <select id="editVisibility">
+                        <option value="PUBLIC">Public</option>
+                        <option value="FRIENDS">Friends</option>
+                        <option value="PRIVATE">Private</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="post-form-row">
+                <div class="post-form-group">
+                    <label>HASHTAGS</label>
+                    <input type="text" id="editHashtags">
+                </div>
+                <div class="post-form-group">
+                    <label>TAG USERS</label>
+                    <input type="text" id="editMentions">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveEditBtn">
+                <i class="fa-solid fa-check"></i> Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     EDIT PROFILE DATA MODAL
+===================================================== -->
+<div class="modal-overlay" id="editProfileDataModal" style="z-index: 35000;">
+    <div class="post-modal" style="width: 600px;">
+        <div class="post-modal-header">
+            <h2><i class="fa-solid fa-user-pen"></i> Update Personal Info</h2>
+            <button type="button" class="post-modal-close" id="closeEditProfileDataModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form id="editProfileForm" style="padding: 25px;">
+            <!-- Image Upload Section (Same as Setup) -->
+            <div class="field-group" style="text-align: center; margin-bottom: 2rem;">
+                <div class="upload-zone" onclick="document.getElementById('editProfileFileInput').click()" style="padding: 1rem;">
+                    <div class="preview-circle" id="edit-profile-preview" style="width: 100px; height: 100px;">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <p style="font-weight: 800; font-size: 0.75rem; color: var(--primary);">CHANGE PHOTO</p>
+                    <input type="file" id="editProfileFileInput" hidden accept="image/*">
+                </div>
+            </div>
+
+            <div class="post-form-row">
+                <div class="post-form-group"><label>FIRST NAME</label><input type="text" id="ep-fname" required></div>
+                <div class="post-form-group"><label>LAST NAME</label><input type="text" id="ep-lname" required></div>
+            </div>
+
+            <div class="post-form-group">
+                <label>PROFESSIONAL BIO</label>
+                <textarea id="ep-bio" rows="3"></textarea>
+            </div>
+
+            <div class="post-form-row">
+                <div class="post-form-group">
+                    <label>GENDER</label>
+                    <select id="ep-gender">
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <div class="post-form-group"><label>BIRTH DATE</label><input type="date" id="ep-dob"></div>
+            </div>
+
+            <div class="post-form-row">
+                <div class="post-form-group"><label>COUNTRY</label><input type="text" id="ep-country"></div>
+                <div class="post-form-group"><label>CITY</label><input type="text" id="ep-city"></div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveProfileBtn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+            </button>
+        </form>
     </div>
 </div>
 
@@ -3674,33 +3812,46 @@
     }
 
     async function openProfileView() {
-        const uuid = localStorage.getItem("currentUserUuid");
-        if (!uuid) return alert("Session expired. Please log in.");
+    const uuid = localStorage.getItem("currentUserUuid");
+    if (!uuid) return alert("Session expired. Please log in.");
 
-        profileModal.style.display = "flex";
-        profileGrid.innerHTML = '<div style="grid-column: 1/4; text-align:center; padding:50px; color:var(--text-dim);"><i class="fa-solid fa-spinner fa-spin"></i> Loading posts...</div>';
+    profileModal.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Prevent background scroll
+    profileGrid.innerHTML = '<div style="grid-column: 1/4; text-align:center; padding:50px; color:var(--text-dim);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
 
-        try {
-            // Fetch User Details (from UI Service /ui/users/{uuid})
-            const userRes = await fetch(`/ui/users/${uuid}`);
-            const user = await userRes.json();
+    try {
+        // 1. Fetch User Object
+        const userRes = await fetch(`/ui/users/${uuid}`);
+        const user = await userRes.json();
 
-            document.getElementById("m-profile-img").src = getProfileImage(user);
-            document.getElementById("m-profile-name").innerText = `${user.firstName || ''} ${user.lastName || ''}`;
-            document.getElementById("m-profile-username").innerText = `@${user.username}`;
-            document.getElementById("m-profile-bio").innerText = user.bio || "No bio available";
+        // 2. Fill Basic Info
+        document.getElementById("m-profile-img").src = getProfileImage(user);
+        document.getElementById("m-profile-name").innerText = `${user.firstName || ''} ${user.lastName || ''}`.trim() || "User";
+        document.getElementById("m-profile-username").innerText = user.username ? `@${user.username}` : "";
+        document.getElementById("m-profile-bio").innerText = user.bio || "No bio available";
 
-            // Fetch Real Posts (from the new Proxy endpoint we added to FeedController)
-            const postsRes = await fetch(`/proxy/posts/user/${uuid}`);
-            const posts = await postsRes.json();
+        // 3. Fill Detailed Info (Matching your side profile)
+        document.getElementById("m-location").innerText = user.city || "-";
+        document.getElementById("m-country").innerText = user.country || "-";
+        document.getElementById("m-gender").innerText = user.gender || "-";
+        document.getElementById("m-language").innerText = user.language || "-";
+        document.getElementById("m-dob").innerText = user.dateOfBirth || "-";
 
-            renderProfilePosts(posts);
+        // 4. Fetch Real Posts
+        const postsRes = await fetch(`/proxy/posts/user/${uuid}`);
+        const posts = await postsRes.json();
 
-        } catch (err) {
-            console.error("Profile Load Error:", err);
-            profileGrid.innerHTML = '<p style="grid-column: 1/4; text-align:center;">Failed to load posts.</p>';
-        }
+        // 5. Update Stat Count
+        document.getElementById("m-stat-posts").innerText = posts.length;
+
+        // 6. Render the Grid
+        renderProfilePosts(posts);
+
+    } catch (err) {
+        console.error("Profile Load Error:", err);
+        profileGrid.innerHTML = '<p style="grid-column: 1/4; text-align:center; padding:20px;">Error loading profile data.</p>';
     }
+}
 
     function renderProfilePosts(posts) {
         profileGrid.innerHTML = '';
@@ -3742,8 +3893,238 @@ function boostPost(id) { alert("Boosting Post: " + id); }
 function editPost(id) { alert("Opening Editor for: " + id); }
 </script>
 
+<script>
+    /**
+ * 1. OPEN EDIT MODAL & LOAD DATA
+ */
+async function editPost(postId) {
+    console.log("Fetching details for post:", postId);
 
+    try {
+        const response = await fetch(`/proxy/posts/${postId}`);
 
+        if (!response.ok) {
+            throw new Error(`Failed to fetch post: ${response.status}`);
+        }
+
+        const post = await response.json();
+
+        // Populate Hidden Fields
+        document.getElementById("editPostId").value = post.postId;
+        document.getElementById("editMediaType").value = post.mediaType;
+
+        // Populate Text Fields
+        document.getElementById("editCaption").value = post.caption || "";
+        document.getElementById("editLocation").value = post.location || "";
+        document.getElementById("editVisibility").value = post.visibility || "PUBLIC";
+
+        // Convert Arrays back to Comma-Separated Strings for the inputs
+        document.getElementById("editHashtags").value =
+            (post.hashtags && post.hashtags.length > 0) ? post.hashtags.join(", ") : "";
+
+        document.getElementById("editMentions").value =
+            (post.mentionedUsers && post.mentionedUsers.length > 0) ? post.mentionedUsers.join(", ") : "";
+
+        // Open Modal and lock scroll
+        const modal = document.getElementById("editPostModal");
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+    } catch (err) {
+        console.error("Error loading post:", err);
+        alert("Could not load post details. Please try again.");
+    }
+}
+
+/**
+ * 2. SUBMIT EDIT FORM
+ */
+document.getElementById("editPostForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const postId = document.getElementById("editPostId").value;
+    const submitBtn = document.getElementById("saveEditBtn");
+
+    // UI Loading State
+    const originalBtnHtml = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+    const formData = new FormData();
+    formData.append("caption", document.getElementById("editCaption").value.trim());
+    formData.append("location", document.getElementById("editLocation").value.trim());
+    formData.append("visibility", document.getElementById("editVisibility").value);
+    formData.append("mediaType", document.getElementById("editMediaType").value);
+
+    // Process Hashtags: Remove '#' symbols and trim spaces
+    const hashtagInput = document.getElementById("editHashtags").value;
+    hashtagInput.split(",")
+        .map(t => t.trim().replace(/^#+/, "")) // remove leading hashtags
+        .filter(t => t.length > 0)             // remove empty entries
+        .forEach(t => formData.append("hashtags", t));
+
+    // Process Mentions: Trim spaces
+    const mentionInput = document.getElementById("editMentions").value;
+    mentionInput.split(",")
+        .map(m => m.trim())
+        .filter(m => m.length > 0)             // remove empty entries
+        .forEach(m => formData.append("mentionedUsers", m));
+
+    try {
+        const response = await fetch(`/proxy/posts/${postId}`, {
+            method: 'PUT',
+            body: formData
+        });
+
+        if (response.ok) {
+            alert("Post updated successfully! ✨");
+
+            // Close Modal
+            closeEditModalFunc();
+
+            // Refresh Profile Grid (Existing function in your code)
+            if (typeof openProfileView === "function") {
+                openProfileView();
+            } else {
+                location.reload(); // Fallback
+            }
+        } else {
+            // Attempt to get the error message from the Microservice response
+            const errorText = await response.text();
+            console.error("Update failed server-side:", errorText);
+            alert(`Update failed: ${errorText || 'Internal Server Error'}`);
+        }
+    } catch (err) {
+        console.error("Network/Proxy Error:", err);
+        alert("Network error: Could not reach the server. Please check your connection.");
+    } finally {
+        // Reset UI State
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+    }
+});
+
+/**
+ * 3. CLOSE MODAL HELPERS
+ */
+function closeEditModalFunc() {
+    document.getElementById("editPostModal").style.display = "none";
+    document.body.style.overflow = ""; // restore scroll
+    document.getElementById("editPostForm").reset(); // clear form
+}
+
+document.getElementById("closeEditModal").onclick = closeEditModalFunc;
+
+// Close modal if user clicks outside the content area
+window.addEventListener("click", function(event) {
+    const modal = document.getElementById("editPostModal");
+    if (event.target === modal) {
+        closeEditModalFunc();
+    }
+});
+</script>
+
+<script>
+    /* Global variable for the edit image base64 */
+let editProfileBase64 = "";
+
+document.addEventListener("DOMContentLoaded", function() {
+    const editModal = document.getElementById("editProfileDataModal");
+    const openBtn = document.getElementById("openEditProfileBtn");
+    const closeBtn = document.getElementById("closeEditProfileDataModal");
+    const editForm = document.getElementById("editProfileForm");
+    const fileInput = document.getElementById("editProfileFileInput");
+
+    // 1. Handle Image Selection (Reuse logic from setup)
+    fileInput.addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const fullBase64 = event.target.result;
+                editProfileBase64 = fullBase64.split(',')[1]; // Get only the data part
+                document.getElementById('edit-profile-preview').innerHTML = `<img src="${fullBase64}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 2. Open Edit Modal & Pre-fill
+    openBtn.addEventListener("click", async () => {
+        const uuid = localStorage.getItem("currentUserUuid");
+        try {
+            const res = await fetch(`/ui/users/${uuid}`);
+            const user = await res.json();
+
+            // Fill text fields
+            document.getElementById("ep-fname").value = user.firstName || "";
+            document.getElementById("ep-lname").value = user.lastName || "";
+            document.getElementById("ep-bio").value = user.bio || "";
+            document.getElementById("ep-gender").value = user.gender || "MALE";
+            document.getElementById("ep-dob").value = user.dateOfBirth || "";
+            document.getElementById("ep-country").value = user.country || "";
+            document.getElementById("ep-city").value = user.city || "";
+
+            // Set Image Preview
+            if(user.profileImage) {
+                document.getElementById('edit-profile-preview').innerHTML = `<img src="${user.profileImage}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+            }
+
+            editModal.style.display = "flex";
+        } catch (err) {
+            alert("Error loading profile data");
+        }
+    });
+
+    // 3. Handle Submit (PUT Request)
+    editForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const uuid = localStorage.getItem("currentUserUuid");
+        const submitBtn = document.getElementById("saveProfileBtn");
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+        const payload = {
+            firstName: document.getElementById("ep-fname").value,
+            lastName: document.getElementById("ep-lname").value,
+            bio: document.getElementById("ep-bio").value,
+            gender: document.getElementById("ep-gender").value,
+            dateOfBirth: document.getElementById("ep-dob").value,
+            country: document.getElementById("ep-country").value,
+            city: document.getElementById("ep-city").value,
+            state: "N/A",
+            language: "English",
+            profileImage: editProfileBase64 // Send new image if selected, else backend keeps old one
+        };
+
+        try {
+            const res = await fetch(`/ui/users/${uuid}/profile`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                alert("Profile updated! ✨");
+                editModal.style.display = "none";
+                // Refresh both the side profile and the modal profile
+                if (typeof loadCurrentUser === "function") loadCurrentUser();
+                if (typeof openProfileView === "function") openProfileView();
+            } else {
+                alert("Failed to update profile");
+            }
+        } catch (error) {
+            alert("Network error occurred");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Profile Changes';
+        }
+    };
+
+    closeBtn.onclick = () => editModal.style.display = "none";
+});
+</script>
 
 
 

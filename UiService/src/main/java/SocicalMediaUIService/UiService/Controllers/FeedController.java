@@ -7,11 +7,7 @@ import SocicalMediaUIService.UiService.ENUMS.ENUMS.mediaType;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import org.springframework.stereotype.Controller;
 
@@ -353,5 +349,68 @@ public class FeedController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error fetching user posts: " + e.getMessage());
         }
+    }
+
+
+    @PutMapping(value = "/proxy/posts/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> proxyUpdatePost(
+            @PathVariable String postId,
+            @RequestParam("caption") String caption,
+            @RequestParam("visibility") String visibility,
+            @RequestParam("mediaType") String mediaTypeValue,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "hashtags", required = false) List<String> hashtags,
+            @RequestParam(value = "mentionedUsers", required = false) List<String> mentionedUsers
+    ) {
+        try {
+            MultiValueMap<String, Object> multipartBody = new LinkedMultiValueMap<>();
+
+            // 1. Prepare DTO
+            java.util.Map<String, Object> requestDto = new java.util.HashMap<>();
+            requestDto.put("caption", caption);
+            requestDto.put("visibility", visibility.toUpperCase());
+            requestDto.put("mediaType", mediaTypeValue.toUpperCase());
+            requestDto.put("location", location);
+            requestDto.put("hashtags", hashtags);
+            requestDto.put("mentionedUsers", mentionedUsers);
+
+            // 2. Wrap as JSON part
+            HttpHeaders jsonHeaders = new HttpHeaders();
+            jsonHeaders.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<java.util.Map<String, Object>> postPart = new HttpEntity<>(requestDto, jsonHeaders);
+            multipartBody.add("post", postPart);
+
+            // 3. Main headers
+            HttpHeaders mainHeaders = new HttpHeaders();
+            mainHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+            // CRITICAL: Explicitly ask for JSON back to avoid the Video conversion error
+            mainHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(multipartBody, mainHeaders);
+
+            // 4. Use EXCHANGE instead of PUT to get the response back
+            ResponseEntity<String> response = restTemplate.exchange(
+                    "http://localhost:8082/api/v1/posts/" + postId,
+                    HttpMethod.PUT,
+                    requestEntity,
+                    String.class
+            );
+
+            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+
+        } catch (HttpStatusCodeException e) {
+            // If microservice returns 400/500, catch it and return its JSON
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("UI Proxy Error: " + e.getMessage());
+        }
+    }
+
+    // Add this to get single post details for the edit form
+    @GetMapping("/proxy/posts/{postId}")
+    @ResponseBody
+    public ResponseEntity<?> proxyGetPost(@PathVariable String postId) {
+        return restTemplate.getForEntity("http://localhost:8082/api/v1/posts/" + postId, String.class);
     }
 }
