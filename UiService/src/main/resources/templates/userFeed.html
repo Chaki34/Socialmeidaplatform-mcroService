@@ -1721,54 +1721,160 @@
 }
  </style>
 
-    <style>
-        .reorder-item {
-    position: relative;
-    width: 90px;
-    height: 90px;
+ <style>
+     /* =====================================================
+   REFINED EDIT MODAL & MEDIA MANAGER
+===================================================== */
+
+/* Container for the media reorder thumbnails */
+#editMediaReorderContainer {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    min-height: 130px;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+/* Custom Scrollbar for the Media Row */
+#editMediaReorderContainer::-webkit-scrollbar {
+    height: 4px;
+}
+#editMediaReorderContainer::-webkit-scrollbar-thumb {
+    background: var(--primary);
     border-radius: 10px;
+}
+
+.reorder-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
     overflow: hidden;
     flex-shrink: 0;
-    border: 2px solid var(--glass-border);
-    transition: 0.3s;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.reorder-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+/* Highlight the first image as the Cover */
+.reorder-item:first-child {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary-glow);
 }
 
 .reorder-item img, .reorder-item video {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.reorder-overlay {
-    position: absolute; inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex; flex-direction: column;
-    justify-content: space-between; padding: 5px;
-    opacity: 0; transition: 0.2s;
-}
-
-.reorder-item:hover .reorder-overlay { opacity: 1; }
-
+/* Professional Numbering Badge */
 .reorder-number {
-    position: absolute; top: 5px; left: 5px;
-    background: var(--primary); color: white;
-    font-size: 10px; font-weight: 800;
-    width: 18px; height: 18px; border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* Overlay that appears on hover */
+.reorder-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.reorder-item:hover .reorder-overlay {
+    opacity: 1;
 }
 
 .reorder-controls {
-    display: flex; justify-content: center; gap: 8px; margin-top: auto;
+    display: flex;
+    gap: 8px;
 }
 
 .reorder-btn {
-    background: white; color: black; border: none;
-    width: 24px; height: 24px; border-radius: 4px;
-    cursor: pointer; font-size: 12px;
-    display: flex; align-items: center; justify-content: center;
+    background: white;
+    color: var(--dark-bg);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
 }
 
-.reorder-btn:hover { background: var(--primary); color: white; }
-    </style>
+.reorder-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+     /* =====================================================
+   MEDIA ZOOM PREVIEW
+===================================================== */
+.media-zoom-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 50000; /* Above everything */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    animation: zoomIn 0.3s ease;
+}
+
+.media-zoom-overlay.active {
+    display: flex;
+}
+
+.media-zoom-content {
+    max-width: 90%;
+    max-height: 85vh;
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+ </style>
 
 
 
@@ -2442,63 +2548,75 @@
      EDIT POST MODAL
 ===================================================== -->
 <div class="modal-overlay" id="editPostModal" style="z-index: 30000;">
-    <div class="post-modal">
+
+    <div class="media-zoom-overlay" id="mediaZoomOverlay" onclick="this.classList.remove('active')">
+        <div id="mediaZoomContainer"></div>
+    </div>
+
+    <div class="post-modal" style="width: 600px;"> <!-- Slightly wider for professional feel -->
         <div class="post-modal-header">
             <div>
                 <h2><i class="fa-solid fa-pen-to-square"></i> Edit Post</h2>
-                <span>Modify your post details</span>
+                <span>Adjust your content and media visibility</span>
             </div>
             <button type="button" class="post-modal-close" id="closeEditModal"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-
-        <!-- ADD THIS INSIDE #editPostModal form -->
-        <div class="post-form-group">
-            <label>MANAGE MEDIA ORDER</label>
-            <div id="editMediaReorderContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 5px; background: rgba(0,0,0,0.2); border-radius: 12px; min-height: 120px; align-items: center;">
-                <!-- Thumbnails injected by JS -->
-            </div>
-            <small style="color: var(--text-dim); font-size: 10px; margin-top: 5px; display: block;">
-                Use arrows to reorder. The first item will be your cover image.
-            </small>
         </div>
 
         <form id="editPostForm" style="padding: 22px;">
             <input type="hidden" id="editPostId">
             <input type="hidden" id="editMediaType">
 
+            <!-- Professional Media Manager Section -->
+            <div class="post-form-group" style="margin-bottom: 25px;">
+                <label style="display: flex; justify-content: space-between; align-items: center;">
+                    MEDIA MANAGER
+                    <span style="font-size: 9px; color: var(--primary); font-weight: 800;">DRAG TO REORDER SOON</span>
+                </label>
+                <div id="editMediaReorderContainer">
+                    <!-- Thumbnails injected by JS -->
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+                    <i class="fa-solid fa-circle-info" style="color: var(--primary); font-size: 12px;"></i>
+                    <small style="color: var(--text-dim); font-size: 10px;">
+                        The first item (labeled 1) is shown as the primary cover in the feed.
+                    </small>
+                </div>
+            </div>
+
+            <!-- Content Section -->
             <div class="post-form-group">
                 <label>CAPTION</label>
-                <textarea id="editCaption" rows="4"></textarea>
+                <textarea id="editCaption" placeholder="Write something professional..." rows="4"></textarea>
             </div>
 
             <div class="post-form-row">
                 <div class="post-form-group">
-                    <label>LOCATION</label>
-                    <input type="text" id="editLocation">
+                    <label><i class="fa-solid fa-location-dot"></i> LOCATION</label>
+                    <input type="text" id="editLocation" placeholder="Add a place">
                 </div>
                 <div class="post-form-group">
-                    <label>VISIBILITY</label>
+                    <label><i class="fa-solid fa-earth-americas"></i> VISIBILITY</label>
                     <select id="editVisibility">
-                        <option value="PUBLIC">Public</option>
-                        <option value="FRIENDS">Friends</option>
-                        <option value="PRIVATE">Private</option>
+                        <option value="PUBLIC">🌎 Public</option>
+                        <option value="FRIENDS">👥 Connections</option>
+                        <option value="PRIVATE">🔒 Only Me</option>
                     </select>
                 </div>
             </div>
 
             <div class="post-form-row">
                 <div class="post-form-group">
-                    <label>HASHTAGS</label>
-                    <input type="text" id="editHashtags">
+                    <label><i class="fa-solid fa-hashtag"></i> HASHTAGS</label>
+                    <input type="text" id="editHashtags" placeholder="e.g. tech, innovation">
                 </div>
                 <div class="post-form-group">
-                    <label>TAG USERS</label>
-                    <input type="text" id="editMentions">
+                    <label><i class="fa-solid fa-at"></i> TAG USERS</label>
+                    <input type="text" id="editMentions" placeholder="Search UUIDs">
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit" id="saveEditBtn">
-                <i class="fa-solid fa-check"></i> Save Changes
+            <button type="submit" class="btn-submit" id="saveEditBtn" style="margin-top: 15px;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Update Post
             </button>
         </form>
     </div>
@@ -4027,52 +4145,58 @@ function editPost(id) { alert("Opening Editor for: " + id); }
 </script>
 
 <script>
-    // State to hold the current order of media for the post being edited
-let currentEditingMediaUrls = [];
+    /* =====================================================
+   GLOBAL STATE & CONSTANTS
+   ===================================================== */
+let currentEditingMediaUrls = []; // Holds the current order of media URLs
 
-/**
- * 1. OPEN EDIT MODAL & LOAD DATA
- */
+/* =====================================================
+   1. EDIT MODAL INITIALIZATION
+   ===================================================== */
 async function editPost(postId) {
-    console.log("Fetching details for post:", postId);
+    console.log("Opening Edit Modal for Post:", postId);
 
     try {
         const response = await fetch(`/proxy/posts/${postId}`);
-        if (!response.ok) throw new Error(`Failed to fetch post: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
         const post = await response.json();
 
-        // 1. Map Hidden & Text Fields
+        // Populate Hidden & Text Fields
         document.getElementById("editPostId").value = post.postId;
         document.getElementById("editMediaType").value = post.mediaType;
         document.getElementById("editCaption").value = post.caption || "";
         document.getElementById("editLocation").value = post.location || "";
         document.getElementById("editVisibility").value = post.visibility || "PUBLIC";
 
-        // 2. Map Hashtags & Mentions (Arrays to Comma-Separated Strings)
+        // Convert Arrays back to Comma-Separated Strings for inputs
         document.getElementById("editHashtags").value =
             (post.hashtags && post.hashtags.length > 0) ? post.hashtags.join(", ") : "";
 
         document.getElementById("editMentions").value =
             (post.mentionedUsers && post.mentionedUsers.length > 0) ? post.mentionedUsers.join(", ") : "";
 
-        // 3. Handle Media Reordering State
+        // Set Media State and Render Thumbnails
         currentEditingMediaUrls = post.mediaUrls || [];
         renderMediaReorder();
 
-        // 4. Open Modal UI
+        // Show UI
         const modal = document.getElementById("editPostModal");
         modal.style.display = "flex";
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden"; // Lock background scroll
 
     } catch (err) {
-        console.error("Error loading post:", err);
-        alert("Could not load post details.");
+        console.error("Edit Post Load Error:", err);
+        alert("Could not load post details. Please try again.");
     }
 }
 
+/* =====================================================
+   2. MEDIA RENDERING & INTERACTION
+   ===================================================== */
+
 /**
- * 2. RENDER MEDIA THUMBNAILS WITH SWAP CONTROLS
+ * Renders the scrollable list of media thumbnails with numbering
  */
 function renderMediaReorder() {
     const container = document.getElementById("editMediaReorderContainer");
@@ -4090,56 +4214,51 @@ function renderMediaReorder() {
         const item = document.createElement("div");
         item.className = "reorder-item";
 
+        // Tooltip and Click-to-Zoom logic
+        item.title = "Click to enlarge";
+        item.onclick = () => showMediaZoom(url, isVideo);
+
         item.innerHTML = `
             <div class="reorder-number">${index + 1}</div>
-            ${isVideo ? `<video src="${url}"></video>` : `<img src="${url}">`}
-
-            <div class="reorder-overlay">
-                <div class="reorder-controls">
-                    <!-- Left Arrow: Only show if not the first item -->
-                    ${index > 0 ? `
-                        <button type="button" class="reorder-btn" onclick="swapMedia(${index}, ${index - 1})">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>` : ''}
-
-                    <!-- Right Arrow: Only show if not the last item -->
-                    ${index < currentEditingMediaUrls.length - 1 ? `
-                        <button type="button" class="reorder-btn" onclick="swapMedia(${index}, ${index + 1})">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>` : ''}
-                </div>
-            </div>
+            ${isVideo ?
+                `<video src="${url}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>` :
+                `<img src="${url}" alt="Post Media ${index + 1}">`
+            }
         `;
         container.appendChild(item);
     });
 }
 
 /**
- * 3. SWAP POSITION LOGIC
+ * Shows the media in a full-screen zoomed overlay
  */
-function swapMedia(idx1, idx2) {
-    // Swap elements in the array
-    const temp = currentEditingMediaUrls[idx1];
-    currentEditingMediaUrls[idx1] = currentEditingMediaUrls[idx2];
-    currentEditingMediaUrls[idx2] = temp;
+function showMediaZoom(url, isVideo) {
+    const overlay = document.getElementById("mediaZoomOverlay");
+    const container = document.getElementById("mediaZoomContainer");
 
-    // Re-render the UI
-    renderMediaReorder();
+    if (!overlay || !container) return;
+
+    // Inject content based on type
+    container.innerHTML = isVideo ?
+        `<video src="${url}" class="media-zoom-content" controls autoplay></video>` :
+        `<img src="${url}" class="media-zoom-content" alt="Zoomed Media">`;
+
+    overlay.classList.add("active");
 }
 
-/**
- * 4. SUBMIT EDIT FORM
- */
+/* =====================================================
+   3. FORM SUBMISSION
+   ===================================================== */
 document.getElementById("editPostForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
     const postId = document.getElementById("editPostId").value;
     const submitBtn = document.getElementById("saveEditBtn");
-
-    // UI Loading State
     const originalBtnHtml = submitBtn.innerHTML;
+
+    // Loading State
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Changes...';
 
     const formData = new FormData();
     formData.append("caption", document.getElementById("editCaption").value.trim());
@@ -4147,22 +4266,20 @@ document.getElementById("editPostForm").addEventListener("submit", async functio
     formData.append("visibility", document.getElementById("editVisibility").value);
     formData.append("mediaType", document.getElementById("editMediaType").value);
 
-    // IMPORTANT: Send the ordered list of URLs back to the backend
+    // Send the media URLs in the order they appear in the state
     currentEditingMediaUrls.forEach(url => {
         formData.append("mediaUrls", url);
     });
 
-    // Process Hashtags
-    document.getElementById("editHashtags").value.split(",")
-        .map(t => t.trim().replace(/^#+/, ""))
-        .filter(t => t.length > 0)
-        .forEach(t => formData.append("hashtags", t));
+    // Handle Hashtags
+    const hashtags = document.getElementById("editHashtags").value;
+    hashtags.split(",").map(t => t.trim().replace(/^#+/, ""))
+        .filter(t => t.length > 0).forEach(t => formData.append("hashtags", t));
 
-    // Process Mentions
-    document.getElementById("editMentions").value.split(",")
-        .map(m => m.trim())
-        .filter(m => m.length > 0)
-        .forEach(m => formData.append("mentionedUsers", m));
+    // Handle Mentions
+    const mentions = document.getElementById("editMentions").value;
+    mentions.split(",").map(m => m.trim())
+        .filter(m => m.length > 0).forEach(m => formData.append("mentionedUsers", m));
 
     try {
         const response = await fetch(`/proxy/posts/${postId}`, {
@@ -4179,7 +4296,7 @@ document.getElementById("editPostForm").addEventListener("submit", async functio
             alert(`Update failed: ${errorText}`);
         }
     } catch (err) {
-        console.error("Network Error:", err);
+        console.error("Submit Error:", err);
         alert("Network error: Could not reach the server.");
     } finally {
         submitBtn.disabled = false;
@@ -4187,25 +4304,44 @@ document.getElementById("editPostForm").addEventListener("submit", async functio
     }
 });
 
+/* =====================================================
+   4. MODAL CONTROLS & CLEANUP
+   ===================================================== */
+
 /**
- * 5. MODAL CLOSING & CLEANUP
+ * Closes the Edit Modal and the Zoom Overlay, resetting state
  */
 function closeEditModalFunc() {
-    const modal = document.getElementById("editPostModal");
-    if (modal) modal.style.display = "none";
+    // Close Edit Modal
+    const editModal = document.getElementById("editPostModal");
+    if (editModal) editModal.style.display = "none";
 
+    // Close Zoom Overlay
+    const zoomOverlay = document.getElementById("mediaZoomOverlay");
+    if (zoomOverlay) zoomOverlay.classList.remove('active');
+
+    // Restore background scroll
     document.body.style.overflow = "";
+
+    // Reset Form and State
     document.getElementById("editPostForm").reset();
-    currentEditingMediaUrls = []; // Clear state
+    currentEditingMediaUrls = [];
 }
 
-document.getElementById("closeEditModal").onclick = closeEditModalFunc;
+// Attach close click to the X button
+const closeBtn = document.getElementById("closeEditModal");
+if (closeBtn) closeBtn.onclick = closeEditModalFunc;
 
+// Close modal if user clicks on the darkened overlay background
 window.addEventListener("click", function(event) {
-    const modal = document.getElementById("editPostModal");
-    if (event.target === modal) {
+    const editModal = document.getElementById("editPostModal");
+    const zoomOverlay = document.getElementById("mediaZoomOverlay");
+
+    if (event.target === editModal) {
         closeEditModalFunc();
     }
+    // Zoom overlay has its own onclick="this.classList.remove('active')" in HTML
+    // but we ensure it is handled correctly here if needed.
 });
 </script>
 
