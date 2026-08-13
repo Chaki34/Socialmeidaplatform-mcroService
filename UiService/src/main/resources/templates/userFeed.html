@@ -1597,16 +1597,16 @@
 
     </style>
 
-    <style>
-        /* ================================
-   PROFILE GRID STYLES
-================================ */
+ <style>
+     /* =====================================================
+   CLEAN PROFILE GRID (Single Media + Count Badge)
+===================================================== */
 
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding-top: 10px;
+    gap: 12px;
+    padding: 10px 0;
 }
 
 .profile-post-item {
@@ -1614,30 +1614,65 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    background: var(--glass);
+    background: #000; /* Contrast background */
+    border: 1px solid var(--glass-border);
     cursor: pointer;
 }
 
+/* Single Media Item (No Slider) */
 .profile-post-item img,
 .profile-post-item video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-/* Hover Overlay */
+.profile-post-item:hover img,
+.profile-post-item:hover video {
+    transform: scale(1.05); /* Subtle zoom on hover */
+}
+
+/* Multi-Media Count Badge (Standard Instagram Style) */
+.post-multi-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.post-multi-badge i {
+    font-size: 12px;
+    color: var(--primary); /* Use your primary theme color for the icon */
+}
+
+/* Hover Action Overlay (Boost/Edit) */
 .post-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 12px;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(4px);
+    transition: 0.3s ease;
+    z-index: 10;
 }
 
 .profile-post-item:hover .post-overlay {
@@ -1645,38 +1680,49 @@
 }
 
 .post-action-btn {
-    width: 110px;
-    padding: 8px 0;
+    width: 120px;
+    padding: 10px 0;
     border: none;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .post-action-btn:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 .btn-boost {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
     color: white;
 }
 
 .btn-edit-post {
     background: white;
-    color: var(--dark-bg);
+    color: #0f172a;
 }
 
-@media (max-width: 768px) {
+/* Responsive Handling */
+@media (max-width: 900px) {
+    .profile-grid { gap: 10px; }
+    .post-action-btn { width: 100px; font-size: 10px; }
+}
+
+@media (max-width: 600px) {
     .profile-grid { grid-template-columns: repeat(2, 1fr); }
 }
-    </style>
+ </style>
+
+
+
+
+
 
 
 </head>
@@ -3853,37 +3899,61 @@
     }
 }
 
-    function renderProfilePosts(posts) {
-        profileGrid.innerHTML = '';
+   // Global state to track which slide each post is on
+const postMediaStates = {};
 
-        if (!posts || posts.length === 0) {
-            profileGrid.innerHTML = '<div style="grid-column: 1/4; text-align:center; padding:40px;"><i class="fa-solid fa-camera" style="font-size:30px; margin-bottom:10px;"></i><p>No posts yet</p></div>';
-            return;
-        }
+function renderProfilePosts(posts) {
+    const profileGrid = document.getElementById("profile-posts-grid");
+    profileGrid.innerHTML = '';
 
-        posts.forEach(post => {
-            const item = document.createElement('div');
-            item.className = 'profile-post-item';
-
-            // Get first image from mediaUrls or use a placeholder
-            const mediaUrl = (post.mediaUrls && post.mediaUrls.length > 0)
-                             ? post.mediaUrls[0]
-                             : 'https://via.placeholder.com/500?text=No+Media';
-
-            item.innerHTML = `
-                <img src="${mediaUrl}" onerror="this.src='https://via.placeholder.com/500?text=Error+Loading'">
-                <div class="post-overlay">
-                    <button class="post-action-btn btn-boost" onclick="boostPost('${post.postId}')">
-                        <i class="fa-solid fa-rocket"></i> BOOST
-                    </button>
-                    <button class="post-action-btn btn-edit-post" onclick="editPost('${post.postId}')">
-                        <i class="fa-solid fa-pen-to-square"></i> EDIT
-                    </button>
-                </div>
-            `;
-            profileGrid.appendChild(item);
-        });
+    if (!posts || posts.length === 0) {
+        profileGrid.innerHTML = `
+            <div style="grid-column: 1/4; text-align:center; padding:60px; color:var(--text-dim);">
+                <i class="fa-solid fa-camera" style="font-size:40px; margin-bottom:15px; opacity:0.3;"></i>
+                <p>No posts published yet</p>
+            </div>`;
+        return;
     }
+
+    posts.forEach(post => {
+        const urls = post.mediaUrls || [];
+        const item = document.createElement('div');
+        item.className = 'profile-post-item';
+
+        // 1. Determine first media (Index 0)
+        const firstMedia = urls.length > 0 ? urls[0] : 'https://via.placeholder.com/500?text=No+Media';
+        const isVideo = firstMedia.toLowerCase().endsWith('.mp4') || firstMedia.toLowerCase().endsWith('.webm');
+
+        // 2. Generate HTML
+        item.innerHTML = `
+            <!-- Show Badge only if multiple files exist -->
+            ${urls.length > 1 ? `
+                <div class="post-multi-badge">
+                    <i class="fa-solid fa-clone"></i>
+                    ${urls.length}
+                </div>
+            ` : ''}
+
+            <!-- Render only the FIRST media item -->
+            ${isVideo ?
+                `<video src="${firstMedia}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>` :
+                `<img src="${firstMedia}" loading="lazy">`
+            }
+
+            <!-- Action Buttons on Hover -->
+            <div class="post-overlay">
+                <button class="post-action-btn btn-boost" onclick="event.stopPropagation(); boostPost('${post.postId}')">
+                    <i class="fa-solid fa-rocket"></i> BOOST
+                </button>
+                <button class="post-action-btn btn-edit-post" onclick="event.stopPropagation(); editPost('${post.postId}')">
+                    <i class="fa-solid fa-pen-to-square"></i> EDIT
+                </button>
+            </div>
+        `;
+
+        profileGrid.appendChild(item);
+    });
+}
 
     closeProfileModal.onclick = () => { profileModal.style.display = "none"; document.body.style.overflow = ""; };
 });
