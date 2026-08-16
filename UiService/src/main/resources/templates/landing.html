@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexus | Enjoy your professional social network</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS VARIABLES & RESET */
+        :root {
+            --primary-red: #E30613;
+            --text-dark: #2C2C2C;
+            --text-muted: #555555;
+            --bg-yellow: #FFF9E1;
+            --border-color: #EAEAEA;
+            --font-main: 'Inter', sans-serif;
+            --accent-purple: #7047eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: #ffffff;
+        }
+
+        /* THREE.JS BACKGROUND CANVAS */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* TOP BANNER WITH EXTERNAL PNG ICONS */
+        .top-banner {
+            background-color: var(--bg-yellow);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+            border-bottom: 1px solid #f2ead0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .top-banner span {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #333;
+        }
+
+        .top-banner a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .monument-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        /* NAVIGATION */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo-box { width: 11px; height: 11px; border: 2.5px solid; border-radius: 2px; }
+        .red { border-color: #E30613; }
+        .green { border-color: #4CAF50; }
+        .blue { border-color: #2196F3; }
+        .yellow { border-color: #FFC107; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .search-icon { cursor: pointer; opacity: 0.6; transition: 0.2s; }
+        .search-icon:hover { opacity: 1; }
+
+        .btn-signin {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .btn-signup {
+            padding: 7px 18px;
+            border: 1px solid var(--primary-red);
+            color: var(--primary-red);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-signup:hover { background: var(--primary-red); color: white; }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 90px 10% 50px;
+        }
+
+        .hero h1 {
+            font-size: 54px;
+            font-weight: 500;
+            line-height: 1.15;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .hero-divider {
+            width: 45px;
+            height: 2px;
+            background: var(--primary-red);
+            margin: 25px auto;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto 35px;
+            line-height: 1.6;
+        }
+
+        .hero p span { border-bottom: 1px dotted #888; }
+
+        .btn-main-cta {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 16px 38px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+        .btn-main-cta:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(227, 6, 19, 0.2); }
+
+        /* FEATURED SECTION (APPS GRID) */
+        .featured-container {
+            max-width: 1240px;
+            margin: 60px auto 100px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* LEFT SIDE - PROMO HUB */
+        .promo-box {
+            background: linear-gradient(145deg, #4b1d8e 0%, #1e0b3d 100%);
+            color: white;
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .promo-icon-container {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .promo-box h2 { font-size: 30px; margin-bottom: 18px; font-weight: 600; line-height: 1.2; }
+        .promo-box p { font-size: 14.5px; opacity: 0.85; margin-bottom: 35px; line-height: 1.6; max-width: 250px; }
+
+        .btn-outline-white {
+            border: 1px solid rgba(255,255,255,0.6);
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .btn-outline-white:hover { background: white; color: #1e0b3d; }
+
+        /* RIGHT SIDE - APPS GRID */
+        .apps-content { padding: 50px; }
+
+        .apps-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .apps-header h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-weight: 700; }
+        .explore-link { color: #0066cc; text-decoration: none; font-size: 13px; font-weight: 600; }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px 30px;
+        }
+
+        .app-item { display: flex; gap: 20px; }
+        .app-icon-svg { width: 32px; height: 32px; flex-shrink: 0; color: #444; }
+        .app-details h4 { font-size: 21px; margin-bottom: 6px; font-weight: 600; color: #111; }
+        .app-details p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+
+        @media (max-width: 1100px) {
+            .featured-container { grid-template-columns: 1fr; }
+            .apps-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+
+    <style>
+        /* SUITE SECTION STYLING */
+.suite-section {
+    background-color: #FFD200; /* Bright Zoho Yellow */
+    position: relative;
+    z-index: 5; /* This makes it sit on top of the Three.js background */
+    padding: 80px 5%;
+    color: #000;
+}
+
+.suite-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+/* Left Content */
+.suite-main {
+    flex: 1.2;
+    display: flex;
+    gap: 30px;
+}
+
+.suite-cube {
+    width: 80px;
+    height: 80px;
+}
+
+.suite-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.suite-text h2 {
+    font-size: 48px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.suite-desc {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    max-width: 500px;
+}
+
+/* Interactive Price Trigger & Popup */
+.plan-trigger {
+    font-size: 16px;
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    border-bottom: 1px dashed #000;
+}
+
+.highlight-price {
+    font-weight: 700;
+}
+
+.price-popup {
+    visibility: hidden;
+    width: 240px;
+    background-color: #2c2c2c;
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 15px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -120px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.price-popup::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #2c2c2c transparent transparent transparent;
+}
+
+.plan-trigger:hover .price-popup {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.btn-suite {
+    background-color: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-suite:hover {
+    transform: scale(1.03);
+}
+
+/* Vertical Divider */
+.suite-divider {
+    width: 1px;
+    height: 250px;
+    border-left: 1px dashed rgba(0,0,0,0.2);
+}
+
+/* Testimonial Side */
+.suite-testimonial {
+    flex: 0.8;
+}
+
+.quote-icon {
+    margin-bottom: 25px;
+}
+
+.quote-text {
+    font-size: 22px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.testimonial-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.testimonial-user img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.user-info h4 {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.user-info p {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 900px) {
+    .suite-container { flex-direction: column; text-align: center; }
+    .suite-main { flex-direction: column; align-items: center; }
+    .suite-divider { display: none; }
+    .suite-desc { margin: 0 auto 25px; }
+    .testimonial-user { justify-content: center; }
+}
+    </style>
+
+    <style>
+        /* PARTNERS SECTION STYLING */
+.partners-section {
+    padding: 100px 5%;
+    text-align: center;
+    background: transparent;
+    position: relative;
+}
+
+.partners-header {
+    margin-bottom: 60px;
+}
+
+.partners-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.accent-line {
+    width: 30px;
+    height: 2px;
+    background: var(--primary-red);
+    margin: 0 auto 20px;
+}
+
+.partners-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* LOGO SLIDER & VANISHING EFFECT */
+.logo-slider-wrapper {
+    overflow: hidden;
+    padding: 40px 0;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.logo-track {
+    display: flex;
+    width: calc(250px * 20);
+    animation: scrollLoop 40s linear infinite;
+}
+
+.logo-item {
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Brands start slightly desaturated and semi-transparent */
+    filter: saturate(0.5);
+    opacity: 0.5;
+    transition: all 0.4s ease;
+}
+
+.logo-item:hover {
+    filter: saturate(1.2); /* Colors pop more on hover */
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* BRAND COLOR THEORY MAPPING (10n logic for infinite loop) */
+.logo-item span {
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+}
+
+/* 1. TECH MAHINDRA - Energetic Red (Action) */
+.logo-item:nth-child(10n+1) span { color: #E30613; }
+
+/* 2. PAPER BOAT - Forest Green (Nature/Growth) */
+.logo-item:nth-child(10n+2) span { color: #138808; }
+
+/* 3. IIFL FINANCE - Trust Blue (Reliability) */
+.logo-item:nth-child(10n+3) span { color: #003366; }
+
+/* 4. SPICEJET - Vibrant Orange (Optimism) */
+.logo-item:nth-child(10n+4) span { color: #FF6600; }
+
+/* 5. TATA PLAY - Magenta/Royal Purple (Creativity) */
+.logo-item:nth-child(10n+5) span { color: #C2185B; }
+
+/* 6. ADOBE - Intense Crimson (Passion) */
+.logo-item:nth-child(10n+6) span { color: #FA0F00; }
+
+/* 7. SALESFORCE - Cloud Blue (Technology) */
+.logo-item:nth-child(10n+7) span { color: #00A1E0; }
+
+/* 8. SWIGGY - Sunset Orange (Appetite) */
+.logo-item:nth-child(10n+8) span { color: #FC8019; }
+
+/* 9. ZOMATO - Deep Red (Urgency) */
+.logo-item:nth-child(10n+9) span { color: #CB202D; }
+
+/* 10. RELIANCE - Solid Navy (Stability) */
+.logo-item:nth-child(10n+10) span { color: #005DAA; }
+
+
+/* FOOTER LINK */
+.partners-footer {
+    margin-top: 50px;
+}
+
+.btn-stories {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* INFINITE SCROLL ANIMATION */
+@keyframes scrollLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-250px * 10)); }
+}
+
+@media (max-width: 768px) {
+    .logo-item { width: 180px; }
+    @keyframes scrollLoop {
+        100% { transform: translateX(calc(-180px * 10)); }
+    }
+}
+    </style>
+
+    <style>
+        /* ENTERPRISE & STORIES SECTION */
+.enterprise-stories-section {
+    padding: 80px 5%;
+    position: relative;
+    background: transparent; /* Allows Three.js bg to show */
+}
+
+/* CAROUSEL STYLES */
+.carousel-outer-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.carousel-container {
+    height: 400px;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    align-items: center;
+    padding: 0 80px;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide-content {
+    color: white;
+    max-width: 500px;
+}
+
+.slide-content h2 {
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: #F8E8C0; /* Soft goldish color for headlines */
+}
+
+.slide-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.read-story-link {
+    color: #FF9933;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    color: #555;
+    transition: 0.2s;
+}
+
+.carousel-btn:hover { background: #f0f0f0; color: #000; }
+.prev { left: -22px; }
+.next { right: -22px; }
+
+/* ENTERPRISE GRID */
+.enterprise-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    padding: 20px;
+}
+
+.enterprise-info {
+    display: flex;
+    gap: 25px;
+}
+
+.enterprise-text h2 {
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.enterprise-text p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 17px;
+    margin-bottom: 40px;
+}
+
+.btn-learn-more {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-learn-more:hover { background: #0066cc; color: white; }
+
+/* Testimonial Column */
+.enterprise-testimonial {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-quote {
+    font-size: 19px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.ceo-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.ceo-profile img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.ceo-meta h4 { font-size: 18px; margin-bottom: 5px; }
+.ceo-meta p { font-size: 13px; color: #666; line-height: 1.4; }
+
+.read-more-story {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .enterprise-grid { grid-template-columns: 1fr; gap: 60px; }
+    .slide { padding: 0 40px; }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+}
+    </style>
+
+    <style>
+        /* VALUES SECTION STYLING */
+.values-section {
+    position: relative;
+    padding-bottom: 250px; /* Space for the floating card */
+    background: transparent;
+}
+
+.values-hero-bg {
+    width: 100%;
+    height: 550px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Darkens the image like the Zoho event photo */
+}
+
+/* THE FLOATING CARD */
+.values-card-container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%); /* Centers the card over the edge of the image */
+    width: 90%;
+    max-width: 1100px;
+    z-index: 20;
+}
+
+.values-card {
+    background: white;
+    padding: 60px;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.values-card-header h3 {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.values-accent-line {
+    width: 40px;
+    height: 2px;
+    background: var(--primary-red);
+    margin: 20px auto 40px;
+}
+
+/* GRID LAYOUT (2x2) */
+.values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px 60px;
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.value-item {
+    display: flex;
+    gap: 20px;
+}
+
+.value-icon svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.value-info h4 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.value-info p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #666;
+}
+
+/* FOOTER BUTTON */
+.values-card-footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 30px;
+}
+
+.btn-read-story {
+    display: inline-block;
+    padding: 10px 25px;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.btn-read-story:hover {
+    background: #0066cc;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .values-grid { grid-template-columns: 1fr; }
+    .values-card { padding: 40px 20px; }
+    .values-hero-bg { height: 400px; }
+}
+    </style>
+
+    <style>
+        /* STATS SECTION STYLING */
+.stats-section {
+    background-color: #FFD200; /* Same Zoho Yellow */
+    padding: 140px 5% 100px; /* Extra top padding to clear the floating card above */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.stats-header h2 {
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.stats-divider {
+    width: 40px;
+    height: 2px;
+    background: #4CAF50; /* Green accent from Zoho logo */
+    margin: 0 auto 60px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin-bottom: 70px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 40px 0;
+}
+
+.stat-item {
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-number {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.stat-item p {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.btn-more-stats {
+    display: inline-block;
+    padding: 14px 30px;
+    border: 1px solid black;
+    color: black;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-more-stats:hover {
+    background: black;
+    color: white;
+}
+
+.stats-illustration {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    pointer-events: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 900px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .stat-item { border-right: none; }
+    .stats-header h2 { font-size: 32px; }
+}
+    </style>
+
+    <style>/* ============================================================
+   REWRITTEN FOOTER STYLES
+   ============================================================ */
+
+.main-footer {
+    position: relative;
+    padding-top: 100px;
+    background: rgba(255, 255, 255, 0.85); /* Semi-transparent for Three.js */
+    backdrop-filter: blur(12px); /* Modern frosted glass effect */
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+/* 1. DYNAMIC INFO BOX (Top Right) */
+.dynamic-info-box {
+    position: absolute;
+    top: 40px;
+    right: 5%;
+    display: flex;
+    gap: 15px;
+    background: #ffffff;
+    padding: 14px 20px;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    font-family: 'Courier New', Courier, monospace; /* Clean terminal look */
+    font-size: 11px;
+    color: #555;
+    border: 1px solid #f0f0f0;
+    line-height: 1.6;
+}
+
+.info-marker {
+    width: 9px;
+    height: 9px;
+    background: #4CAF50; /* Brand Green */
+    border-radius: 50%;
+    margin-top: 4px;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* 2. FOOTER CTA */
+.footer-cta {
+    text-align: center;
+    margin-bottom: 90px;
+}
+
+.footer-cta h2 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.footer-cta p {
+    font-size: 22px;
+    color: #666;
+    margin-bottom: 35px;
+}
+
+.btn-signup-footer {
+    display: inline-block;
+    background: #E30613; /* Brand Red */
+    color: #fff;
+    padding: 16px 45px;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 4px;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.btn-signup-footer:hover {
+    background: #c20511;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 6, 19, 0.2);
+}
+
+/* 3. FOOTER GRID LAYOUT */
+.footer-links-grid {
+    max-width: 1240px;
+    margin: 0 auto 80px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 0 5%;
+    gap: 30px;
+}
+
+.footer-col h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 25px;
+    color: #111;
+    font-weight: 700;
+}
+
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 14px; }
+.footer-col ul li a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.footer-col ul li a:hover { color: #E30613; }
+.footer-col ul li a.highlight-blue { color: #0066cc; font-weight: 600; }
+
+.contact-info p { font-size: 14px; color: #555; margin-bottom: 18px; line-height: 1.6; }
+.contact-info strong { color: #111; display: block; margin-bottom: 4px; }
+.contact-info a { color: #0066cc; text-decoration: none; font-weight: 500; }
+
+.footer-support-links {
+    margin-top: 25px;
+    border-top: 1px dashed #e0e0e0;
+    padding-top: 20px;
+}
+.footer-support-links a {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #0066cc;
+}
+
+/* 4. SOCIAL & LEGAL */
+.footer-social-legal {
+    text-align: center;
+    padding-bottom: 60px;
+}
+/* SOCIAL ICONS WITH FLATICON IMAGES */
+.social-icons {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icons a {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff; /* White background makes the colored icons pop */
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+
+.social-icons a img {
+    width: 20px; /* Icon size */
+    height: 20px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+/* Hover Effects */
+.social-icons a:hover {
+    background: #fdfdfd;
+    border-color: #E30613; /* Brand Red border on hover */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+}
+
+.social-icons a:hover img {
+    transform: scale(1.15); /* Slightly enlarge icon on hover */
+}
+
+/* Specifically for X (Twitter) - keep it slightly larger if needed */
+.social-icons a:first-child img {
+    width: 18px;
+}
+
+.legal-links { font-size: 12.5px; color: #888; letter-spacing: 0.3px; }
+.legal-links a { color: #666; text-decoration: none; margin: 0 8px; }
+.legal-links a:hover { text-decoration: underline; }
+
+/* 5. DARK BOTTOM BAR & BRAND LOGO */
+.footer-bottom-dark {
+    background: #0f111a; /* Dark Navy */
+    padding: 50px 5% 40px;
+    text-align: center;
+    color: #888;
+}
+
+.footer-bottom-dark .logo-small {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 20px;
+    filter: none; /* Removed grayscale filter */
+}
+
+/* Unified Logo Box Styles to match Nav */
+.footer-bottom-dark .logo-box {
+    width: 11px;
+    height: 11px;
+    border: 2.5px solid;
+    border-radius: 2px;
+}
+.footer-bottom-dark .logo-box.red { border-color: #E30613; }
+.footer-bottom-dark .logo-box.green { border-color: #4CAF50; }
+.footer-bottom-dark .logo-box.blue { border-color: #2196F3; }
+.footer-bottom-dark .logo-box.yellow { border-color: #FFC107; }
+
+.footer-bottom-dark span {
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 18px;
+    margin-left: 6px;
+}
+
+.footer-bottom-dark p {
+    font-size: 13px;
+    margin-top: 15px;
+    opacity: 0.7;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 1024px) {
+    .footer-links-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+}
+
+@media (max-width: 768px) {
+    .footer-links-grid { grid-template-columns: 1fr 1fr; }
+    .footer-cta h2 { font-size: 32px; }
+    .dynamic-info-box {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 0 auto 50px;
+        width: fit-content;
+    }
+}</style>
+
+</head>
+<body>
+
+<!-- THREEE.JS CANVAS BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- TOP NOTIFICATION BANNER -->
+<div class="top-banner">
+    <!-- Left Icon -->
+    <img src="https://cdn-icons-png.flaticon.com/128/15488/15488305.png" class="monument-icon" alt="India Gate">
+
+    <span>
+        Flexus Summit 2024 is back—and we're hosting it at our silicon valley campus!
+        <a href="#">Grab your spot</a>.
+    </span>
+
+    <!-- Right Icon -->
+    <img src="https://cdn-icons-png.flaticon.com/128/510/510018.png" class="monument-icon" alt="Temple">
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+    <div class="logo">
+        <div class="logo-box red"></div>
+        <div class="logo-box green"></div>
+        <div class="logo-box blue"></div>
+        <div class="logo-box yellow"></div>
+        <span>FLEXUS</span>
+    </div>
+    <div class="nav-right">
+        <div class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <a href="#" class="btn-signin">Sign In</a>
+        <a href="#" class="btn-signup">Sign Up</a>
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<header class="hero">
+    <h1 th:text="${heroTitle}">Enjoy your <br>professional social network</h1>
+    <div class="hero-divider"></div>
+    <p>
+        A unique and powerful platform to transform the way you connect.
+        Designed for creators of all sizes, built by a company that <span>values your privacy</span>.
+    </p>
+    <button class="btn-main-cta">GET STARTED FOR FREE &nbsp; <small>&#9656;</small></button>
+</header>
+
+<!-- FEATURED APPS SECTION -->
+<section class="featured-container">
+    <div class="promo-box">
+        <div class="promo-icon-container">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        </div>
+        <h2 th:text="${promoTitle}">Introducing <br>Flexus AI Studio</h2>
+        <p th:text="${promoDesc}">Build autonomous agents that can qualify leads, resolve tickets, draft emails, and more.</p>
+        <a href="#" class="btn-outline-white">Explore Flexus Agents &nbsp; &#9656;</a>
+    </div>
+
+    <div class="apps-content">
+        <div class="apps-header">
+            <h3>Featured Apps</h3>
+            <a href="#" class="explore-link">EXPLORE ALL PRODUCTS &nbsp; &#9656;</a>
+        </div>
+
+        <div class="apps-grid">
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <div class="app-details">
+                    <h4>Network</h4>
+                    <p>Comprehensive CRM platform for professional relationships.</p>
+                </div>
+            </div>
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <div class="app-details">
+                    <h4>Mail</h4>
+                    <p>Secure email service for teams of all sizes.</p>
+                </div>
+            </div>
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <div class="app-details">
+                    <h4>Books</h4>
+                    <p>Powerful accounting platform for growing businesses.</p>
+                </div>
+            </div>
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                <div class="app-details">
+                    <h4>People</h4>
+                    <p>Organize, automate, and simplify your HR processes.</p>
+                </div>
+            </div>
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <div class="app-details">
+                    <h4>Earnings</h4>
+                    <p>Effortless payroll processing software for businesses.</p>
+                </div>
+            </div>
+            <div class="app-item">
+                <svg class="app-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                <div class="app-details">
+                    <h4>Publish</h4>
+                    <p>Manage all your business listings on a single platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- START FLEXUS SUITE SECTION -->
+<section class="suite-section">
+    <div class="suite-container">
+        <!-- Left Content -->
+        <div class="suite-main">
+            <div class="suite-logo-area">
+                <!-- Flexus Suite Logo Placeholder -->
+                <svg class="suite-cube" viewBox="0 0 100 100">
+                    <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" fill="none" stroke="#E30613" stroke-width="3"/>
+                    <path d="M50 10 L50 90 M15 30 L85 70 M85 30 L15 70" stroke="#4CAF50" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <div class="suite-text">
+                <p class="suite-label">ALL-IN-ONE SUITE</p>
+                <h2>Flexus Suite</h2>
+                <p class="suite-desc">
+                    The operating system for your professional growth.
+                    Manage your <strong>Flex World</strong> posts, analysis, and projects in one place.
+                    Connect with experts and earn money through verified collaborations.
+                </p>
+
+                <!-- Interactive Plan Text -->
+                <p class="plan-trigger">
+                    Flexible plans starting at <span class="highlight-price">₹499/month</span>
+                    <!-- The Popup -->
+                    <span class="price-popup">
+                        <strong>Pack Ranges:</strong><br>
+                        • Basic: ₹499 (Individual creators)<br>
+                        • Mid: ₹1,250 (Growing teams)<br>
+                        • Excellent: ₹2,999 (Full Enterprise)
+                    </span>
+                </p>
+
+                <button class="btn-suite">TRY FLEXUS SUITE &nbsp; &#9656;</button>
+            </div>
+        </div>
+
+        <!-- Vertical Divider -->
+        <div class="suite-divider"></div>
+
+        <!-- Right Testimonial -->
+        <div class="suite-testimonial">
+            <div class="quote-icon">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.154c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            </div>
+
+            <p class="quote-text">"You can be a freelancer, a growing startup, or a global enterprise—Flexus Suite is a boon for professional networking and project management."</p>
+
+            <div class="testimonial-user">
+                <img src="https://i.pravatar.cc/150?u=flexus-ceo" alt="User">
+                <div class="user-info">
+                    <h4>Alex Rivers</h4>
+                    <p>CEO, FlexWorld Global</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END FLEXUS SUITE SECTION -->
+
+<!-- START TRUSTED PARTNERS SECTION -->
+<section class="partners-section">
+    <div class="partners-header">
+        <p class="partners-label">BRANDS THAT TRUST US</p>
+        <div class="accent-line"></div>
+        <p class="partners-desc">
+            Our partners are truly satisfied with our precise customer matching,
+            accelerated business growth, and high-conversion ad placements.
+        </p>
+    </div>
+
+    <!-- Infinite Looping Slider Container -->
+    <div class="logo-slider-wrapper">
+        <div class="logo-track">
+            <!-- 10 Product Based Companies (Repeat for seamless loop) -->
+            <div class="logo-item"><span>TECH MAHINDRA</span></div>
+            <div class="logo-item"><span>PAPER BOAT</span></div>
+            <div class="logo-item"><span>IIFL FINANCE</span></div>
+            <div class="logo-item"><span>SPICEJET</span></div>
+            <div class="logo-item"><span>TATA PLAY</span></div>
+            <div class="logo-item"><span>ADOBE</span></div>
+            <div class="logo-item"><span>SALESFORCE</span></div>
+            <div class="logo-item"><span>SWIGGY</span></div>
+            <div class="logo-item"><span>ZOMATO</span></div>
+            <div class="logo-item"><span>RELIANCE</span></div>
+
+            <!-- Duplicated set for infinite loop -->
+            <div class="logo-item"><span>TECH MAHINDRA</span></div>
+            <div class="logo-item"><span>PAPER BOAT</span></div>
+            <div class="logo-item"><span>IIFL FINANCE</span></div>
+            <div class="logo-item"><span>SPICEJET</span></div>
+            <div class="logo-item"><span>TATA PLAY</span></div>
+            <div class="logo-item"><span>ADOBE</span></div>
+            <div class="logo-item"><span>SALESFORCE</span></div>
+            <div class="logo-item"><span>SWIGGY</span></div>
+            <div class="logo-item"><span>ZOMATO</span></div>
+            <div class="logo-item"><span>RELIANCE</span></div>
+        </div>
+    </div>
+
+    <div class="partners-footer">
+        <a href="#" class="btn-stories">CUSTOMER STORIES &nbsp; &#9656;</a>
+    </div>
+</section>
+<!-- END TRUSTED PARTNERS SECTION -->
+
+<!-- START ENTERPRISE & STORIES SECTION -->
+<section class="enterprise-stories-section">
+
+    <!-- TOP CAROUSEL SECTION -->
+    <div class="carousel-outer-wrapper">
+        <div class="carousel-container" id="flexusCarousel">
+            <!-- Slide 1 -->
+            <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop');">
+                <div class="slide-content">
+                    <h2>Built with patience.<br>Guided by purpose.</h2>
+                    <p>We’ve spent years building professional network software with focus and intent.</p>
+                    <a href="#" class="read-story-link">READ THE STORY &nbsp; &#10138;</a>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop');">
+                <div class="slide-content">
+                    <h2>Empowering Connections.<br>Driving Innovation.</h2>
+                    <p>Our platform scales with your enterprise, ensuring secure and private networking at every level.</p>
+                    <a href="#" class="read-story-link">READ THE STORY &nbsp; &#10138;</a>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop');">
+                <div class="slide-content">
+                    <h2>Secure by Design.<br>Private by Default.</h2>
+                    <p>Experience the ecosystem built for large-scale professional transformation.</p>
+                    <a href="#" class="read-story-link">READ THE STORY &nbsp; &#10138;</a>
+                </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop');">
+                <div class="slide-content">
+                    <h2>Global Reach.<br>Local Expertise.</h2>
+                    <p>Join thousands of enterprises trust Flexus for their global communication infrastructure.</p>
+                    <a href="#" class="read-story-link">READ THE STORY &nbsp; &#10138;</a>
+                </div>
+            </div>
+        </div>
+        <!-- Navigation Arrows -->
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <!-- BOTTOM ENTERPRISE & TESTIMONIAL GRID -->
+    <div class="enterprise-grid">
+        <!-- Left: Enterprise Info -->
+        <div class="enterprise-info">
+            <div class="enterprise-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="8" y1="12" x2="8" y2="16"></line>
+                    <line x1="12" y1="10" x2="12" y2="16"></line>
+                    <line x1="16" y1="8" x2="16" y2="16"></line>
+                </svg>
+            </div>
+            <div class="enterprise-text">
+                <h2>Flexus for Enterprise</h2>
+                <p>Discover the ecosystem we’ve built for large-scale transformation. Explore Flexus’s platform capabilities, professional services, and infrastructure.</p>
+                <a href="#" class="btn-learn-more">LEARN MORE &nbsp; &#9656;</a>
+            </div>
+        </div>
+
+        <!-- Right: CEO Testimonial -->
+        <div class="enterprise-testimonial">
+            <p class="testimonial-quote">
+                "We are proud that Flexus developed a world-class, highly secured and local ‘no code- no source’ platform like FlexConnect for the global market, underlining the unmatched prowess of technological innovation and adaptability."
+            </p>
+            <div class="ceo-profile">
+                <img src="https://i.pravatar.cc/150?u=ceo-mercedes" alt="Santosh Iyer">
+                <div class="ceo-meta">
+                    <h4>Santosh Iyer</h4>
+                    <p>Managing Director & CEO, <br>Mercedes-Benz Global</p>
+                </div>
+            </div>
+            <a href="#" class="read-more-story">READ THE STORY &nbsp; &#9656;</a>
+        </div>
+    </div>
+
+</section>
+
+<!-- START CORE VALUES SECTION -->
+<section class="values-section">
+    <!-- Large Background Image Area -->
+    <div class="values-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop');">
+        <!-- Overlay to ensure the card pops -->
+        <div class="bg-overlay"></div>
+    </div>
+
+    <!-- Floating Values Card -->
+    <div class="values-card-container">
+        <div class="values-card">
+            <div class="values-card-header">
+                <h3>The core values and<br>principles that drive us</h3>
+                <div class="values-accent-line"></div>
+            </div>
+
+            <div class="values-grid">
+                <!-- Value 1 -->
+                <div class="value-item">
+                    <div class="value-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="value-info">
+                        <h4>Long-term commitment</h4>
+                        <p>10+ years of running a profitable network gives us a unique sense of challenges professionals face. We take pride in running a sustainable platform.</p>
+                    </div>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="value-item">
+                    <div class="value-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="value-info">
+                        <h4>User-first philosophy</h4>
+                        <p>In all these years, it's our users' trust that has helped us establish a strong position. No matter the size of your network, we're here to help you grow.</p>
+                    </div>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="value-item">
+                    <div class="value-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="value-info">
+                        <h4>Privacy and security</h4>
+                        <p>We do not own or sell your data. We certainly do not bank on advertising-based business models. The only way we make money is from your subscription.</p>
+                    </div>
+                </div>
+
+                <!-- Value 4 -->
+                <div class="value-item">
+                    <div class="value-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FFC107" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div class="value-info">
+                        <h4>Focus on R&D</h4>
+                        <p>Software is our craft and we back it up with relentless investments in R&D. So much so that we prefer to own the entire technology stack globally.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="values-card-footer">
+                <a href="#" class="btn-read-story">READ OUR STORY &nbsp; &#9656;</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END CORE VALUES SECTION -->
+
+<!-- START IMPACT STATS SECTION -->
+<section class="stats-section" id="impact-section">
+    <div class="stats-container">
+        <div class="stats-header">
+            <h2>Made in India.<br>Made for the World.</h2>
+            <div class="stats-divider"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="150">0</span>M+</div>
+                <p>Users Globally</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="150">0</span>+</div>
+                <p>Countries Served</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="60">0</span>+</div>
+                <p>Products</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="30">0</span>+</div>
+                <p>Years in Business</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="19">0</span>K+</div>
+                <p>Employees Worldwide</p>
+            </div>
+        </div>
+
+        <div class="stats-footer">
+            <a href="#" class="btn-more-stats">MORE ABOUT FLEXUS &nbsp; &#9656;</a>
+        </div>
+    </div>
+
+    <!-- Subtle Background Illustration (Mimicking the Temple art) -->
+    <div class="stats-illustration">
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" opacity="0.1">
+            <path d="M600 400 L600 300 L650 250 L700 300 L700 400 M620 400 L620 320 M680 400 L680 320" stroke="black" fill="none" stroke-width="2"/>
+            <path d="M550 400 L550 350 L580 320 L610 350 L610 400" stroke="black" fill="none" stroke-width="1.5"/>
+            <circle cx="750" cy="350" r="30" stroke="black" fill="none" />
+        </svg>
+    </div>
+</section>
+
+<!-- START FOOTER SECTION -->
+<footer class="main-footer">
+    <!-- Top Right Info Box -->
+    <div class="dynamic-info-box">
+        <div class="info-marker"></div>
+        <div class="info-content">
+            <span id="current-time">00:00:00</span><br>
+            <span id="current-date">Loading date...</span><br>
+            <span id="gmt-offset">GMT+0</span><br>
+            <span id="geo-location">Locating...</span>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="footer-cta">
+        <h2>Ready to do your best work?</h2>
+        <p>Let's get you started.</p>
+        <a href="#" class="btn-signup-footer">SIGN UP NOW &nbsp; &#9656;</a>
+    </div>
+
+    <!-- Links Grid -->
+    <div class="footer-links-grid">
+        <div class="footer-col">
+            <h4>Apps and Extensions</h4>
+            <ul>
+                <li><a href="#" class="highlight-blue">Mobile Apps</a></li>
+                <li><a href="#">Desktop Apps</a></li>
+                <li><a href="#">Developer Center</a></li>
+                <li><a href="#">Google Workspace Integration</a></li>
+                <li><a href="#">Microsoft 365 Integration</a></li>
+                <li><a href="#">Apps for Apple Watch</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Learn</h4>
+            <ul>
+                <li><a href="#">Announcements Hub</a></li>
+                <li><a href="#">Training and Certification</a></li>
+                <li><a href="#">Academy</a></li>
+                <li><a href="#">Knowledge Base</a></li>
+                <li><a href="#">Zia AI</a></li>
+                <li><a href="#">Newsletter</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Community</h4>
+            <ul>
+                <li><a href="#">User Community</a></li>
+                <li><a href="#">Customer Stories</a></li>
+                <li><a href="#">Work With a Partner</a></li>
+                <li><a href="#">Affiliate Program</a></li>
+                <li><a href="#">Humans of Flexus</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Press</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Branding Guidelines</a></li>
+                <li><a href="#">Careers</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contact Sales</h4>
+            <div class="contact-info">
+                <p><strong>Phone</strong><br>1800 123 4567</p>
+                <p><strong>Email</strong><br><a href="mailto:sales@flexus.com">sales@flexus.com</a></p>
+                <div class="footer-support-links">
+                    <a href="#">Support &nbsp; &#9656;</a><br>
+                    <a href="#">Talk to Concierge &nbsp; &#9656;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social & Legal -->
+    <div class="footer-social-legal">
+        <div class="social-icons">
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/5968/5968830.png" alt="X">
+            </a>
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/5968/5968764.png" alt="Facebook">
+            </a>
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/1384/1384060.png" alt="YouTube">
+            </a>
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/3536/3536505.png" alt="LinkedIn">
+            </a>
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" alt="Instagram">
+            </a>
+        </div>
+        <div class="legal-links">
+            <a href="#">Contact Us</a> | <a href="#">Security</a> | <a href="#">Compliance</a> | <a href="#">IPR Complaints</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+        </div>
+    </div>
+
+    <!-- Dark Bottom Bar -->
+    <div class="footer-bottom-dark">
+        <div class="logo-small">
+            <div class="logo-box red"></div>
+            <div class="logo-box green"></div>
+            <div class="logo-box blue"></div>
+            <div class="logo-box yellow"></div>
+            <span>FLEXUS</span>
+        </div>
+        <p>&copy; <span id="display-year"></span>, Flexus Corporation Pvt. Ltd. All Rights Reserved.</p>
+    </div>
+</footer>
+
+
+
+
+
+<!-- THREE.JS ENGINE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    const canvas = document.querySelector('#bg-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Satisfying Waves Geometry
+    const lineCount = 15;
+    const segments = 120;
+    const lines = [];
+
+    for (let i = 0; i < lineCount; i++) {
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(segments * 3);
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.LineBasicMaterial({
+            color: 0x999999,
+            transparent: true,
+            opacity: 0.12
+        });
+
+        const line = new THREE.Line(geometry, material);
+        scene.add(line);
+        lines.push({
+            line: line,
+            offset: i * 0.4,
+            yPos: (i - lineCount / 2) * 1.5
+        });
+    }
+
+    camera.position.z = 15;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const time = Date.now() * 0.0008;
+
+        lines.forEach((l) => {
+            const positions = l.line.geometry.attributes.position.array;
+            for (let i = 0; i < segments; i++) {
+                const x = (i - segments / 2) * 0.5;
+                // Left to Right movement logic
+                const y = Math.sin(x * 0.35 + time + l.offset) * 0.9 + l.yPos;
+                const z = Math.cos(x * 0.2 + time * 0.4) * 0.5;
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+            }
+            l.line.geometry.attributes.position.needsUpdate = true;
+        });
+
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+</script>
+
+<script>
+    // Add to your existing script section
+const logoTrack = document.querySelector('.logo-track');
+
+logoTrack.addEventListener('mouseenter', () => {
+    logoTrack.style.animationPlayState = 'paused';
+});
+
+logoTrack.addEventListener('mouseleave', () => {
+    logoTrack.style.animationPlayState = 'running';
+});
+</script>
+
+<script>
+    let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let autoSlideTimer;
+
+function showSlide(index) {
+    // Reset timer when manually sliding
+    resetTimer();
+
+    slides[currentSlide].classList.remove('active');
+
+    currentSlide = (index + totalSlides) % totalSlides;
+
+    slides[currentSlide].classList.add('active');
+}
+
+function moveSlide(step) {
+    showSlide(currentSlide + step);
+}
+
+// Automatic transition every 4 seconds
+function startAutoSlide() {
+    autoSlideTimer = setInterval(() => {
+        moveSlide(1);
+    }, 4000);
+}
+
+function resetTimer() {
+    clearInterval(autoSlideTimer);
+    startAutoSlide();
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    startAutoSlide();
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200; // The lower the slower
+
+    const startCounters = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+
+                    // Calculate increment
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 15);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+                // Stop observing once animation is triggered
+                observer.unobserve(counter);
+            }
+        });
+    };
+
+    const statsObserver = new IntersectionObserver(startCounters, {
+        threshold: 0.5 // Start when 50% of the element is visible
+    });
+
+    counters.forEach(counter => {
+        statsObserver.observe(counter);
+    });
+});
+</script>
+
+<script>
+    // Dynamic Footer Logic
+function updateFooterData() {
+    const now = new Date();
+
+    // 1. Update Time
+    document.getElementById('current-time').innerText = now.toLocaleTimeString();
+
+    // 2. Update Date
+    const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    document.getElementById('current-date').innerText = now.toLocaleDateString('en-GB', dateOptions);
+
+    // 3. Update GMT Offset
+    const offset = -now.getTimezoneOffset() / 60;
+    document.getElementById('gmt-offset').innerText = `GMT ${offset >= 0 ? '+' : ''}${offset}`;
+
+    // 4. Update Copyright Year
+    document.getElementById('display-year').innerText = now.getFullYear();
+}
+
+// 5. Geolocation for Lat/Long
+function updateLocation() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude.toFixed(4);
+            const long = position.coords.longitude.toFixed(4);
+            document.getElementById('geo-location').innerText = `LAT: ${lat} | LONG: ${long}`;
+        }, () => {
+            document.getElementById('geo-location').innerText = "Loc: Permission Denied";
+        });
+    }
+}
+
+// Initialize
+setInterval(updateFooterData, 1000);
+updateFooterData();
+updateLocation();
+</script>
+
+
+</body>
+</html>
