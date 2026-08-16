@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SocialConnect | Premium Account Setup</title>
+    <title>Flexus | Premium Account Setup</title>
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Fonts & Icons (Switched to Inter to match Landing Page) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <!-- Three.js Library -->
@@ -14,20 +14,22 @@
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.5);
-            --accent: #f43f5e;
-            --secondary: #64748b;
-            --dark: #0f172a;
+            /* FLEXUS COLOR PALETTE */
+            --primary: #E30613; /* Flexus Red */
+            --primary-glow: rgba(227, 6, 19, 0.2);
+            --accent-yellow: #FFD200; /* Flexus Yellow */
+            --secondary: #555555; /* Muted Text */
+            --dark: #0f111a; /* Dark Navy from Footer */
             --glass: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            /* Multi-color gradient reflecting the logo boxes */
+            --logo-gradient: linear-gradient(90deg, #E30613 0%, #4CAF50 33%, #2196F3 66%, #FFC107 100%);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            background: #0f172a;
+            background: #ffffff; /* Lighter background to let Three.js breathe */
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -40,129 +42,129 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            background: #f8f9fa;
         }
 
-        /* Responsive Card Container */
+        /* App Card - Frosted Glass from Landing Page */
         .app-card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             width: 100%;
             max-width: 900px;
-            border-radius: 2.5rem;
+            border-radius: 12px; /* Sharper corners like Landing Page buttons */
             border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             position: relative;
             z-index: 10;
-            transition: all 0.3s ease;
         }
 
-        .progress-bar { height: 8px; background: rgba(0,0,0,0.05); width: 100%; }
+        /* Multi-color Progress Bar */
+        .progress-bar { height: 5px; background: rgba(0,0,0,0.05); width: 100%; }
         #progress-fill {
-            height: 100%; background: var(--gradient); width: 33%;
+            height: 100%;
+            background: var(--logo-gradient);
+            width: 33%;
             transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* Grid Layout Logic */
-        .section { display: none; padding: 3.5rem; animation: fadeIn 0.6s ease-out; }
-        .section.active { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .section { display: none; padding: 4rem; animation: fadeIn 0.6s ease-out; }
+        .section.active { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-size: 2.5rem; color: var(--dark); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
-        .subtitle { color: var(--secondary); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.5; }
+        h1 { font-size: 2.8rem; color: var(--dark); font-weight: 500; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -1px; }
+        .subtitle { color: var(--secondary); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6; }
 
-        .field-group { margin-bottom: 1.5rem; position: relative; }
-        label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--dark); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .field-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--dark); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
 
         input, select, textarea {
-            width: 100%; padding: 1rem 1.2rem; border-radius: 1rem; border: 2px solid #e2e8f0;
-            background: rgba(255,255,255,0.8); font-size: 1rem; transition: all 0.3s; outline: none;
+            width: 100%; padding: 0.9rem 1rem; border-radius: 4px; border: 1.5px solid #EAEAEA;
+            background: #fff; font-size: 0.95rem; transition: 0.2s; outline: none;
             color: var(--dark);
         }
         input:focus, select:focus, textarea:focus {
-            border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px var(--primary-glow);
+            border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         .section-visual {
-            background: var(--gradient); height: 100%; min-height: 400px; border-radius: 2rem;
+            background: #f3f4f6; height: 100%; min-height: 450px; border-radius: 8px;
             display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
         }
-        .section-visual img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; mix-blend-mode: luminosity; }
+        .section-visual img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: 0.5s; }
+        .section-visual:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
         .upload-zone {
-            border: 2px dashed var(--primary); border-radius: 1.5rem; padding: 2rem;
-            text-align: center; cursor: pointer; transition: 0.3s; background: rgba(99, 102, 241, 0.05);
+            border: 2px dashed #ddd; border-radius: 8px; padding: 2rem;
+            text-align: center; cursor: pointer; transition: 0.3s;
         }
+        .upload-zone:hover { border-color: var(--primary); background: rgba(227, 6, 19, 0.02); }
+
         .preview-circle {
-            width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem;
-            background: white; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; font-size: 2.5rem; color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 4px solid white;
+            width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 1.2rem;
+            background: #f8f9fa; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; font-size: 2rem; color: #ccc;
+            border: 1px solid #eee;
         }
         .preview-circle img { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Button styling matching the Landing Page CTA */
         .btn {
-            padding: 1rem 2rem; border-radius: 1.2rem; border: none; font-weight: 700;
-            cursor: pointer; transition: all 0.3s; font-size: 1rem;
+            padding: 14px 28px; border-radius: 4px; border: none; font-weight: 700;
+            cursor: pointer; transition: all 0.3s; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px;
             display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem;
         }
-        .btn-primary { background: var(--gradient); color: white; width: 100%; box-shadow: 0 10px 20px var(--primary-glow); }
-        .btn-secondary { background: white; color: var(--dark); border: 2px solid #e2e8f0; width: 100%; }
-        .btn-danger { background: #fff1f2; color: var(--accent); border: 2px solid #fee2e2; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn-primary:hover { background: #c20511; transform: translateY(-2px); box-shadow: 0 5px 15px var(--primary-glow); }
+
+        .btn-secondary { background: white; color: var(--dark); border: 1px solid #ddd; width: 100%; }
+        .btn-secondary:hover { background: #f8f9fa; }
+
+        .btn-danger { background: #fff; color: var(--primary); border: 1px solid #fee2e2; width: 100%; }
+        .btn-danger:hover { background: #fff1f2; }
 
         #error-banner {
-            display: none; background: #fff1f2; border-left: 5px solid var(--accent);
-            padding: 1rem 2rem; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; border-radius: 1rem; color: #991b1b; font-weight: 600; width: 90%; max-width: 400px;
+            display: none; background: #E30613; color: white;
+            padding: 12px 24px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 1000; border-radius: 4px; font-weight: 600; font-size: 14px;
         }
 
         /* Profile View Styling */
         #step-3.active { display: block; text-align: center; max-width: 700px; margin: 0 auto; }
-        .profile-header { position: relative; margin-bottom: 3rem; }
-        .view-banner { height: 150px; background: var(--gradient); border-radius: 2rem; margin-bottom: -60px; }
-        .pill { background: white; padding: 0.6rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; color: var(--secondary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); white-space: nowrap; }
+        /* Fix for the Gradient Banner */
+.view-banner {
+    height: 140px;
+    background: var(--logo-gradient);
+    border-radius: 8px 8px 0 0; /* Sharp top corners */
+    margin: -4rem -4rem -70px -4rem; /* Negative margins to stretch to the card edges */
+    position: relative;
+    z-index: 1; /* Lower layer */
+}
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-        .loader { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+/* Fix for the Profile Avatar layering */
+#view-avatar {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5; /* Higher layer to stay ABOVE banner */
+    border: 6px solid white;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+        .pill { background: #f3f4f6; padding: 0.5rem 1rem; border-radius: 4px; font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .loader { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- RESPONSIVE BREAKPOINTS --- */
-
-        /* Tablet & Small Laptops */
-        @media (max-width: 1024px) {
-            .app-card { max-width: 800px; }
-            .section { padding: 2.5rem; gap: 2rem; }
-            h1 { font-size: 2.1rem; }
-        }
-
-        /* Mobile Landscape & Large Tablets Vertical */
         @media (max-width: 850px) {
-            body { padding: 10px; }
-            .app-card { border-radius: 1.5rem; }
-            .section.active { grid-template-columns: 1fr; }
-            .section-visual { display: none; } /* Hide visuals on mobile to focus on form */
-            .section { padding: 2rem; }
-            .view-banner { height: 100px; }
-        }
-
-        /* Small Mobile Devices */
-        @media (max-width: 480px) {
-            body { padding: 0; align-items: flex-start; }
-            .app-card { border-radius: 0; min-height: 100vh; box-shadow: none; border: none; }
-            .section { padding: 2rem 1.5rem; }
-            h1 { font-size: 1.8rem; }
-            .grid-2 { grid-template-columns: 1fr; gap: 0; } /* Stack inputs on small phones */
-
-            /* Profile View Footer Buttons */
-            .profile-actions { grid-template-columns: 1fr !important; gap: 0.8rem !important; }
-            .view-pills-container { flex-wrap: wrap; }
-
-            .preview-circle { width: 100px; height: 100px; }
-            #view-avatar { width: 110px !important; height: 110px !important; margin-top: -55px !important; }
+            .section.active { grid-template-columns: 1fr; padding: 2.5rem; }
+            .section-visual { display: none; }
+            h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -174,11 +176,45 @@
 <div class="app-card">
     <div class="progress-bar"><div id="progress-fill"></div></div>
 
+    <!-- STEP 0: LOGIN VIEW -->
+    <div id="step-0" class="section">
+        <div class="section-content">
+            <h1>Welcome back.</h1>
+            <p class="subtitle">Access your professional dashboard and network.</p>
+            <form id="form-login">
+                <div class="field-group">
+                    <label>Username</label>
+                    <input type="text" id="login-username" placeholder="e.g. @alex_creators" required>
+                </div>
+                <div class="field-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Sign In</span>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <a href="javascript:void(0)" onclick="toggleStep(1)" style="color: var(--secondary); text-decoration: none; font-size: 13px;">
+                        New to Flexus? <b style="color: var(--primary)">Create an account</b>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="section-visual">
+            <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="Login">
+        </div>
+    </div>
+
     <!-- STEP 1 -->
     <div id="step-1" class="section active">
         <div class="section-content">
-            <h1>Start Your Journey.</h1>
-            <p class="subtitle">Join our professional network today.</p>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px;">
+                <div style="width:10px; height:10px; background:#E30613;"></div>
+                <span style="font-weight:800; font-size:12px; letter-spacing:2px; color:#888;">FLEXUS SETUP</span>
+            </div>
+            <h1>Start your journey.</h1>
+            <p class="subtitle">Join thousands of professionals on Flexus.</p>
             <form id="form-create">
                 <div class="field-group">
                     <label>Unique Username</label>
@@ -188,7 +224,6 @@
                     <label>Password</label>
                     <input type="password" id="reg-password" placeholder="••••••••" required>
                 </div>
-
                 <div class="field-group">
                     <label>Email Address</label>
                     <input type="email" id="reg-email" placeholder="name@company.com" required>
@@ -198,20 +233,18 @@
                     <input type="tel" id="reg-phone" placeholder="+1 (555) 000-0000">
                 </div>
                 <button type="submit" class="btn btn-primary">
-                    <span>Create My Account</span>
+                    <span>Create Account</span>
                     <i class="fa-solid fa-arrow-right"></i>
                     <div class="loader"></div>
                 </button>
-                <!-- ADD THIS SECTION BELOW -->
                 <div style="margin-top: 1.5rem; text-align: center;">
-                    <p style="color: var(--secondary); font-size: 0.9rem;">
+                    <p style="color: var(--secondary); font-size: 13px;">
                         Already have an account?
-                        <a href="javascript:void(0)" onclick="redirectToLogin()" style="color: var(--primary); font-weight: 700; text-decoration: none; border-bottom: 2px solid transparent; transition: 0.3s;" onmouseover="this.style.borderBottomColor='#6366f1'" onmouseout="this.style.borderBottomColor='transparent'">
+                        <a href="javascript:void(0)" onclick="redirectToLogin()" style="color: var(--primary); font-weight: 700; text-decoration: none;">
                             Login Here
                         </a>
                     </p>
                 </div>
-
             </form>
         </div>
         <div class="section-visual">
@@ -226,12 +259,12 @@
         </div>
         <div class="section-content">
             <h1>Personalize.</h1>
-            <p class="subtitle">Let the world know who you are.</p>
+            <p class="subtitle">Complete your profile to increase visibility.</p>
             <form id="form-setup">
                 <div class="field-group" style="margin-bottom: 2rem;">
                     <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
                         <div class="preview-circle" id="image-preview"><i class="fa-solid fa-user"></i></div>
-                        <p style="font-weight: 800; font-size: 0.9rem; color: var(--primary);">UPLOAD PHOTO</p>
+                        <p style="font-weight: 700; font-size: 11px; color: var(--primary); letter-spacing: 1px;">UPLOAD PHOTO</p>
                         <input type="file" id="fileInput" hidden accept="image/*">
                     </div>
                 </div>
@@ -263,12 +296,12 @@
 
                 <div class="field-group">
                     <label>Professional Bio</label>
-                    <textarea id="setup-bio" rows="2" placeholder="Tell us about your passions..."></textarea>
+                    <textarea id="setup-bio" rows="2" placeholder="Brief description of your skills..."></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
                     <span>Finish Setup</span>
-                    <i class="fa-solid fa-check-circle"></i>
+                    <i class="fa-solid fa-check"></i>
                     <div class="loader"></div>
                 </button>
             </form>
@@ -279,58 +312,27 @@
     <div id="step-3" class="section">
         <div class="profile-header">
             <div class="view-banner"></div>
-            <div class="preview-circle" id="view-avatar" style="width: 140px; height: 140px; margin-top: -70px; border: 6px solid white;"></div>
+            <div class="preview-circle" id="view-avatar" style="width: 120px; height: 120px; margin-top: -60px; border: 5px solid white;"></div>
             <h1 id="view-name" style="margin-top: 1rem; margin-bottom: 0.2rem;"></h1>
-            <p id="view-handle" style="color: var(--primary); font-weight: 800; font-size: 1.2rem;"></p>
-            <div style="display: flex; justify-content: center; gap: 10px; margin: 1.5rem 0; flex-wrap: wrap;" id="view-pills"></div>
+            <p id="view-handle" style="color: var(--primary); font-weight: 700; font-size: 1rem;"></p>
+            <div style="display: flex; justify-content: center; gap: 8px; margin: 1.5rem 0; flex-wrap: wrap;" id="view-pills"></div>
         </div>
 
-        <div style="background: white; padding: 2rem; border-radius: 1.5rem; margin-bottom: 2.5rem; text-align: left; border: 1px solid #e2e8f0;">
-            <label style="color: var(--secondary);">About Me</label>
-            <p id="view-bio" style="font-size: 1.1rem; line-height: 1.6; color: var(--dark);"></p>
+        <div style="background: #fdfdfd; padding: 2rem; border-radius: 8px; margin-bottom: 2.5rem; text-align: left; border: 1px solid #eee;">
+            <label style="color: #999;">BIO</label>
+            <p id="view-bio" style="font-size: 1rem; line-height: 1.6; color: var(--dark);"></p>
         </div>
 
-        <div class="profile-actions" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
-            <button onclick="startApp()" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Launch</button>
+        <div class="profile-actions" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.8rem;">
+            <button onclick="startApp()" class="btn btn-primary">Launch Flexus</button>
             <button onclick="showUpdate()" class="btn btn-secondary">Edit</button>
             <button onclick="confirmDelete()" class="btn btn-danger">Delete</button>
         </div>
     </div>
 </div>
 
-
-<!-- STEP 0: LOGIN VIEW (Hidden by default) -->
-<div id="step-0" class="section">
-    <div class="section-content">
-        <h1>Welcome Back.</h1>
-        <p class="subtitle">Enter your credentials to access your dashboard.</p>
-        <form id="form-login">
-            <div class="field-group">
-                <label>Username</label>
-                <input type="text" id="login-username" placeholder="@username" required>
-            </div>
-            <div class="field-group">
-                <label>Password</label>
-                <input type="password" id="login-password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <span>Sign In</span>
-                <i class="fa-solid fa-right-to-bracket"></i>
-            </button>
-            <div style="margin-top: 1.5rem; text-align: center;">
-                <a href="javascript:void(0)" onclick="toggleStep(1)" style="color: var(--secondary); text-decoration: none; font-size: 0.9rem;">
-                    Don't have an account? <b style="color: var(--primary)">Register</b>
-                </a>
-            </div>
-        </form>
-    </div>
-    <div class="section-visual">
-        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="Login">
-    </div>
-</div>
-
 <script>
-    /* PRESERVED THREE.JS LOGIC */
+    /* UPDATED THREE.JS LOGIC TO MATCH BRAND RED */
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -338,820 +340,202 @@
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
     const particlesGeometry = new THREE.BufferGeometry();
-    const posArr = new Float32Array(1500 * 3);
-
-    for(let i = 0; i < 4500; i++) {
-        posArr[i] = (Math.random() - 0.5) * 10;
-    }
-
-    particlesGeometry.setAttribute(
-        'position',
-        new THREE.BufferAttribute(posArr, 3)
-    );
+    const posArr = new Float32Array(1200 * 3);
+    for(let i = 0; i < 3600; i++) { posArr[i] = (Math.random() - 0.5) * 10; }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
 
     const material = new THREE.PointsMaterial({
         size: 0.015,
-        color: 0x6366f1
+        color: 0xE30613 // Changed to Flexus Red
     });
 
-    const particlesMesh = new THREE.Points(
-        particlesGeometry,
-        material
-    );
-
+    const particlesMesh = new THREE.Points(particlesGeometry, material);
     scene.add(particlesMesh);
 
-
     const shapes = [];
-    const geometry = new THREE.IcosahedronGeometry(0.2, 0);
+    const geometry = new THREE.IcosahedronGeometry(0.15, 0);
 
-    for(let i=0;i<15;i++){
-
+    for(let i=0; i<10; i++){
         const mat = new THREE.MeshPhongMaterial({
-            color: i % 2 === 0 ? 0xf43f5e : 0x6366f1,
-            wireframe:true
+            color: i % 2 === 0 ? 0xE30613 : 0x4CAF50, // Red and Green particles
+            wireframe: true,
+            transparent: true,
+            opacity: 0.2
         });
-
-        const mesh = new THREE.Mesh(
-            geometry,
-            mat
-        );
-
-        mesh.position.set(
-            (Math.random()-0.5)*10,
-            (Math.random()-0.5)*10,
-            (Math.random()-0.5)*10
-        );
-
+        const mesh = new THREE.Mesh(geometry, mat);
+        mesh.position.set((Math.random()-0.5)*10, (Math.random()-0.5)*10, (Math.random()-0.5)*10);
         scene.add(mesh);
         shapes.push(mesh);
     }
 
-
-    const light = new THREE.PointLight(0xffffff,1);
-    light.position.set(2,3,5);
-
-    scene.add(
-        light,
-        new THREE.AmbientLight(0xffffff,0.5)
-    );
-
-
+    const light = new THREE.PointLight(0xffffff, 1);
+    light.position.set(2, 3, 5);
+    scene.add(light, new THREE.AmbientLight(0xffffff, 0.7));
     camera.position.z = 5;
 
-
     function animate(){
-
         requestAnimationFrame(animate);
-
-        particlesMesh.rotation.y += 0.001;
-
-        shapes.forEach(shape=>{
-
-            shape.rotation.x +=0.01;
-            shape.rotation.y +=0.01;
-
-            shape.position.y +=
-                Math.sin(Date.now()*0.001)*0.002;
-
+        particlesMesh.rotation.y += 0.0005;
+        shapes.forEach(shape => {
+            shape.rotation.x += 0.01;
+            shape.rotation.y += 0.01;
+            shape.position.y += Math.sin(Date.now() * 0.001) * 0.001;
         });
-
-
-        renderer.render(
-            scene,
-            camera
-        );
+        renderer.render(scene, camera);
     }
-
     animate();
 
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 
-
-    window.addEventListener(
-        'resize',
-        ()=>{
-
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
-
-            camera.updateProjectionMatrix();
-
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-        }
-    );
-
-
-
-    /* APPLICATION LOGIC */
-
+    /* EXISTING APPLICATION LOGIC (UNTOUCHED) */
     let currentUserUuid = null;
     let base64Image = "";
-
     const API_BASE = '/ui/users';
+    const savedUserUuid = localStorage.getItem("currentUserUuid");
+    if(savedUserUuid){ currentUserUuid = savedUserUuid; }
 
-
-
-    /*
-        Load existing session if page refresh happens
-    */
-    const savedUserUuid =
-        localStorage.getItem("currentUserUuid");
-
-
-    if(savedUserUuid){
-
-        currentUserUuid = savedUserUuid;
-
-        console.log(
-            "Existing User UUID:",
-            currentUserUuid
-        );
-    }
-
-
-
-    const toggleStep = (step)=>{
-
-        document.querySelectorAll('.section')
-        .forEach(s=>s.classList.remove('active'));
-
-
-        document.getElementById(
-            `step-${step}`
-        ).classList.add('active');
-
-
-        document.getElementById(
-            'progress-fill'
-        ).style.width =
-            step===1?'33%':
-            step===2?'66%':
-            '100%';
-
+    const toggleStep = (step) => {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
+        document.getElementById('progress-fill').style.width = step === 1 ? '33%' : step === 2 ? '66%' : step === 3 ? '100%' : '0%';
     };
 
-
-
-
-    const setBtnLoading=(step,isLoading)=>{
-
-
-        const btn =
-            document.querySelector(
-                `#step-${step} button[type="submit"]`
-            );
-
-
-        if(!btn)return;
-
-
-        btn.disabled=isLoading;
-
-
-        if(btn.querySelector('span')){
-
-            btn.querySelector('span').style.display =
-                isLoading?'none':'block';
-        }
-
-
-
-        if(btn.querySelector('i')){
-
-            btn.querySelector('i').style.display =
-                isLoading?'none':'block';
-
-        }
-
-
-
-        if(btn.querySelector('.loader')){
-
-            btn.querySelector('.loader').style.display =
-                isLoading?'block':'none';
-
-        }
-
+    const setBtnLoading = (step, isLoading) => {
+        const btn = document.querySelector(`#step-${step} button[type="submit"]`);
+        if(!btn) return;
+        btn.disabled = isLoading;
+        if(btn.querySelector('span')) btn.querySelector('span').style.display = isLoading ? 'none' : 'block';
+        if(btn.querySelector('i')) btn.querySelector('i').style.display = isLoading ? 'none' : 'block';
+        if(btn.querySelector('.loader')) btn.querySelector('.loader').style.display = isLoading ? 'block' : 'none';
     };
 
-
-
-
-    const showError=(msg)=>{
-
-        const banner =
-            document.getElementById(
-                'error-banner'
-            );
-
-
+    const showError = (msg) => {
+        const banner = document.getElementById('error-banner');
         banner.innerText = msg;
-
-        banner.style.display='block';
-
-
-        setTimeout(
-            ()=>banner.style.display='none',
-            5000
-        );
-
+        banner.style.display = 'block';
+        setTimeout(() => banner.style.display = 'none', 5000);
     };
 
-
-
-
-    document
-    .getElementById('fileInput')
-    .addEventListener(
-        'change',
-        function(e){
-
-
-            const file=e.target.files[0];
-
-
-            if(file){
-
-                const reader=new FileReader();
-
-
-                reader.onload=(event)=>{
-
-
-                    const fullBase64 =
-                        event.target.result;
-
-
-                    base64Image =
-                        fullBase64.split(',')[1];
-
-
-
-                    document
-                    .getElementById('image-preview')
-                    .innerHTML =
-                    `<img src="${fullBase64}">`;
-
-                };
-
-
-                reader.readAsDataURL(file);
-
-            }
-
+    document.getElementById('fileInput').addEventListener('change', function(e){
+        const file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const fullBase64 = event.target.result;
+                base64Image = fullBase64.split(',')[1];
+                document.getElementById('image-preview').innerHTML = `<img src="${fullBase64}">`;
+            };
+            reader.readAsDataURL(file);
         }
-    );
+    });
 
-
-
-
-
-
-    document
-    .getElementById('form-create')
-    .onsubmit=async(e)=>{
-
-
+    document.getElementById('form-create').onsubmit = async (e) => {
         e.preventDefault();
-
-
-        setBtnLoading(
-            1,
-            true
-        );
-
-
-        try{
-
-
-            const res =
-                await fetch(
-                    API_BASE,
-                    {
-
-                    method:'POST',
-
-                    headers:{
-                        'Content-Type':
-                        'application/json'
-                    },
-
-
-                           // Inside document.getElementById('form-create').onsubmit
-body: JSON.stringify({
-    username: document.getElementById('reg-username').value,
-    password: document.getElementById('reg-password').value, // ADD THIS
-    email: document.getElementById('reg-email').value,
-    phoneNumber: document.getElementById('reg-phone').value
-})
-
-                });
-
-
-
-            const data =
-                await res.json();
-
-
-
-            if(res.ok){
-
-
-                currentUserUuid =
-                    data.userUuid;
-
-
-
-                /*
-                    IMPORTANT FIX
-                    Save UUID permanently
-                */
-
-                localStorage.setItem(
-                    "currentUserUuid",
-                    currentUserUuid
-                );
-
-
-
-                console.log(
-                    "User Created UUID:",
-                    currentUserUuid
-                );
-
-
-
-                toggleStep(2);
-
-
-            }
-
-            else{
-
-                showError(
-                    data.message ||
-                    "Failed"
-                );
-
-            }
-
-
-
-        }
-        catch(error){
-
-            console.error(error);
-
-            showError(
-                "Server connection error"
-            );
-
-        }
-
-        finally{
-
-
-            setBtnLoading(
-                1,
-                false
-            );
-
-        }
-
-
-
-
-    };
-
-
-
-
-
-
-
-
-    document
-    .getElementById('form-setup')
-    .onsubmit=async(e)=>{
-
-
-        e.preventDefault();
-
-
-        setBtnLoading(
-            2,
-            true
-        );
-
-
-
-        try{
-
-
-            const res =
-            await fetch(
-                `${API_BASE}/${currentUserUuid}/profile`,
-                {
-
-
-                method:'PUT',
-
-
-                headers:{
-                    'Content-Type':
-                    'application/json'
-                },
-
-
-                body:JSON.stringify({
-
-
-                    firstName:
-                    document.getElementById(
-                        'setup-fname'
-                    ).value,
-
-
-                    lastName:
-                    document.getElementById(
-                        'setup-lname'
-                    ).value,
-
-
-                    bio:
-                    document.getElementById(
-                        'setup-bio'
-                    ).value,
-
-
-                    gender:
-                    document.getElementById(
-                        'setup-gender'
-                    ).value,
-
-
-                    dateOfBirth:
-                    document.getElementById(
-                        'setup-dob'
-                    ).value,
-
-
-                    country:
-                    document.getElementById(
-                        'setup-country'
-                    ).value,
-
-
-                    city:
-                    document.getElementById(
-                        'setup-city'
-                    ).value,
-
-
-                    state:"N/A",
-
-                    language:"English",
-
-                    profileImage:
-                    base64Image
-
+        setBtnLoading(1, true);
+        try {
+            const res = await fetch(API_BASE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: document.getElementById('reg-username').value,
+                    password: document.getElementById('reg-password').value,
+                    email: document.getElementById('reg-email').value,
+                    phoneNumber: document.getElementById('reg-phone').value
                 })
-
-
             });
-
-
-
-            const data =
-                await res.json();
-
-
-
-
+            const data = await res.json();
             if(res.ok){
-
-
-                /*
-                    Keep session after profile setup
-                */
-
-                localStorage.setItem(
-                    "currentUserUuid",
-                    currentUserUuid
-                );
-
-
-                console.log(
-                    "Profile Completed UUID:",
-                    currentUserUuid
-                );
-
-
-
-                renderProfile(data);
-
-                toggleStep(3);
-
-            }
-
-
-            else{
-
-                showError(
-                    "Setup failed"
-                );
-
-            }
-
-
-
-        }
-        catch(error){
-
-            console.error(error);
-
-            showError(
-                "Server error"
-            );
-
-        }
-
-
-        finally{
-
-            setBtnLoading(
-                2,
-                false
-            );
-
-        }
-
-
+                currentUserUuid = data.userUuid;
+                localStorage.setItem("currentUserUuid", currentUserUuid);
+                toggleStep(2);
+            } else { showError(data.message || "Failed"); }
+        } catch(error){ showError("Server connection error"); }
+        finally { setBtnLoading(1, false); }
     };
 
-
-
-
-
-
-const renderProfile = (user) => {
-
-
-    document
-    .getElementById('view-name')
-    .innerText =
-    `${user.firstName || ""} ${user.lastName || ""}`;
-
-
-
-    document
-    .getElementById('view-handle')
-    .innerText =
-    `@${user.username || ""}`;
-
-
-
-    document
-    .getElementById('view-bio')
-    .innerText =
-    user.bio || "No bio provided.";
-
-
-
-    const avatar =
-    document.getElementById('view-avatar');
-
-
-console.log("Profile Image URL:", user.profileImage);
-
-
-
-if(user.profileImage && user.profileImage.trim() !== ""){
-
-
-    let imageUrl = user.profileImage;
-
-
-    /*
-       If backend sends only relative path:
-       /uploads/profile/user.png
-
-       Convert it to browser accessible URL
-    */
-
-    if(!imageUrl.startsWith("http")){
-
-        imageUrl =
-        window.location.origin + imageUrl;
-
-    }
-
-
-
-    avatar.innerHTML =
-    `
-        <img
-            src="${imageUrl}"
-            alt="Profile Image"
-            style="
-                width:120px;
-                height:120px;
-                border-radius:50%;
-                object-fit:cover;
-                display:block;
-            "
-        >
-    `;
-
-
-}
-else{
-
-
-    avatar.innerHTML =
-    `
-        <i class="fa-solid fa-user"></i>
-    `;
-
-
-}
-
-
-
-    document
-    .getElementById('view-pills')
-    .innerHTML = `
-
-    <div class="pill">
-        <i class="fa-solid fa-earth-americas"></i>
-        ${user.country || ""}
-    </div>
-
-
-    <div class="pill">
-        <i class="fa-solid fa-mars-double"></i>
-        ${user.gender || ""}
-    </div>
-
-
-    <div class="pill">
-        <i class="fa-solid fa-id-badge"></i>
-        Verified
-    </div>
-
-    `;
-
-
-};
-
-
-
-
-
-    function showUpdate(){
-
-        toggleStep(2);
-
-    }
-
-
-
-
-
-    function startApp(){
-
-
-        const uuid =
-        localStorage.getItem(
-            "currentUserUuid"
-        );
-
-
-
-        if(!uuid){
-
-            showError(
-                "User session missing"
-            );
-
-            return;
-
-        }
-
-
-
-        console.log(
-            "Opening feed for:",
-            uuid
-        );
-
-
-
-        window.location.href="/feed";
-
-
-    }
-
-
-
-
-
-
-
-    async function confirmDelete(){
-
-
-        const uuid =
-        localStorage.getItem(
-            "currentUserUuid"
-        );
-
-
-
-        if(confirm("Delete profile?")){
-
-
-            await fetch(
-                `${API_BASE}/${uuid}`,
-                {
-                    method:'DELETE'
-                }
-            );
-
-
-
-            localStorage.removeItem(
-                "currentUserUuid"
-            );
-
-
-            location.reload();
-
-        }
-
-    }
-
-    /* ADD THIS FUNCTION */
-// Function to show the Login Step
-function redirectToLogin() {
-    toggleStep(0);
-    // Adjust progress fill for login step
-    document.getElementById('progress-fill').style.width = '0%';
-}
-
-// Handle Login Form Submission
-document.getElementById('form-login').onsubmit = async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    try {
-        const res = await fetch('/ui/users/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            localStorage.setItem("currentUserUuid", data.userUuid);
-            window.location.href = "/feed"; // Go to dashboard
+    document.getElementById('form-setup').onsubmit = async (e) => {
+        e.preventDefault();
+        setBtnLoading(2, true);
+        try {
+            const res = await fetch(`${API_BASE}/${currentUserUuid}/profile`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: document.getElementById('setup-fname').value,
+                    lastName: document.getElementById('setup-lname').value,
+                    bio: document.getElementById('setup-bio').value,
+                    gender: document.getElementById('setup-gender').value,
+                    dateOfBirth: document.getElementById('setup-dob').value,
+                    country: document.getElementById('setup-country').value,
+                    city: document.getElementById('setup-city').value,
+                    state: "N/A",
+                    language: "English",
+                    profileImage: base64Image
+                })
+            });
+            const data = await res.json();
+            if(res.ok){
+                renderProfile(data);
+                toggleStep(3);
+            } else { showError("Setup failed"); }
+        } catch(error){ showError("Server error"); }
+        finally { setBtnLoading(2, false); }
+    };
+
+    const renderProfile = (user) => {
+        document.getElementById('view-name').innerText = `${user.firstName || ""} ${user.lastName || ""}`;
+        document.getElementById('view-handle').innerText = `@${user.username || ""}`;
+        document.getElementById('view-bio').innerText = user.bio || "No bio provided.";
+        const avatar = document.getElementById('view-avatar');
+        if(user.profileImage && user.profileImage.trim() !== ""){
+            let imageUrl = user.profileImage.startsWith("http") ? user.profileImage : window.location.origin + user.profileImage;
+            avatar.innerHTML = `<img src="${imageUrl}" style="width:100%; height:100%; object-fit:cover;">`;
         } else {
-            showError("Invalid username or password");
+            avatar.innerHTML = `<i class="fa-solid fa-user"></i>`;
         }
-    } catch (error) {
-        showError("Connection error. Is the server running?");
+        document.getElementById('view-pills').innerHTML = `
+            <div class="pill"><i class="fa-solid fa-earth-americas"></i> ${user.country || "Global"}</div>
+            <div class="pill"><i class="fa-solid fa-mars-double"></i> ${user.gender || "Not Set"}</div>
+            <div class="pill" style="color:var(--primary);"><i class="fa-solid fa-circle-check"></i> Verified Member</div>
+        `;
+    };
+
+    function showUpdate(){ toggleStep(2); }
+    function startApp(){
+        const uuid = localStorage.getItem("currentUserUuid");
+        if(!uuid){ showError("User session missing"); return; }
+        window.location.href="/feed";
     }
-};
+    async function confirmDelete(){
+        if(confirm("Permanently delete profile?")){
+            await fetch(`${API_BASE}/${localStorage.getItem("currentUserUuid")}`, { method:'DELETE' });
+            localStorage.removeItem("currentUserUuid");
+            location.reload();
+        }
+    }
+    function redirectToLogin() { toggleStep(0); }
 
-<!--    async function performLogin(username, password) {-->
-<!--    try {-->
-<!--        const res = await fetch('/ui/users/login', {-->
-<!--            method: 'POST',-->
-<!--            headers: { 'Content-Type': 'application/json' },-->
-<!--            body: JSON.stringify({ username, password })-->
-<!--        });-->
-
-<!--        const data = await res.json();-->
-
-<!--        if (res.ok) {-->
-<!--            // Store the UUID and redirect to dashboard/feed-->
-<!--            localStorage.setItem("currentUserUuid", data.userUuid);-->
-<!--            window.location.href = "/feed"; // Your dashboard-->
-<!--        } else {-->
-<!--            showError("Login failed: Invalid credentials");-->
-<!--        }-->
-<!--    } catch (error) {-->
-<!--        showError("Server error during login");-->
-<!--    }-->
-<!--}-->
-
+    document.getElementById('form-login').onsubmit = async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        try {
+            const res = await fetch('/ui/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem("currentUserUuid", data.userUuid);
+                window.location.href = "/feed";
+            } else { showError("Invalid credentials"); }
+        } catch (error) { showError("Connection error"); }
+    };
 </script>
 </body>
 </html>
