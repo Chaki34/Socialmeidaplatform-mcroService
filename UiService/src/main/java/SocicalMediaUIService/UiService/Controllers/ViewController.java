@@ -35,4 +35,9 @@ public class ViewController {
     public String showLoginPage() {
         return "login";
     }
+
+    @GetMapping("/about")
+    public String aboutPage() {
+        return "about";
+    }
 }

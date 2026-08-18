@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story | Flexus - Professional Evolution</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #E30613;
+            --dark-navy: #0f111a;
+            --text-main: #1a1a1a;
+            --text-muted: #555;
+            --light-gray: #f8f9fa;
+            --border: #ececec;
+            --mint: #e6fffa;
+            --mint-text: #047857;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { color: var(--text-main); line-height: 1.7; overflow-x: hidden; background: #fff; }
+
+        #canvas-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.35; pointer-events: none;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 6%; background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; font-size: 1.3rem; display: flex; align-items: center; gap: 8px; letter-spacing: 1px; color: var(--dark-navy); text-decoration: none; }
+        .logo-box { width: 12px; height: 12px; border: 2.5px solid; border-radius: 2px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 35px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- HERO --- */
+        .hero { padding: 120px 6% 80px; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .tag { display: inline-block; padding: 6px 16px; background: #fff1f2; color: var(--primary); border-radius: 4px; font-size: 11px; font-weight: 800; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .hero h1 { font-size: 4rem; font-weight: 500; line-height: 1.1; margin-bottom: 30px; letter-spacing: -2px; color: var(--dark-navy); }
+        .hero p { font-size: 1.3rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; font-weight: 400; }
+
+        /* --- MISSIONS (10 ITEMS) --- */
+        .mission-section { padding: 60px 6%; }
+        .mission-item { display: flex; gap: 80px; align-items: center; margin-bottom: 150px; }
+        .mission-item:nth-child(even) { flex-direction: row-reverse; }
+
+        .mission-img-container { flex: 1.2; position: relative; }
+        .mission-img-container img {
+            width: 100%; height: 550px; object-fit: cover;
+            border-radius: 4px 4px 100px 4px;
+            box-shadow: 30px 30px 0px var(--light-gray);
+        }
+        .mission-item:nth-child(even) img { border-radius: 4px 100px 4px 4px; box-shadow: -30px 30px 0px var(--light-gray); }
+
+        /* Reference Stats Overlay */
+        .img-overlay-box {
+            position: absolute; bottom: 40px; right: -20px;
+            background: white; padding: 25px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 220px;
+        }
+        .mission-item:nth-child(even) .img-overlay-box { right: auto; left: -20px; }
+        .overlay-stat { font-size: 1.8rem; font-weight: 800; color: var(--dark-navy); }
+        .overlay-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+        .mission-content { flex: 0.8; position: relative; }
+        .mission-content h3 { font-size: 2.8rem; margin-bottom: 25px; font-weight: 600; color: var(--dark-navy); letter-spacing: -1px; line-height: 1.2; }
+        .mission-content p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 25px; }
+        .mission-number { font-size: 6rem; font-weight: 900; opacity: 0.04; position: absolute; top: -50px; left: -20px; z-index: -1; }
+
+        /* --- TEAM SECTION (LYNQET STYLE) --- */
+        .team-section { padding: 100px 6%; background: #fff; text-align: center; }
+        .team-tag { background: var(--mint); color: var(--mint-text); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 15px; display: inline-block; }
+        .team-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 30px; max-width: 1200px; margin: 60px auto 0;
+        }
+        .team-card {
+            background: var(--light-gray); border-radius: 15px;
+            padding: 40px 30px 0; text-align: left; position: relative;
+            transition: 0.4s ease; overflow: hidden;
+        }
+        .team-card:hover { transform: translateY(-10px); background: #fdfdfd; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .team-info h4 { font-size: 1.2rem; margin-bottom: 5px; color: var(--dark-navy); }
+        .team-info p { font-size: 0.85rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 30px; }
+        .team-img-wrapper {
+            width: 100%; height: 300px; display: flex; align-items: flex-end; justify-content: center;
+            background: radial-gradient(circle at center, #ffffff 0%, #eef1f5 100%);
+            border-radius: 0 0 100px 0; /* The signature cut look */
+        }
+        .team-card img { width: 90%; height: auto; display: block; filter: grayscale(20%); transition: 0.4s; }
+        .team-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
+
+        /* --- STATS STRIP --- */
+        .stats-strip { background: var(--dark-navy); color: #fff; padding: 80px 6%; display: flex; justify-content: space-around; text-align: center; margin: 50px 0; border-radius: 4px; }
+        .stat-box h2 { font-size: 3.5rem; margin-bottom: 10px; color: #fff; font-weight: 700; }
+        .stat-box p { font-size: 12px; opacity: 0.6; letter-spacing: 1.5px; text-transform: uppercase; }
+
+        /* --- FAQ SECTION --- */
+        .faq-section { padding: 120px 6%; background: #fcfcfc; }
+        .faq-header { text-align: center; margin-bottom: 60px; }
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 15px; overflow: hidden; transition: 0.3s; }
+        .faq-question { padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; cursor: pointer; color: var(--dark-navy); }
+        .faq-question i { font-size: 12px; transition: 0.4s; }
+        .faq-answer { max-height: 0; padding: 0 30px; overflow: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text-muted); font-size: 15px; }
+        .faq-item.active { border-color: var(--primary); }
+        .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 25px; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--primary); }
+
+        /* --- REVEAL ANIMATION --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--dark-navy); color: #fff; padding: 100px 6% 50px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 60px; }
+        .footer-col h4 { margin-bottom: 25px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #888; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-col ul li a:hover { color: #fff; }
+        .copy { text-align: center; padding-top: 40px; font-size: 12px; color: #555; }
+
+        @media (max-width: 1024px) {
+            .mission-item, .mission-item:nth-child(even) { flex-direction: column; gap: 40px; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .team-grid { grid-template-columns: 1fr; }
+            .stats-strip { flex-direction: column; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<nav>
+    <a href="#" class="logo">
+        <div class="logo-box" style="border-color:#E30613"></div>
+        <div class="logo-box" style="border-color:#4CAF50"></div>
+        <div class="logo-box" style="border-color:#2196F3"></div>
+        <div class="logo-box" style="border-color:#FFC107"></div>
+        FLEXUS
+    </a>
+    <div class="nav-links">
+        <a href="#">Solutions</a>
+
+
+        <a href="#">Contact</a>
+        <a href="#" style="background: var(--primary); color: #fff; padding: 12px 25px; border-radius: 2px;">See a demo <i class="fa-solid fa-arrow-right" style="font-size: 10px; margin-left: 5px;"></i></a>
+    </div>
+</nav>
+
+<section class="hero reveal">
+    <span class="tag">The Flexus Agenda</span>
+    <h1>Built for the modern<br>professional ecosystem</h1>
+    <p>Success depends on intelligent, real-time relationship infrastructure. Flexus provides a unified view of professional supply and demand for global evolution.</p>
+</section>
+
+<!-- 10 MISSIONS -->
+<section class="mission-section">
+    <!-- Mission 1 -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" alt="Vision">
+            <div class="img-overlay-box">
+                <div class="overlay-stat">10x</div>
+                <div class="overlay-label">Faster decisions</div>
+            </div>
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">01</span>
+            <span class="tag">Strategy</span>
+            <h3>Delivering Certainty</h3>
+            <p>We empower professionals around the world to overcome critical network challenges with unparalleled precision and real-time insights.</p>
+            <p>Our infrastructure allows you to act quickly and respond to changing market conditions while maintaining long-term resilience.</p>
+        </div>
+    </div>
+
+    <!-- Mission 2 -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80" alt="Scaling">
+            <div class="img-overlay-box">
+                <div class="overlay-stat">95%</div>
+                <div class="overlay-label">Sustainable growth</div>
+            </div>
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">02</span>
+            <span class="tag">Experience</span>
+            <h3>Unparalleled Global Scaling</h3>
+            <p>We bring decades of experience delivering results, faster value, and measurable ROI across global career industries at scale.</p>
+            <p>Supporting high-performance outcomes through a combination of deep industry expertise and autonomous networking technology.</p>
+        </div>
+    </div>
+
+    <!-- Mission 3 -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="Collaboration">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">03</span>
+            <span class="tag">Culture</span>
+            <h3>Synergistic Collaboration</h3>
+            <p>Break down silos between teams and industries. Flexus facilitates a bridge where talent meets opportunity through organic AI matching.</p>
+            <p>Our focus is on human-centric design, ensuring technology serves the professional, not the other way around.</p>
+        </div>
+    </div>
+
+    <!-- Mission 4 -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80" alt="Security">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">04</span>
+            <span class="tag">Privacy</span>
+            <h3>Data Sovereignty & Security</h3>
+            <p>In a world of data exploitation, Flexus stands for professional privacy. Your network is your asset; we simply provide the vault.</p>
+            <p>Utilizing zero-knowledge architecture to ensure that your sensitive professional connections remain entirely under your control.</p>
+        </div>
+    </div>
+
+    <!-- Mission 5 -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80" alt="AI">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">05</span>
+            <span class="tag">Technology</span>
+            <h3>The AI Evolution</h3>
+            <p>Our Flex-AI engine doesn't just suggest jobs; it predicts industry shifts, helping you stay three steps ahead of the global economy.</p>
+            <p>We integrate deep learning with professional psychology to foster connections that actually result in meaningful project outcomes.</p>
+        </div>
+    </div>
+
+    <!-- Mission 6-10 Simplified for scroll flow -->
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1454165833767-027ffea9e77b?auto=format&fit=crop&w=1200&q=80" alt="Analysis">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">06</span>
+            <h3>Real-time Market Insights</h3>
+            <p>Get instant feedback on your professional standing. Our analytics dashboard translates global trends into personal actionable steps.</p>
+        </div>
+    </div>
+
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Future">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">07</span>
+            <h3>Future-Proofing Careers</h3>
+            <p>As industries shift, so do we. Flexus provides the training and network paths needed to transition into the emerging green and tech economies.</p>
+        </div>
+    </div>
+
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80" alt="Success">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">08</span>
+            <h3>Enterprise-Grade Integrity</h3>
+            <p>Verified profiles mean verified opportunities. We eliminate the noise of modern social networks to focus on pure professional signal.</p>
+        </div>
+    </div>
+
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80" alt="Global">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">09</span>
+            <h3>Global Support Ecosystem</h3>
+            <p>Our support doesn't end at software. We facilitate peer-to-peer mentoring and concierge services for our premium enterprise partners.</p>
+        </div>
+    </div>
+
+    <div class="mission-item reveal">
+        <div class="mission-img-container">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80" alt="Vision">
+        </div>
+        <div class="mission-content">
+            <span class="mission-number">10</span>
+            <h3>One Vision, One Network</h3>
+            <p>The final goal: A unified professional world where distance is irrelevant and value is the only currency that matters.</p>
+        </div>
+    </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="stats-strip reveal">
+    <div class="stat-box"><h2>25</h2><p>Excellence Awards</p></div>
+    <div class="stat-box"><h2>100+</h2><p>Fortune 500 Partners</p></div>
+    <div class="stat-box"><h2>~500</h2><p>Patents & IP Rights</p></div>
+    <div class="stat-box"><h2>3,000</h2><p>Global Enterprises</p></div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="team-section reveal">
+    <span class="team-tag">TEAM</span>
+
+    <h2 style="font-size: 2.8rem; color: var(--dark-navy);">
+        Meet the Flexus people
+    </h2>
+
+    <p style="color: var(--text-muted); margin-bottom: 20px;">
+        We deliver reliable professional solutions for a sustainable future.
+    </p>
+
+    <div class="team-grid">
+
+        <!-- Member 1 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Royal Hooper</h4>
+                <p>CEO - Founder</p>
+            </div>
+
+            <div class="team-img-wrapper">
+                <img
+                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Royal Hooper"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+
+        <!-- Member 2 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Matilda Shelton</h4>
+                <p>Head of Product</p>
+            </div>
+
+            <div class="team-img-wrapper"
+                 style="border-radius: 0 0 0 100px;">
+
+                <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Matilda Shelton"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+
+        <!-- Member 3 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Tony Manning</h4>
+                <p>Lead Engineer</p>
+            </div>
+
+            <div class="team-img-wrapper">
+                <img
+                        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Tony Manning"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+
+        <!-- Member 4 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Jennifer Davis</h4>
+                <p>Operations Manager</p>
+            </div>
+
+            <div class="team-img-wrapper"
+                 style="border-radius: 0 0 100px 0;">
+
+                <img
+                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Jennifer Davis"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+
+        <!-- Member 5 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Tommie Harvey</h4>
+                <p>Product Manager</p>
+            </div>
+
+            <div class="team-img-wrapper">
+                <img
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Tommie Harvey"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+
+        <!-- Member 6 -->
+        <div class="team-card">
+            <div class="team-info">
+                <h4>Christi Hampton</h4>
+                <p>Marketing Strategist</p>
+            </div>
+
+            <div class="team-img-wrapper"
+                 style="border-radius: 0 0 0 100px;">
+
+                <img
+                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&h=750&q=85"
+                        alt="Christi Hampton"
+                        loading="lazy"
+                        referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- FAQ SECTION -->
+<section class="faq-section reveal">
+    <div class="faq-header">
+        <span class="tag">Questions</span>
+        <h2 style="font-size: 2.8rem; margin-top: 10px;">Frequently Asked Questions</h2>
+        <p style="color: var(--text-muted);">Clear answers to common questions about our platform and support.</p>
+    </div>
+
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question">What is Flexus Global Fulfillment? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">Flexus combines real-time networking with smart orchestration to deliver professional projects through the best talent for faster and more reliable results globally.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How do I switch between accounts? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">On the Main Menu, you will find a "Profile Switch" button that allows you to swap between your Personal, Professional, and Enterprise identities instantly.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Is the Flexus Pulse Dynamic Safety Stock active? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes, our Pulse AI autonomously adjusts your professional resource allocation based on real-time market demand and industry shifts.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">What are the Customer Success offerings? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">We offer a comprehensive suite of advisory, technical, and concierge services designed to ensure your organization hits its ROI targets within 6 months.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Does Flexus support multi-currency payroll? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">Absolutely. We handle cross-border payments in over 80 currencies, ensuring compliance with local tax laws in every country we operate in.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How secure is my proprietary project data? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">We utilize AES-256 bank-grade encryption. Your data is your own; Flexus never sells or uses your project details for training external AI models.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Can I integrate my existing CRM? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes, Flexus features a robust API and native integrations for Salesforce, HubSpot, and Microsoft Dynamics 365.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">What is the "Verification Tier"? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-answer">This is our gold-standard vetting process that verifies identity, past project success, and skill proficiency through a peer-reviewed ledger.</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <a href="#" class="logo" style="filter: brightness(0) invert(1); margin-bottom: 20px;">
+                <div class="logo-box" style="border-color:#fff"></div>FLEXUS
+            </a>
+            <p style="color: #666; font-size: 14px;">Building the future of professional infrastructure. Made for the global world of work.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Solutions</h4>
+            <ul>
+                <li><a href="#">Network Hub</a></li>
+                <li><a href="#">Flex AI</a></li>
+                <li><a href="#">Enterprise OS</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Legal</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="#">Sales</a></li>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copy">&copy; 2024 Flexus Corporation Pvt. Ltd. All rights reserved.</div>
+</footer>
+
+<script>
+    // --- THREE.JS BACKGROUND (PRESERVED) ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 1500; i++) {
+        vertices.push(THREE.MathUtils.randFloatSpread(20), THREE.MathUtils.randFloatSpread(20), THREE.MathUtils.randFloatSpread(20));
+    }
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    const material = new THREE.PointsMaterial({ color: 0xE30613, size: 0.03 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+    camera.position.z = 8;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.001;
+        points.rotation.x += 0.0005;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // --- FAQ INTERACTION ---
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+
+    // --- REVEAL ON SCROLL ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
+</body>
+</html>
