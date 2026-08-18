@@ -7,28 +7,35 @@
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.4);
-            --accent: #f43f5e;
-            --dark-bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-heavy: rgba(15, 23, 42, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
+            /* ===== FLEXUS LANDING THEME (light / red / yellow) ===== */
+            --primary: #E30613;                 /* Flexus red */
+            --primary-glow: rgba(227, 6, 19, 0.22);
+            --accent: #FFC107;                  /* warm yellow accent */
+            --dark-bg: #ffffff;                 /* base surface (now light) */
+            --page-bg: #ffffff;
+            --bg-yellow: #FFF9E1;               /* soft yellow banner tone */
+            --glass: rgba(255, 255, 255, 0.72); /* light glass cards */
+            --glass-heavy: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-main: #1f2328;               /* dark text on light */
+            --text-dark: #2C2C2C;
+            --text-dim: #6a7280;
+            --border-color: #EAEAEA;
             --nav-width: 260px;
-            --story-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --accent-purple: #7047eb;
+            --story-gradient: linear-gradient(45deg, #E30613, #FF6600, #FFC107);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Plus Jakarta Sans', sans-serif; }
 
         body {
-            background: var(--dark-bg);
+            background: var(--page-bg);
             color: var(--text-main);
             overflow: hidden;
             height: 100vh;
@@ -1617,290 +1624,483 @@
 
 
 
- <style>
-     /* =====================================================
-   CLEAN PROFILE GRID (Single Media + Count Badge)
-===================================================== */
+    <style>
+        /* =====================================================
+      CLEAN PROFILE GRID (Single Media + Count Badge)
+   ===================================================== */
 
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 10px 0;
-}
+   .profile-grid {
+       display: grid;
+       grid-template-columns: repeat(3, 1fr);
+       gap: 12px;
+       padding: 10px 0;
+   }
 
-.profile-post-item {
-    aspect-ratio: 1 / 1;
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #000; /* Contrast background */
-    border: 1px solid var(--glass-border);
-    cursor: pointer;
-}
+   .profile-post-item {
+       aspect-ratio: 1 / 1;
+       position: relative;
+       border-radius: 12px;
+       overflow: hidden;
+       background: #000; /* Contrast background */
+       border: 1px solid var(--glass-border);
+       cursor: pointer;
+   }
 
-/* Single Media Item (No Slider) */
-.profile-post-item img,
-.profile-post-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
+   /* Single Media Item (No Slider) */
+   .profile-post-item img,
+   .profile-post-item video {
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+       transition: transform 0.5s ease;
+   }
 
-.profile-post-item:hover img,
-.profile-post-item:hover video {
-    transform: scale(1.05); /* Subtle zoom on hover */
-}
+   .profile-post-item:hover img,
+   .profile-post-item:hover video {
+       transform: scale(1.05); /* Subtle zoom on hover */
+   }
 
-/* Multi-Media Count Badge (Standard Instagram Style) */
-.post-multi-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 800;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
+   /* Multi-Media Count Badge (Standard Instagram Style) */
+   .post-multi-badge {
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       background: rgba(15, 23, 42, 0.75);
+       backdrop-filter: blur(8px);
+       -webkit-backdrop-filter: blur(8px);
+       border: 1px solid rgba(255, 255, 255, 0.15);
+       color: white;
+       padding: 4px 10px;
+       border-radius: 8px;
+       font-size: 11px;
+       font-weight: 800;
+       z-index: 5;
+       display: flex;
+       align-items: center;
+       gap: 6px;
+       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+   }
 
-.post-multi-badge i {
-    font-size: 12px;
-    color: var(--primary); /* Use your primary theme color for the icon */
-}
+   .post-multi-badge i {
+       font-size: 12px;
+       color: var(--primary); /* Use your primary theme color for the icon */
+   }
 
-/* Hover Action Overlay (Boost/Edit) */
-.post-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    opacity: 0;
-    transition: 0.3s ease;
-    z-index: 10;
-}
+   /* Hover Action Overlay (Boost/Edit) */
+   .post-overlay {
+       position: absolute;
+       inset: 0;
+       background: rgba(15, 23, 42, 0.6);
+       backdrop-filter: blur(4px);
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       gap: 12px;
+       opacity: 0;
+       transition: 0.3s ease;
+       z-index: 10;
+   }
 
-.profile-post-item:hover .post-overlay {
-    opacity: 1;
-}
+   .profile-post-item:hover .post-overlay {
+       opacity: 1;
+   }
 
-.post-action-btn {
-    width: 120px;
-    padding: 10px 0;
-    border: none;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
+   .post-action-btn {
+       width: 120px;
+       padding: 10px 0;
+       border: none;
+       border-radius: 10px;
+       font-size: 11px;
+       font-weight: 800;
+       cursor: pointer;
+       transition: 0.2s;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 8px;
+   }
 
-.post-action-btn:hover {
-    transform: translateY(-2px);
-}
+   .post-action-btn:hover {
+       transform: translateY(-2px);
+   }
 
-.btn-boost {
-    background: linear-gradient(135deg, var(--primary), #8b5cf6);
-    color: white;
-}
+   .btn-boost {
+       background: linear-gradient(135deg, var(--primary), #8b5cf6);
+       color: white;
+   }
 
-.btn-edit-post {
-    background: white;
-    color: #0f172a;
-}
+   .btn-edit-post {
+       background: white;
+       color: #0f172a;
+   }
 
-/* Responsive Handling */
-@media (max-width: 900px) {
-    .profile-grid { gap: 10px; }
-    .post-action-btn { width: 100px; font-size: 10px; }
-}
+   /* Responsive Handling */
+   @media (max-width: 900px) {
+       .profile-grid { gap: 10px; }
+       .post-action-btn { width: 100px; font-size: 10px; }
+   }
 
-@media (max-width: 600px) {
-    .profile-grid { grid-template-columns: repeat(2, 1fr); }
-}
- </style>
+   @media (max-width: 600px) {
+       .profile-grid { grid-template-columns: repeat(2, 1fr); }
+   }
+    </style>
 
- <style>
-     /* =====================================================
-   REFINED EDIT MODAL & MEDIA MANAGER
-===================================================== */
+    <style>
+        /* =====================================================
+      REFINED EDIT MODAL & MEDIA MANAGER
+   ===================================================== */
 
-/* Container for the media reorder thumbnails */
-#editMediaReorderContainer {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
-    min-height: 130px;
-    align-items: center;
-    border: 1px solid rgba(255,255,255,0.05);
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) transparent;
-}
+   /* Container for the media reorder thumbnails */
+   #editMediaReorderContainer {
+       display: flex;
+       gap: 14px;
+       overflow-x: auto;
+       padding: 15px;
+       background: rgba(0, 0, 0, 0.25);
+       border-radius: 16px;
+       min-height: 130px;
+       align-items: center;
+       border: 1px solid rgba(255,255,255,0.05);
+       scrollbar-width: thin;
+       scrollbar-color: var(--primary) transparent;
+   }
 
-/* Custom Scrollbar for the Media Row */
-#editMediaReorderContainer::-webkit-scrollbar {
-    height: 4px;
-}
-#editMediaReorderContainer::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 10px;
-}
+   /* Custom Scrollbar for the Media Row */
+   #editMediaReorderContainer::-webkit-scrollbar {
+       height: 4px;
+   }
+   #editMediaReorderContainer::-webkit-scrollbar-thumb {
+       background: var(--primary);
+       border-radius: 10px;
+   }
 
-.reorder-item {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 12px;
-    overflow: hidden;
-    flex-shrink: 0;
-    border: 2px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
+   .reorder-item {
+       position: relative;
+       width: 100px;
+       height: 100px;
+       border-radius: 12px;
+       overflow: hidden;
+       flex-shrink: 0;
+       border: 2px solid transparent;
+       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+   }
 
-.reorder-item:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary);
-}
+   .reorder-item:hover {
+       transform: translateY(-5px);
+       border-color: var(--primary);
+   }
 
-/* Highlight the first image as the Cover */
-.reorder-item:first-child {
-    border-color: var(--primary);
-    box-shadow: 0 0 15px var(--primary-glow);
-}
+   /* Highlight the first image as the Cover */
+   .reorder-item:first-child {
+       border-color: var(--primary);
+       box-shadow: 0 0 15px var(--primary-glow);
+   }
 
-.reorder-item img, .reorder-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+   .reorder-item img, .reorder-item video {
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
 
-/* Professional Numbering Badge */
-.reorder-number {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: var(--primary);
-    color: white;
-    font-size: 10px;
-    font-weight: 800;
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
+   /* Professional Numbering Badge */
+   .reorder-number {
+       position: absolute;
+       top: 8px;
+       left: 8px;
+       background: var(--primary);
+       color: white;
+       font-size: 10px;
+       font-weight: 800;
+       width: 20px;
+       height: 20px;
+       border-radius: 6px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       z-index: 5;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+   }
 
-/* Overlay that appears on hover */
-.reorder-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 10px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
+   /* Overlay that appears on hover */
+   .reorder-overlay {
+       position: absolute;
+       inset: 0;
+       background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+       display: flex;
+       align-items: flex-end;
+       justify-content: center;
+       padding-bottom: 10px;
+       opacity: 0;
+       transition: opacity 0.2s;
+   }
 
-.reorder-item:hover .reorder-overlay {
-    opacity: 1;
-}
+   .reorder-item:hover .reorder-overlay {
+       opacity: 1;
+   }
 
-.reorder-controls {
-    display: flex;
-    gap: 8px;
-}
+   .reorder-controls {
+       display: flex;
+       gap: 8px;
+   }
 
-.reorder-btn {
-    background: white;
-    color: var(--dark-bg);
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-}
+   .reorder-btn {
+       background: white;
+       color: var(--dark-bg);
+       border: none;
+       width: 28px;
+       height: 28px;
+       border-radius: 8px;
+       cursor: pointer;
+       font-size: 12px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: 0.2s;
+   }
 
-.reorder-btn:hover {
-    background: var(--primary);
-    color: white;
-    transform: scale(1.1);
-}
+   .reorder-btn:hover {
+       background: var(--primary);
+       color: white;
+       transform: scale(1.1);
+   }
 
-     /* =====================================================
-   MEDIA ZOOM PREVIEW
-===================================================== */
-.media-zoom-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    z-index: 50000; /* Above everything */
-    display: none;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-    animation: zoomIn 0.3s ease;
-}
+        /* =====================================================
+      MEDIA ZOOM PREVIEW
+   ===================================================== */
+   .media-zoom-overlay {
+       position: fixed;
+       inset: 0;
+       background: rgba(0, 0, 0, 0.85);
+       backdrop-filter: blur(10px);
+       z-index: 50000; /* Above everything */
+       display: none;
+       align-items: center;
+       justify-content: center;
+       cursor: zoom-out;
+       animation: zoomIn 0.3s ease;
+   }
 
-.media-zoom-overlay.active {
-    display: flex;
-}
+   .media-zoom-overlay.active {
+       display: flex;
+   }
 
-.media-zoom-content {
-    max-width: 90%;
-    max-height: 85vh;
-    border-radius: 15px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    transform: scale(1);
-    transition: transform 0.3s ease;
-}
+   .media-zoom-content {
+       max-width: 90%;
+       max-height: 85vh;
+       border-radius: 15px;
+       box-shadow: 0 0 50px rgba(0,0,0,0.5);
+       transform: scale(1);
+       transition: transform 0.3s ease;
+   }
 
-@keyframes zoomIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
- </style>
-
-
+   @keyframes zoomIn {
+       from { opacity: 0; transform: scale(0.9); }
+       to { opacity: 1; transform: scale(1); }
+   }
+    </style>
 
 
 
 
 
 
+
+
+    <!-- =====================================================
+         FLEXUS LIGHT THEME OVERRIDES
+         Re-skins the dark glass UI into the landing page's
+         white / red / yellow identity. Structure, popups,
+         fields and backend logic are untouched.
+    ===================================================== -->
+    <style>
+        html, body { background: #ffffff; }
+
+        /* Soft branded wash behind the particle field */
+        #canvas-container {
+            background:
+                radial-gradient(1100px 620px at 85% -10%, rgba(255, 201, 7, 0.16), transparent 60%),
+                radial-gradient(900px 560px at 10% 110%, rgba(227, 6, 19, 0.10), transparent 60%),
+                #ffffff;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+        nav.sidebar {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid var(--border-color);
+        }
+        .logo { color: var(--text-dark); }
+        .nav-item { color: var(--text-dim); }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(227, 6, 19, 0.07);
+            color: var(--text-dark);
+        }
+        .nav-item.active i { color: var(--primary); text-shadow: none; }
+
+        /* ---------- FEED / POST CARDS ---------- */
+        .post-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            backdrop-filter: none;
+        }
+        .post-card h2 { color: var(--text-dark); }
+
+        /* ---------- RIGHT PROFILE CARD ---------- */
+        .user-profile-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+        }
+        .stats-row { border-top: 1px solid var(--border-color); }
+        .stat-item span { color: var(--text-dim); }
+        .profile-details-list { color: var(--text-dark); }
+        .profile-details-list i { color: var(--primary); }
+
+        /* Stories ring inner border sits on the white surface */
+        .story-ring img { border-color: #ffffff; }
+        .story-ring.seen { background: var(--border-color); }
+
+        /* ---------- CREATE POPUP ---------- */
+        .create-popup {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14), 0 0 25px rgba(227, 6, 19, 0.06);
+        }
+        .create-popup-header {
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .create-popup-header button { color: #8a94a3; }
+        .create-popup-header button:hover { background: rgba(0, 0, 0, 0.05); color: var(--text-dark); }
+        .create-option:hover { background: rgba(227, 6, 19, 0.06); }
+        .create-icon { background: #f5f6f8; }
+        .create-text strong { color: var(--text-dark); }
+        .create-text small { color: var(--text-dim); }
+
+        /* ---------- MESSAGE SIDE TAB + DRAWER ---------- */
+        .message-side-tab {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-right: none;
+            color: var(--text-dim);
+            box-shadow: -8px 0 30px rgba(0, 0, 0, 0.10);
+        }
+        .message-side-tab:hover {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: -8px 0 35px rgba(227, 6, 19, 0.14);
+        }
+        .message-drawer {
+            background: #ffffff;
+            border-left: 1px solid var(--border-color);
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.18);
+        }
+        .message-header { border-bottom: 1px solid var(--border-color); }
+        .message-title { color: var(--text-dark); }
+        .message-title i { color: var(--primary); }
+        .message-close { background: rgba(0, 0, 0, 0.04); color: #8a94a3; }
+        .message-close:hover { background: rgba(0, 0, 0, 0.08); color: var(--text-dark); }
+        .message-search {
+            background: #f5f6f8;
+            border: 1px solid var(--border-color);
+        }
+        .message-search i { color: #9aa3b2; }
+        .message-search input { color: var(--text-dark); }
+        .message-search input::placeholder { color: #9aa3b2; }
+        .message-section-title { color: #9aa3b2; }
+        .friend-row:hover, .chat-row:hover { background: rgba(227, 6, 19, 0.05); }
+        .friend-avatar img { border: 2px solid var(--primary); }
+        .online-dot, .offline-dot { border: 2px solid #ffffff; }
+        .friend-info strong, .chat-name-row strong { color: var(--text-dark); }
+        .friend-status, .chat-name-row span, .chat-info p { color: var(--text-dim); }
+        .unread-count { background: var(--primary); color: #fff; }
+        .message-overlay { background: rgba(15, 23, 42, 0.25); }
+
+        /* ---------- MODALS (post / profile / edit) ---------- */
+        .modal-overlay { background: rgba(15, 23, 42, 0.35); }
+        .post-modal {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22), 0 0 40px rgba(227, 6, 19, 0.06);
+        }
+        .post-modal-header { border-bottom: 1px solid var(--border-color); }
+        .post-modal-header h2 { color: var(--text-dark); }
+        .post-modal-header span { color: var(--text-dim); }
+        .post-modal-close { background: rgba(0, 0, 0, 0.04); color: #8a94a3; }
+        .post-modal-close:hover { background: rgba(0, 0, 0, 0.08); color: var(--text-dark); }
+
+        /* ---------- FORM FIELDS ---------- */
+        #postForm textarea, #postForm input, #postForm select,
+        #editPostForm textarea, #editPostForm input, #editPostForm select,
+        #editProfileForm textarea, #editProfileForm input, #editProfileForm select {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+        #postForm textarea:focus, #postForm input:focus, #postForm select:focus,
+        #editPostForm textarea:focus, #editPostForm input:focus, #editPostForm select:focus,
+        #editProfileForm textarea:focus, #editProfileForm input:focus, #editProfileForm select:focus {
+            border-color: var(--primary);
+            background: rgba(227, 6, 19, 0.04);
+        }
+        #postForm input::placeholder, #postForm textarea::placeholder,
+        #editPostForm input::placeholder, #editPostForm textarea::placeholder,
+        #editProfileForm input::placeholder, #editProfileForm textarea::placeholder {
+            color: #9aa3b2;
+        }
+        #postForm label, #editPostForm label, #editProfileForm label,
+        .post-form-group > label { color: #8a94a3; }
+        #postVisibility option, #editVisibility option, #ep-gender option {
+            background: #ffffff; color: var(--text-dark);
+        }
+
+        /* File upload dropzone */
+        .file-input-label {
+            border: 1px dashed rgba(227, 6, 19, 0.4);
+            background: rgba(227, 6, 19, 0.035);
+        }
+        .file-input-label:hover { border-color: var(--primary); background: rgba(227, 6, 19, 0.07); }
+        .file-input-label i { color: var(--primary); }
+        .file-input-label strong { color: var(--text-dark); }
+        .file-input-label small { color: var(--text-dim); }
+        .preview-item { background: #f5f6f8; border: 1px solid var(--border-color); }
+
+        /* Primary action buttons -> Flexus red gradient */
+        .btn-submit, .btn-boost {
+            background: linear-gradient(135deg, #E30613, #ff5a34);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(227, 6, 19, 0.25);
+        }
+        .btn-submit:hover, .btn-boost:hover {
+            box-shadow: 0 12px 30px rgba(227, 6, 19, 0.35);
+        }
+
+        /* ---------- PROFILE GRID / MEDIA MANAGER ---------- */
+        .profile-post-item { border: 1px solid var(--border-color); }
+        .post-multi-badge i { color: #FFC107; }
+        .btn-edit-post { background: #ffffff; color: var(--text-dark); border: 1px solid var(--border-color); }
+        #editMediaReorderContainer {
+            background: #f5f6f8;
+            border: 1px solid var(--border-color);
+        }
+        .reorder-item { box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10); }
+        .reorder-number { background: var(--primary); color: #fff; }
+        .reorder-btn { background: #ffffff; color: var(--primary); }
+        .reorder-btn:hover { background: var(--primary); color: #fff; }
+
+        /* Edit-profile photo upload zone */
+        .upload-zone .preview-circle,
+        #edit-profile-preview {
+            background: #f5f6f8;
+            border: 1px dashed rgba(227, 6, 19, 0.4);
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 
@@ -2057,20 +2257,20 @@
             <h2 id="profile-name">Loading...</h2>
             <p id="profile-username" style="color: var(--text-dim); font-size: 0.9rem;"></p>
 
-<!--            &lt;!&ndash; Detailed Info Section &ndash;&gt;-->
-<!--            <div class="profile-details-list">-->
-<!--                <div><i class="fa-solid fa-location-dot"></i> <span id="profile-location">-</span></div>-->
-<!--                <div><i class="fa-solid fa-earth-asia"></i> <span id="profile-country">-</span></div>-->
-<!--                <div><i class="fa-solid fa-user"></i> <span id="profile-gender">-</span></div>-->
-<!--                <div><i class="fa-solid fa-language"></i> <span id="profile-language">-</span></div>-->
-<!--                <div><i class="fa-solid fa-cake-candles"></i> <span id="profile-dob">-</span></div>-->
-<!--            </div>-->
+            <!--            &lt;!&ndash; Detailed Info Section &ndash;&gt;-->
+            <!--            <div class="profile-details-list">-->
+            <!--                <div><i class="fa-solid fa-location-dot"></i> <span id="profile-location">-</span></div>-->
+            <!--                <div><i class="fa-solid fa-earth-asia"></i> <span id="profile-country">-</span></div>-->
+            <!--                <div><i class="fa-solid fa-user"></i> <span id="profile-gender">-</span></div>-->
+            <!--                <div><i class="fa-solid fa-language"></i> <span id="profile-language">-</span></div>-->
+            <!--                <div><i class="fa-solid fa-cake-candles"></i> <span id="profile-dob">-</span></div>-->
+            <!--            </div>-->
 
-<!--            <div class="stats-row">-->
-<!--                <div class="stat-item"><b>0</b><span>Posts</span></div>-->
-<!--                <div class="stat-item"><b>0</b><span>Followers</span></div>-->
-<!--                <div class="stat-item"><b>0</b><span>Following</span></div>-->
-<!--            </div>-->
+            <!--            <div class="stats-row">-->
+            <!--                <div class="stat-item"><b>0</b><span>Posts</span></div>-->
+            <!--                <div class="stat-item"><b>0</b><span>Followers</span></div>-->
+            <!--                <div class="stat-item"><b>0</b><span>Following</span></div>-->
+            <!--            </div>-->
         </div>
     </aside>
 </div>
@@ -2730,7 +2930,7 @@
 
             return `https://ui-avatars.com/api/?name=${encodeURIComponent(
                 user.username || "User"
-            )}&background=6366f1&color=fff`;
+            )}&background=E30613&color=fff`;
 
         }
 
@@ -3194,8 +3394,8 @@
     const material =
     new THREE.PointsMaterial({
 
-        size:0.015,
-        color:0x6366f1
+        size:0.02,
+        color:0xE30613
 
     });
 
