@@ -177,8 +177,12 @@
     <div class="progress-bar"><div id="progress-fill"></div></div>
 
     <!-- STEP 0: LOGIN VIEW -->
-    <div id="step-0" class="section">
+    <div id="step-0"
+         class="section"
+         th:classappend="${mode == 'login'} ? ' active' : ''">
+
         <div class="section-content">
+
             <h1>Welcome back.</h1>
             <p class="subtitle">Access your professional dashboard and network.</p>
             <form id="form-login">
@@ -202,12 +206,15 @@
             </form>
         </div>
         <div class="section-visual">
-            <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="Login">
+            <img src="https://images.pexels.com/photos/7170766/pexels-photo-7170766.jpeg" alt="Login">
         </div>
     </div>
 
     <!-- STEP 1 -->
-    <div id="step-1" class="section active">
+    <div id="step-1"
+         class="section"
+         th:classappend="${mode != 'login'} ? ' active' : ''">
+
         <div class="section-content">
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px;">
                 <div style="width:10px; height:10px; background:#E30613;"></div>
@@ -248,14 +255,14 @@
             </form>
         </div>
         <div class="section-visual">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Social">
+            <img src="https://images.pexels.com/photos/32496952/pexels-photo-32496952.jpeg" alt="Social">
         </div>
     </div>
 
     <!-- STEP 2 -->
     <div id="step-2" class="section">
         <div class="section-visual">
-            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80" alt="Team">
+            <img src="https://images.pexels.com/photos/7170700/pexels-photo-7170700.jpeg" alt="Team">
         </div>
         <div class="section-content">
             <h1>Personalize.</h1>

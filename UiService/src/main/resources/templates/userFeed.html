@@ -4656,6 +4656,3427 @@
     }
 
 }</style>
+
+
+    <style>
+        /* =========================================================
+   ACHIEVEMENT MODAL
+========================================================= */
+
+.achievement-modal {
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 100000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.achievement-modal.show {
+
+    display: flex;
+}
+
+
+.achievement-modal-overlay {
+
+    position: absolute;
+    inset: 0;
+
+    background: rgba(5, 10, 20, .74);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.achievement-modal-container {
+
+    position: relative;
+    z-index: 2;
+
+    width: min(900px, 96vw);
+
+    max-height: 92vh;
+
+    background: var(--card-bg, #fff);
+
+    color: var(--text-color, #172033);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, .38);
+
+    animation:
+        achievementModalIn .25s ease;
+}
+
+
+@keyframes achievementModalIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(25px)
+            scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.achievement-modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 27px 30px 20px;
+
+    border-bottom:
+        1px solid #e8ebf0;
+}
+
+
+.achievement-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 6px 11px;
+
+    border-radius: 8px;
+
+    background: rgba(245, 158, 11, .12);
+
+    color: #d97706;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+
+.achievement-modal-header h2 {
+
+    margin: 10px 0 4px;
+
+    font-size: 23px;
+
+    font-weight: 800;
+}
+
+
+.achievement-modal-header p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 13px;
+}
+
+
+.achievement-close-btn {
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #667085;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s;
+}
+
+
+.achievement-close-btn:hover {
+
+    background: #e7eaf0;
+
+    color: #111827;
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.achievement-progress {
+
+    padding: 20px 30px 8px;
+}
+
+
+.achievement-progress-line {
+
+    height: 3px;
+
+    background: #edf0f4;
+
+    margin: 0 42px -23px;
+
+    position: relative;
+}
+
+
+.achievement-progress-line div {
+
+    height: 100%;
+
+    width: 0%;
+
+    background: #d97706;
+
+    transition: width .3s ease;
+}
+
+
+.achievement-steps {
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+
+.achievement-step {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #98a1b2;
+
+    font-size: 10px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.achievement-step span {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef0f4;
+
+    color: #778094;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    transition: .25s;
+}
+
+
+.achievement-step.active span,
+.achievement-step.completed span {
+
+    background: #d97706;
+
+    color: white;
+}
+
+
+.achievement-step.active,
+.achievement-step.completed {
+
+    color: #d97706;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#achievementForm {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+.achievement-form-step {
+
+    display: none;
+
+    overflow-y: auto;
+
+    padding: 25px 30px;
+
+    max-height: 57vh;
+}
+
+
+.achievement-form-step.active {
+
+    display: block;
+
+    animation:
+        achievementStepIn .2s ease;
+}
+
+
+@keyframes achievementStepIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.achievement-section-title {
+
+    display: flex;
+
+    gap: 13px;
+
+    margin-bottom: 25px;
+}
+
+
+.achievement-section-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(217, 119, 6, .11);
+
+    color: #d97706;
+}
+
+
+.achievement-section-title h3 {
+
+    margin: 0 0 3px;
+
+    font-size: 17px;
+}
+
+
+.achievement-section-title p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.achievement-field {
+
+    margin-bottom: 21px;
+
+    position: relative;
+}
+
+
+.achievement-field label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.achievement-field label > span {
+
+    color: #ef4444;
+}
+
+
+.achievement-field input,
+.achievement-field textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e0e4ea;
+
+    background: #fafbfc;
+
+    color: #172033;
+
+    border-radius: 11px;
+
+    padding: 12px 14px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition: .2s;
+}
+
+
+.achievement-field textarea {
+
+    resize: vertical;
+
+    min-height: 90px;
+}
+
+
+.achievement-field input:focus,
+.achievement-field textarea:focus {
+
+    border-color: #d97706;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(217, 119, 6, .08);
+}
+
+
+.achievement-hint {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #929aaa;
+
+    font-size: 10px;
+}
+
+
+.achievement-character-count {
+
+    position: absolute;
+
+    right: 12px;
+
+    bottom: 10px;
+
+    color: #9aa2b1;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   ICON INPUT
+========================================================= */
+
+.achievement-input-icon {
+
+    position: relative;
+}
+
+
+.achievement-input-icon i {
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #d97706;
+}
+
+
+.achievement-input-icon input {
+
+    padding-left: 40px;
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.achievement-upload-box {
+
+    min-height: 140px;
+
+    border: 1.5px dashed #cdd3dd;
+
+    border-radius: 14px;
+
+    background: #fafbfc;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.achievement-upload-box:hover {
+
+    border-color: #d97706;
+
+    background: #fffbeb;
+}
+
+
+.achievement-upload-placeholder {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #8992a4;
+
+    text-align: center;
+}
+
+
+.achievement-upload-icon {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(217, 119, 6, .1);
+
+    color: #d97706;
+
+    font-size: 18px;
+
+    margin-bottom: 3px;
+}
+
+
+.achievement-upload-placeholder strong {
+
+    color: #344054;
+
+    font-size: 13px;
+}
+
+
+.achievement-upload-placeholder small {
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SKILL INPUT
+========================================================= */
+
+.skills-input-wrapper {
+
+    position: relative;
+
+    border: 1px solid #e0e4ea;
+
+    background: #fafbfc;
+
+    border-radius: 12px;
+
+    padding: 8px;
+
+    transition: .2s;
+}
+
+
+.skills-input-wrapper:focus-within {
+
+    border-color: #d97706;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(217, 119, 6, .08);
+}
+
+
+.selected-skills {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+#skillInput {
+
+    border: none;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    padding: 8px 6px;
+
+    min-width: 180px;
+}
+
+
+#skillInput:focus {
+
+    box-shadow: none;
+
+    border: none;
+}
+
+
+.skill-chip {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background: #fff7ed;
+
+    border: 1px solid #fed7aa;
+
+    color: #c2410c;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.skill-chip button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #c2410c;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SKILL SUGGESTIONS
+========================================================= */
+
+.skill-suggestions {
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    top: calc(100% + 5px);
+
+    z-index: 50;
+
+    display: none;
+
+    max-height: 220px;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border: 1px solid #e1e5eb;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, .12);
+}
+
+
+.skill-suggestions.show {
+
+    display: block;
+}
+
+
+.skill-suggestion {
+
+    padding: 10px 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    color: #475467;
+
+    transition: .15s;
+}
+
+
+.skill-suggestion:hover {
+
+    background: #fff7ed;
+
+    color: #c2410c;
+}
+
+
+.skill-suggestion i {
+
+    color: #d97706;
+}
+
+
+/* =========================================================
+   POPULAR SKILLS
+========================================================= */
+
+.popular-skills {
+
+    margin-bottom: 24px;
+}
+
+
+.popular-skills h4 {
+
+    margin: 0 0 10px;
+
+    font-size: 12px;
+
+    color: #667085;
+}
+
+
+.popular-skill-list {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+.popular-skill-list button {
+
+    border: 1px solid #e1e5eb;
+
+    background: #fafbfc;
+
+    color: #667085;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.popular-skill-list button:hover {
+
+    border-color: #d97706;
+
+    background: #fff7ed;
+
+    color: #c2410c;
+}
+
+
+/* =========================================================
+   SCORE CARDS
+========================================================= */
+
+.score-card-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 11px;
+
+    margin-bottom: 25px;
+}
+
+
+.score-card {
+
+    padding: 15px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    background: #fafbfc;
+}
+
+
+.score-card > span {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #fff7ed;
+
+    color: #d97706;
+
+    margin-bottom: 9px;
+}
+
+
+.score-card label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 11px;
+
+    color: #667085;
+}
+
+
+.score-input {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+
+.score-input input {
+
+    padding: 8px !important;
+
+    min-width: 0;
+}
+
+
+.score-input b {
+
+    color: #98a1b2;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+.achievement-question-box {
+
+    border: 1px solid #e3e6eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background: #fafbfc;
+
+    margin-bottom: 25px;
+}
+
+
+.achievement-question-header {
+
+    padding: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #e6e9ee;
+}
+
+
+.achievement-question-header span {
+
+    color: #d97706;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+
+.achievement-question-header h4 {
+
+    margin: 7px 0 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+.achievement-question-header strong {
+
+    padding: 5px 9px;
+
+    height: fit-content;
+
+    border-radius: 7px;
+
+    background: #fff7ed;
+
+    color: #c2410c;
+
+    font-size: 10px;
+}
+
+
+#achievementQuestionAnswer {
+
+    margin: 18px;
+
+    width: calc(100% - 36px);
+
+    box-sizing: border-box;
+
+    min-height: 130px;
+}
+
+
+.achievement-question-navigation {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 13px 18px;
+
+    border-top: 1px solid #e6e9ee;
+}
+
+
+.achievement-question-navigation button {
+
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid #dce1e8;
+
+    background: white;
+
+    color: #d97706;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+}
+
+
+.achievement-question-navigation button:disabled {
+
+    opacity: .35;
+
+    cursor: not-allowed;
+}
+
+
+.achievement-question-dots {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.achievement-question-dots span {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #d7dce4;
+}
+
+
+.achievement-question-dots span.active {
+
+    width: 18px;
+
+    border-radius: 5px;
+
+    background: #d97706;
+}
+
+
+/* =========================================================
+   PROVIDER FEEDBACK
+========================================================= */
+
+.provider-feedback {
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    background: #fafbfc;
+
+    overflow: hidden;
+}
+
+
+.provider-feedback-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 17px;
+}
+
+
+.provider-feedback-header h4 {
+
+    margin: 0 0 4px;
+
+    font-size: 13px;
+}
+
+
+.provider-feedback-header h4 i {
+
+    color: #d97706;
+
+    margin-right: 5px;
+}
+
+
+.provider-feedback-header p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 10px;
+}
+
+
+/* Toggle */
+
+.feedback-toggle input {
+
+    display: none;
+}
+
+
+.feedback-toggle span {
+
+    width: 42px;
+    height: 23px;
+
+    display: block;
+
+    background: #d8dde5;
+
+    border-radius: 20px;
+
+    position: relative;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.feedback-toggle span::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 17px;
+    height: 17px;
+
+    left: 3px;
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: .2s;
+}
+
+
+.feedback-toggle input:checked + span {
+
+    background: #d97706;
+}
+
+
+.feedback-toggle input:checked + span::after {
+
+    transform: translateX(19px);
+}
+
+
+.provider-feedback-input {
+
+    display: none;
+
+    padding: 0 17px 17px;
+}
+
+
+.provider-feedback-input.show {
+
+    display: block;
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.achievement-preview-card {
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffdf8,
+            #ffffff
+        );
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .05);
+}
+
+
+.achievement-preview-top {
+
+    display: flex;
+
+    gap: 14px;
+
+    align-items: center;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #eceef2;
+}
+
+
+.preview-trophy {
+
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #fff7ed;
+
+    color: #d97706;
+
+    font-size: 24px;
+}
+
+
+.achievement-preview-top span {
+
+    color: #d97706;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+
+.achievement-preview-top h3 {
+
+    margin: 4px 0;
+
+    font-size: 17px;
+}
+
+
+.achievement-preview-top p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 11px;
+}
+
+
+.preview-description {
+
+    padding: 18px 0;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+.preview-skills {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    padding-bottom: 18px;
+}
+
+
+.preview-skill {
+
+    padding: 6px 9px;
+
+    background: #fff7ed;
+
+    border: 1px solid #fed7aa;
+
+    border-radius: 7px;
+
+    color: #c2410c;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.preview-scores {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    padding-bottom: 18px;
+}
+
+
+.preview-score {
+
+    padding: 10px;
+
+    border-radius: 9px;
+
+    background: #f8fafc;
+
+    text-align: center;
+}
+
+
+.preview-score strong {
+
+    display: block;
+
+    color: #d97706;
+
+    font-size: 15px;
+}
+
+
+.preview-score small {
+
+    color: #8992a4;
+
+    font-size: 9px;
+}
+
+
+.preview-proof-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #d97706;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.achievement-modal-footer {
+
+    padding: 16px 30px;
+
+    border-top: 1px solid #e7eaf0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: white;
+}
+
+
+.achievement-footer-step {
+
+    margin-left: auto;
+
+    color: #929aaa;
+
+    font-size: 11px;
+}
+
+
+.achievement-secondary-btn,
+.achievement-primary-btn,
+.achievement-publish-btn {
+
+    border: none;
+
+    padding: 10px 16px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    transition: .2s;
+}
+
+
+.achievement-secondary-btn {
+
+    background: #f1f3f6;
+
+    color: #667085;
+}
+
+
+.achievement-primary-btn {
+
+    background: #d97706;
+
+    color: white;
+}
+
+
+.achievement-primary-btn:hover {
+
+    background: #b45309;
+
+    transform: translateY(-1px);
+}
+
+
+.achievement-publish-btn {
+
+    display: none;
+
+    background: #16a34a;
+
+    color: white;
+}
+
+
+.achievement-publish-btn:hover {
+
+    background: #15803d;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .achievement-modal {
+
+        padding: 0;
+    }
+
+
+    .achievement-modal-container {
+
+        width: 100%;
+
+        height: 100%;
+
+        max-height: 100vh;
+
+        border-radius: 0;
+    }
+
+
+    .achievement-modal-header {
+
+        padding: 20px;
+    }
+
+
+    .achievement-progress {
+
+        padding: 16px 20px 6px;
+    }
+
+
+    .achievement-form-step {
+
+        padding: 20px;
+
+        max-height: none;
+    }
+
+
+    .score-card-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .preview-scores {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .achievement-modal-footer {
+
+        padding: 13px 20px;
+    }
+
+
+    .achievement-footer-step {
+
+        display: none;
+    }
+
+}
+    </style>
+
+
+    <style>
+        /* =========================================================
+   THESIS MODAL
+========================================================= */
+
+.thesis-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100000;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.thesis-modal.show {
+
+    display: flex;
+
+}
+
+
+.thesis-modal-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(5, 10, 20, .76);
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+.thesis-modal-container {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: min(950px, 96vw);
+
+    max-height: 94vh;
+
+    background: var(--card-bg, #ffffff);
+
+    color: var(--text-color, #172033);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow:
+
+        0 30px 90px rgba(0, 0, 0, .38);
+
+    display: flex;
+
+    flex-direction: column;
+
+    animation: thesisModalIn .25s ease;
+
+}
+
+
+@keyframes thesisModalIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(25px)
+            scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.thesis-modal-header {
+
+    padding: 22px 28px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    border-bottom: 1px solid #e7eaf0;
+
+}
+
+
+.thesis-header-info {
+
+    display: flex;
+
+    gap: 13px;
+
+    align-items: center;
+
+}
+
+
+.thesis-header-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(59, 130, 246, .11);
+
+    color: #2563eb;
+
+    font-size: 20px;
+
+}
+
+
+.thesis-label {
+
+    display: inline-flex;
+
+    color: #2563eb;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .8px;
+
+}
+
+
+.thesis-modal-header h2 {
+
+    margin: 4px 0;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+}
+
+
+.thesis-modal-header p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 11px;
+
+}
+
+
+.thesis-close-btn {
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #667085;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: .2s;
+
+}
+
+
+.thesis-close-btn:hover {
+
+    background: #e7eaf0;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.thesis-progress {
+
+    padding: 18px 30px 7px;
+
+}
+
+
+.thesis-progress-line {
+
+    height: 3px;
+
+    background: #edf0f4;
+
+    margin: 0 35px -23px;
+
+}
+
+
+.thesis-progress-line div {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #2563eb;
+
+    transition: width .3s ease;
+
+}
+
+
+.thesis-steps {
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+
+.thesis-step {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #98a1b2;
+
+    font-size: 9px;
+
+}
+
+
+.thesis-step span {
+
+    width: 30px;
+
+    height: 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eef1f5;
+
+    color: #7b8494;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.thesis-step.active span,
+.thesis-step.completed span {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+
+.thesis-step.active,
+.thesis-step.completed {
+
+    color: #2563eb;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#thesisForm {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 0;
+
+}
+
+
+.thesis-form-step {
+
+    display: none;
+
+    padding: 24px 30px;
+
+    overflow-y: auto;
+
+    max-height: 59vh;
+
+}
+
+
+.thesis-form-step.active {
+
+    display: block;
+
+    animation: thesisStepIn .2s ease;
+
+}
+
+
+@keyframes thesisStepIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.thesis-section-heading {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 23px;
+
+}
+
+
+.thesis-section-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(37, 99, 235, .1);
+
+    color: #2563eb;
+
+}
+
+
+.thesis-section-heading h3 {
+
+    margin: 0 0 3px;
+
+    font-size: 16px;
+
+}
+
+
+.thesis-section-heading p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.thesis-field {
+
+    position: relative;
+
+    margin-bottom: 20px;
+
+}
+
+
+.thesis-field label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.thesis-field label span {
+
+    color: #ef4444;
+
+}
+
+
+.thesis-field input,
+.thesis-field textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border: 1px solid #dfe4eb;
+
+    background: #fafbfc;
+
+    color: #172033;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    transition: .2s;
+
+}
+
+
+.thesis-field textarea {
+
+    resize: vertical;
+
+    min-height: 85px;
+
+}
+
+
+.thesis-field input:focus,
+.thesis-field textarea:focus {
+
+    background: white;
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .08);
+
+}
+
+
+.thesis-hint {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #98a1b2;
+
+    font-size: 9px;
+
+}
+
+
+.thesis-counter {
+
+    position: absolute;
+
+    right: 11px;
+
+    bottom: 9px;
+
+    color: #98a1b2;
+
+    font-size: 9px;
+
+}
+
+
+/* =========================================================
+   PREDEFINED OPTIONS
+========================================================= */
+
+.thesis-select-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+
+.thesis-select-option,
+.method-option-grid button {
+
+    border: 1px solid #e1e5eb;
+
+    background: #fafbfc;
+
+    color: #667085;
+
+    padding: 10px 8px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    transition: .2s;
+
+}
+
+
+.thesis-select-option i,
+.method-option-grid i {
+
+    display: block;
+
+    color: #2563eb;
+
+    margin-bottom: 5px;
+
+}
+
+
+.thesis-select-option:hover,
+.thesis-select-option.selected,
+.method-option-grid button:hover,
+.method-option-grid button.selected {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.thesis-search-wrapper {
+
+    position: relative;
+
+}
+
+
+.thesis-search-wrapper > i {
+
+    position: absolute;
+
+    left: 13px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #98a1b2;
+
+    font-size: 11px;
+
+}
+
+
+.thesis-search-wrapper input {
+
+    padding-left: 35px;
+
+}
+
+
+.thesis-suggestions {
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    top: calc(100% + 5px);
+
+    z-index: 100;
+
+    display: none;
+
+    max-height: 220px;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border: 1px solid #e1e5eb;
+
+    border-radius: 11px;
+
+    box-shadow:
+
+        0 15px 35px rgba(0, 0, 0, .12);
+
+}
+
+
+.thesis-suggestions.show {
+
+    display: block;
+
+}
+
+
+.thesis-suggestion-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    color: #475467;
+
+}
+
+
+.thesis-suggestion-item:hover {
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+}
+
+
+.thesis-suggestion-item i {
+
+    color: #2563eb;
+
+}
+
+
+/* =========================================================
+   TAGS
+========================================================= */
+
+.thesis-tags-wrapper {
+
+    position: relative;
+
+    border: 1px solid #dfe4eb;
+
+    background: #fafbfc;
+
+    border-radius: 10px;
+
+    padding: 7px;
+
+}
+
+
+.thesis-tags-wrapper:focus-within {
+
+    border-color: #2563eb;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .08);
+
+}
+
+
+.selected-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+}
+
+
+.thesis-tags-wrapper input {
+
+    border: none;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    padding: 7px 5px;
+
+}
+
+
+.thesis-tags-wrapper input:focus {
+
+    border: none;
+
+    box-shadow: none;
+
+}
+
+
+.thesis-tag-chip {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 8px;
+
+    background: #eff6ff;
+
+    border: 1px solid #bfdbfe;
+
+    color: #1d4ed8;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.thesis-tag-chip button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #2563eb;
+
+    cursor: pointer;
+
+    padding: 0;
+
+}
+
+
+/* =========================================================
+   DOMAIN
+========================================================= */
+
+.selected-domain {
+
+    display: flex;
+
+    margin-top: 7px;
+
+}
+
+
+.domain-chip {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    border: 1px solid #bfdbfe;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.domain-chip button {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    color: #2563eb;
+
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+.thesis-image-upload {
+
+    min-height: 120px;
+
+    border: 1.5px dashed #cdd4df;
+
+    background: #fafbfc;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+
+.thesis-image-upload:hover {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+}
+
+
+.thesis-upload-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color: #8992a4;
+
+}
+
+
+.thesis-upload-content i {
+
+    font-size: 22px;
+
+    color: #2563eb;
+
+}
+
+
+.thesis-upload-content strong {
+
+    color: #475467;
+
+    font-size: 11px;
+
+}
+
+
+.thesis-upload-content small {
+
+    font-size: 9px;
+
+}
+
+
+.thesis-cover-preview img {
+
+    width: 100%;
+
+    max-height: 200px;
+
+    object-fit: cover;
+
+    border-radius: 11px;
+
+    margin-top: 8px;
+
+}
+
+
+/* =========================================================
+   FILE DROP
+========================================================= */
+
+.thesis-drop-zone {
+
+    min-height: 150px;
+
+    border: 1.5px dashed #cdd4df;
+
+    border-radius: 14px;
+
+    background: #fafbfc;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+
+.thesis-drop-zone:hover,
+.thesis-drop-zone.dragging {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+}
+
+
+.thesis-drop-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    margin: auto auto 8px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 20px;
+
+}
+
+
+.thesis-drop-zone strong {
+
+    display: block;
+
+    font-size: 12px;
+
+    color: #344054;
+
+}
+
+
+.thesis-drop-zone small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #98a1b2;
+
+    font-size: 9px;
+
+}
+
+
+/* =========================================================
+   FILE ROWS
+========================================================= */
+
+.thesis-mini-file-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px;
+
+    border: 1px solid #e2e6ec;
+
+    background: #fafbfc;
+
+    border-radius: 11px;
+
+}
+
+
+.thesis-mini-file-row > i {
+
+    width: 35px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+}
+
+
+.thesis-mini-file-row > div {
+
+    flex: 1;
+
+}
+
+
+.thesis-mini-file-row strong {
+
+    display: block;
+
+    font-size: 11px;
+
+}
+
+
+.thesis-mini-file-row small {
+
+    color: #98a1b2;
+
+    font-size: 9px;
+
+}
+
+
+.thesis-mini-file-row button {
+
+    border: none;
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 7px 11px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.thesis-file-preview {
+
+    margin-top: 8px;
+
+}
+
+
+.thesis-file-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 11px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e6ec;
+
+    border-radius: 9px;
+
+    font-size: 10px;
+
+}
+
+
+.thesis-file-card i {
+
+    color: #2563eb;
+
+}
+
+
+.thesis-file-card strong {
+
+    flex: 1;
+
+}
+
+
+.thesis-file-card small {
+
+    color: #98a1b2;
+
+}
+
+
+/* =========================================================
+   RESEARCH QUESTIONS
+========================================================= */
+
+.dynamic-question-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.dynamic-question {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.dynamic-question input {
+
+    flex: 1;
+
+}
+
+
+.dynamic-question button {
+
+    width: 38px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #fef2f2;
+
+    color: #dc2626;
+
+    cursor: pointer;
+
+}
+
+
+.thesis-add-btn {
+
+    margin-top: 9px;
+
+    border: 1px dashed #b9c1cf;
+
+    background: transparent;
+
+    color: #2563eb;
+
+    padding: 8px 11px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+}
+
+
+.thesis-add-btn:hover {
+
+    background: #eff6ff;
+
+    border-color: #2563eb;
+
+}
+
+
+.thesis-add-btn.small {
+
+    margin: 0;
+
+}
+
+
+/* =========================================================
+   METHODOLOGY
+========================================================= */
+
+.method-option-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+
+.method-option-grid button {
+
+    min-height: 65px;
+
+}
+
+
+/* =========================================================
+   RESULT METRICS
+========================================================= */
+
+.thesis-label-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 9px;
+
+}
+
+
+.thesis-label-row label {
+
+    margin: 0;
+
+}
+
+
+.result-metric-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 9px;
+
+}
+
+
+.result-metric {
+
+    position: relative;
+
+    padding: 12px;
+
+    border: 1px solid #e2e6ec;
+
+    background: #fafbfc;
+
+    border-radius: 11px;
+
+}
+
+
+.result-metric label {
+
+    font-size: 10px;
+
+    color: #667085;
+
+}
+
+
+.result-metric input {
+
+    margin-top: 6px;
+
+    background: white;
+
+}
+
+
+.remove-metric {
+
+    position: absolute;
+
+    right: 7px;
+
+    top: 7px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #a0a8b5;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.thesis-preview-card {
+
+    border: 1px solid #e2e6ec;
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    background: white;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .05);
+
+}
+
+
+.thesis-preview-cover {
+
+    height: 170px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #f8fafc
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+.thesis-preview-cover > div {
+
+    font-size: 40px;
+
+    color: #2563eb;
+
+}
+
+
+.thesis-preview-cover img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.thesis-preview-body {
+
+    padding: 20px;
+
+}
+
+
+.preview-thesis-type {
+
+    display: inline-flex;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: .6px;
+
+}
+
+
+.thesis-preview-body h2 {
+
+    margin: 9px 0 7px;
+
+    font-size: 19px;
+
+}
+
+
+.thesis-preview-body > p {
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+}
+
+
+.preview-domain {
+
+    margin-top: 12px;
+
+    display: inline-flex;
+
+    padding: 6px 9px;
+
+    background: #f1f5f9;
+
+    color: #475467;
+
+    border-radius: 7px;
+
+    font-size: 9px;
+
+}
+
+
+.preview-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 12px;
+
+}
+
+
+.preview-tag {
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-size: 9px;
+
+}
+
+
+.preview-research {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+}
+
+
+.preview-research > div {
+
+    padding: 12px;
+
+    background: #f8fafc;
+
+    border-radius: 10px;
+
+}
+
+
+.preview-research span {
+
+    font-size: 8px;
+
+    color: #2563eb;
+
+    font-weight: 800;
+
+}
+
+
+.preview-research p {
+
+    margin: 5px 0 0;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    color: #667085;
+
+}
+
+
+.preview-metrics {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-top: 12px;
+
+}
+
+
+.preview-metric {
+
+    padding: 10px;
+
+    text-align: center;
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+
+}
+
+
+.preview-metric strong {
+
+    display: block;
+
+    color: #2563eb;
+
+    font-size: 14px;
+
+}
+
+
+.preview-metric small {
+
+    color: #8992a4;
+
+    font-size: 8px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.thesis-modal-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 14px 28px;
+
+    border-top: 1px solid #e7eaf0;
+
+    background: white;
+
+}
+
+
+.thesis-secondary-btn,
+.thesis-primary-btn,
+.thesis-publish-btn {
+
+    border: none;
+
+    padding: 10px 15px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.thesis-secondary-btn {
+
+    background: #f1f3f6;
+
+    color: #667085;
+
+}
+
+
+.thesis-primary-btn {
+
+    margin-left: auto;
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+
+.thesis-primary-btn:hover {
+
+    background: #1d4ed8;
+
+}
+
+
+.thesis-publish-btn {
+
+    display: none;
+
+    margin-left: auto;
+
+    background: #16a34a;
+
+    color: white;
+
+}
+
+
+.thesis-step-counter {
+
+    color: #98a1b2;
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .thesis-modal {
+
+        padding: 0;
+
+    }
+
+
+    .thesis-modal-container {
+
+        width: 100%;
+
+        height: 100%;
+
+        max-height: 100vh;
+
+        border-radius: 0;
+
+    }
+
+
+    .thesis-form-step {
+
+        max-height: none;
+
+        padding: 20px;
+
+    }
+
+
+    .thesis-select-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .method-option-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .result-metric-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .preview-research {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .preview-metrics {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+    </style>
 </head>
 <body>
 
@@ -4749,7 +8170,8 @@
             </div>
 
 
-            <div class="create-option" data-type="achievement">
+            <div class="create-option achievement-create-option" data-type="achievement">
+
                 <div class="create-icon achievement-icon">
                     <i class="fa-solid fa-trophy"></i>
                 </div>
@@ -4758,6 +8180,7 @@
                     <strong>Achievement</strong>
                     <small>Share your latest achievement</small>
                 </div>
+
             </div>
 
 
@@ -5815,10 +9238,6 @@
      PROJECT POST MODAL
 ========================================================= -->
 
-<!-- =========================================================
-     PROJECT POST MODAL
-========================================================= -->
-
 <div class="project-modal" id="projectModal">
 
     <div class="project-modal-overlay"></div>
@@ -6734,6 +10153,2450 @@
                 >
                     <i class="fa-solid fa-paper-plane"></i>
                     Publish Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ACHIEVEMENT POST MODAL
+========================================================= -->
+
+<div class="achievement-modal" id="achievementModal">
+
+    <div class="achievement-modal-overlay"></div>
+
+    <div class="achievement-modal-container">
+
+        <!-- HEADER -->
+        <div class="achievement-modal-header">
+
+            <div>
+
+                <span class="achievement-badge">
+                    <i class="fa-solid fa-trophy"></i>
+                    ACHIEVEMENT
+                </span>
+
+                <h2>Share Your Achievement</h2>
+
+                <p>
+                    Showcase what you achieved and what you learned.
+                </p>
+
+            </div>
+
+            <button
+                    type="button"
+                    class="achievement-close-btn"
+                    id="achievementCloseBtn">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="achievement-progress">
+
+            <div class="achievement-progress-line">
+
+                <div id="achievementProgressBar"></div>
+
+            </div>
+
+
+            <div class="achievement-steps">
+
+                <div
+                        class="achievement-step active"
+                        data-achievement-step="1">
+
+                    <span>1</span>
+                    <small>Achievement</small>
+
+                </div>
+
+
+                <div
+                        class="achievement-step"
+                        data-achievement-step="2">
+
+                    <span>2</span>
+                    <small>Skills</small>
+
+                </div>
+
+
+                <div
+                        class="achievement-step"
+                        data-achievement-step="3">
+
+                    <span>3</span>
+                    <small>Score</small>
+
+                </div>
+
+
+                <div
+                        class="achievement-step"
+                        data-achievement-step="4">
+
+                    <span>4</span>
+                    <small>Insights</small>
+
+                </div>
+
+
+                <div
+                        class="achievement-step"
+                        data-achievement-step="5">
+
+                    <span>5</span>
+                    <small>Preview</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="achievementForm">
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section
+                    class="achievement-form-step active"
+                    data-achievement-content="1">
+
+                <div class="achievement-section-title">
+
+                    <div class="achievement-section-icon">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>Achievement Details</h3>
+
+                        <p>
+                            Tell everyone about your achievement.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Achievement Title
+                        <span>*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="achievementTitle"
+                            name="achievementTitle"
+                            placeholder="e.g. Completed Java Programming Certification"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- PROVIDER -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Provider / Issuer
+                        <span>*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="achievementProvider"
+                            name="achievementProvider"
+                            placeholder="e.g. Coursera, Google, AWS, HackerRank..."
+                            required
+                    >
+
+                </div>
+
+
+                <!-- PROVIDER LINK -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Provider / Proof Link
+                    </label>
+
+                    <div class="achievement-input-icon">
+
+                        <i class="fa-solid fa-link"></i>
+
+                        <input
+                                type="url"
+                                id="achievementProviderLink"
+                                name="achievementProviderLink"
+                                placeholder="https://..."
+                        >
+
+                    </div>
+
+                    <small class="achievement-hint">
+                        Add the official certificate, verification or provider page.
+                    </small>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Description
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="achievementDescription"
+                            name="achievementDescription"
+                            rows="5"
+                            maxlength="1000"
+                            placeholder="Describe what you achieved..."
+                            required
+                    ></textarea>
+
+                    <div class="achievement-character-count">
+
+                        <span id="achievementDescriptionCount">
+                            0
+                        </span>
+
+                        /1000
+
+                    </div>
+
+                </div>
+
+
+                <!-- CERTIFICATE / PROOF -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Certificate / Proof
+                    </label>
+
+                    <div
+                            class="achievement-upload-box"
+                            id="achievementProofUpload">
+
+                        <input
+                                type="file"
+                                id="achievementProof"
+                                name="achievementProof"
+                                accept="image/*,.pdf"
+                                hidden
+                        >
+
+                        <div class="achievement-upload-placeholder">
+
+                            <div class="achievement-upload-icon">
+
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                            </div>
+
+                            <strong>
+                                Upload Certificate or Proof
+                            </strong>
+
+                            <small>
+                                PNG, JPG, WEBP or PDF
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div id="achievementProofPreview"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 2 — SKILLS
+            ================================================== -->
+
+            <section
+                    class="achievement-form-step"
+                    data-achievement-content="2">
+
+                <div class="achievement-section-title">
+
+                    <div class="achievement-section-icon">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Skills Learned</h3>
+
+                        <p>
+                            Add every skill you learned from this achievement.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="achievement-field">
+
+                    <label>
+                        Skills
+                    </label>
+
+
+                    <div class="skills-input-wrapper">
+
+                        <div
+                                class="selected-skills"
+                                id="selectedSkills">
+                        </div>
+
+
+                        <input
+                                type="text"
+                                id="skillInput"
+                                autocomplete="off"
+                                placeholder="Type a skill..."
+                        >
+
+
+                        <div
+                                class="skill-suggestions"
+                                id="skillSuggestions">
+                        </div>
+
+                    </div>
+
+
+                    <small class="achievement-hint">
+
+                        Start typing to see suggestions.
+                        You can add unlimited skills.
+
+                    </small>
+
+                </div>
+
+
+                <!-- POPULAR SKILLS -->
+
+                <div class="popular-skills">
+
+                    <h4>Popular Skills</h4>
+
+                    <div class="popular-skill-list">
+
+                        <button
+                                type="button"
+                                data-skill="Java">
+
+                            Java
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="JavaScript">
+
+                            JavaScript
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="Spring Boot">
+
+                            Spring Boot
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="Spring AI">
+
+                            Spring AI
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="Python">
+
+                            Python
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="React">
+
+                            React
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="SQL">
+
+                            SQL
+
+                        </button>
+
+                        <button
+                                type="button"
+                                data-skill="Git">
+
+                            Git
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LEARNING DESCRIPTION -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        What did you learn?
+                    </label>
+
+                    <textarea
+                            id="learningDescription"
+                            name="learningDescription"
+                            rows="5"
+                            placeholder="Describe the important concepts or skills you learned..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 3 — SCORE
+            ================================================== -->
+
+            <section
+                    class="achievement-form-step"
+                    data-achievement-content="3">
+
+                <div class="achievement-section-title">
+
+                    <div class="achievement-section-icon">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Score & Results</h3>
+
+                        <p>
+                            Add your performance details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SCORE CARDS -->
+
+                <div class="score-card-grid">
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-bullseye"></i>
+                        </span>
+
+                        <label>Accuracy</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="number"
+                                    id="accuracy"
+                                    name="accuracy"
+                                    min="0"
+                                    max="100"
+                                    placeholder="95"
+                            >
+
+                            <b>%</b>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-star"></i>
+                        </span>
+
+                        <label>Marks</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="number"
+                                    id="marks"
+                                    name="marks"
+                                    placeholder="95"
+                            >
+
+                            <b>/</b>
+
+                            <input
+                                    type="number"
+                                    id="totalMarks"
+                                    name="totalMarks"
+                                    placeholder="100"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-percent"></i>
+                        </span>
+
+                        <label>Percentage</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="number"
+                                    id="percentage"
+                                    name="percentage"
+                                    min="0"
+                                    max="100"
+                                    placeholder="95"
+                            >
+
+                            <b>%</b>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </span>
+
+                        <label>Rank</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="text"
+                                    id="rank"
+                                    name="rank"
+                                    placeholder="Top 10"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </span>
+
+                        <label>Grade</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="text"
+                                    id="grade"
+                                    name="grade"
+                                    placeholder="A+"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card">
+
+                        <span>
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+
+                        <label>Duration</label>
+
+                        <div class="score-input">
+
+                            <input
+                                    type="text"
+                                    id="duration"
+                                    name="duration"
+                                    placeholder="6 weeks"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOM RESULT -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Additional Result
+                    </label>
+
+                    <input
+                            type="text"
+                            id="additionalResult"
+                            name="additionalResult"
+                            placeholder="e.g. Completed 8 projects, 12 assignments..."
+                    >
+
+                </div>
+
+
+                <!-- RESULT DESCRIPTION -->
+
+                <div class="achievement-field">
+
+                    <label>
+                        Result Description
+                    </label>
+
+                    <textarea
+                            id="resultDescription"
+                            name="resultDescription"
+                            rows="4"
+                            placeholder="Explain your performance or result..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 4 — QUESTIONS
+            ================================================== -->
+
+            <section
+                    class="achievement-form-step"
+                    data-achievement-content="4">
+
+                <div class="achievement-section-title">
+
+                    <div class="achievement-section-icon">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Achievement Insights</h3>
+
+                        <p>
+                            Answer a few questions about your experience.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="achievement-question-box">
+
+                    <div class="achievement-question-header">
+
+                        <div>
+
+                            <span>
+                                QUESTION
+                            </span>
+
+                            <h4
+                                    id="achievementQuestionText">
+                            </h4>
+
+                        </div>
+
+                        <strong
+                                id="achievementQuestionCounter">
+                            1 / 3
+                        </strong>
+
+                    </div>
+
+
+                    <textarea
+                            id="achievementQuestionAnswer"
+                            rows="6"
+                            placeholder="Write your answer..."
+                    ></textarea>
+
+
+                    <div class="achievement-question-navigation">
+
+                        <button
+                                type="button"
+                                id="achievementPreviousQuestion"
+                                disabled>
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                        </button>
+
+
+                        <div
+                                class="achievement-question-dots"
+                                id="achievementQuestionDots">
+
+                            <span class="active"></span>
+
+                            <span></span>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <button
+                                type="button"
+                                id="achievementNextQuestion">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FEEDBACK -->
+
+                <div class="provider-feedback">
+
+                    <div class="provider-feedback-header">
+
+                        <div>
+
+                            <h4>
+                                <i class="fa-regular fa-message"></i>
+                                Provider Feedback
+                            </h4>
+
+                            <p>
+                                Optional feedback for the organization or
+                                platform that provided this achievement.
+                            </p>
+
+                        </div>
+
+
+                        <label class="feedback-toggle">
+
+                            <input
+                                    type="checkbox"
+                                    id="enableProviderFeedback"
+                            >
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div
+                            class="provider-feedback-input"
+                            id="providerFeedbackInput">
+
+                        <textarea
+                                id="providerFeedback"
+                                name="providerFeedback"
+                                rows="4"
+                                placeholder="Share your feedback..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 5 — PREVIEW
+            ================================================== -->
+
+            <section
+                    class="achievement-form-step"
+                    data-achievement-content="5">
+
+                <div class="achievement-section-title">
+
+                    <div class="achievement-section-icon">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Preview Achievement</h3>
+
+                        <p>
+                            Review your achievement before sharing.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="achievement-preview-card">
+
+                    <div class="achievement-preview-top">
+
+                        <div class="preview-trophy">
+
+                            <i class="fa-solid fa-trophy"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                ACHIEVEMENT
+                            </span>
+
+                            <h3 id="previewAchievementTitle">
+                                Your Achievement
+                            </h3>
+
+                            <p id="previewProvider">
+                                Provider
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                            class="preview-description"
+                            id="previewDescription">
+                    </div>
+
+
+                    <div
+                            class="preview-skills"
+                            id="previewSkills">
+                    </div>
+
+
+                    <div
+                            class="preview-scores"
+                            id="previewScores">
+                    </div>
+
+
+                    <a
+                            href="#"
+                            target="_blank"
+                            id="previewProviderLink"
+                            class="preview-proof-link">
+
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                        View Provider / Proof
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="achievement-modal-footer">
+
+                <button
+                        type="button"
+                        class="achievement-secondary-btn"
+                        id="achievementPreviousBtn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Previous
+
+                </button>
+
+
+                <div class="achievement-footer-step">
+
+                    <span id="currentAchievementStep">
+                        1
+                    </span>
+
+                    /
+
+                    <span>5</span>
+
+                </div>
+
+
+                <button
+                        type="button"
+                        class="achievement-primary-btn"
+                        id="achievementNextBtn">
+
+                    Next
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <button
+                        type="submit"
+                        class="achievement-publish-btn"
+                        id="achievementPublishBtn">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Share Achievement
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     THESIS POST MODAL
+========================================================= -->
+
+<div class="thesis-modal" id="thesisModal">
+
+    <div class="thesis-modal-overlay"></div>
+
+    <div class="thesis-modal-container">
+
+        <!-- HEADER -->
+        <div class="thesis-modal-header">
+
+            <div class="thesis-header-info">
+
+                <div class="thesis-header-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <div>
+
+                    <span class="thesis-label">
+                        THESIS POST
+                    </span>
+
+                    <h2>Share Your Research</h2>
+
+                    <p>
+                        Showcase your thesis, research and findings.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                    type="button"
+                    class="thesis-close-btn"
+                    id="thesisCloseBtn">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- =====================================================
+             PROGRESS
+        ====================================================== -->
+
+        <div class="thesis-progress">
+
+            <div class="thesis-progress-line">
+
+                <div id="thesisProgressBar"></div>
+
+            </div>
+
+
+            <div class="thesis-steps">
+
+                <div
+                        class="thesis-step active"
+                        data-thesis-step="1">
+
+                    <span>1</span>
+
+                    <small>Basic</small>
+
+                </div>
+
+
+                <div
+                        class="thesis-step"
+                        data-thesis-step="2">
+
+                    <span>2</span>
+
+                    <small>Files</small>
+
+                </div>
+
+
+                <div
+                        class="thesis-step"
+                        data-thesis-step="3">
+
+                    <span>3</span>
+
+                    <small>Research</small>
+
+                </div>
+
+
+                <div
+                        class="thesis-step"
+                        data-thesis-step="4">
+
+                    <span>4</span>
+
+                    <small>Method</small>
+
+                </div>
+
+
+                <div
+                        class="thesis-step"
+                        data-thesis-step="5">
+
+                    <span>5</span>
+
+                    <small>Results</small>
+
+                </div>
+
+
+                <div
+                        class="thesis-step"
+                        data-thesis-step="6">
+
+                    <span>6</span>
+
+                    <small>Preview</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             FORM
+        ====================================================== -->
+
+        <form id="thesisForm">
+
+
+            <!-- =================================================
+                 STEP 1 — BASIC INFORMATION
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step active"
+                    data-thesis-content="1">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>Basic Information</h3>
+
+                        <p>
+                            Introduce your thesis or research work.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Thesis Title
+                        <span>*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="thesisTitle"
+                            placeholder="Enter your full thesis title"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- ABSTRACT -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Short Description / Abstract
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisAbstract"
+                            rows="5"
+                            maxlength="1200"
+                            placeholder="Give a short overview of your research..."
+                            required
+                    ></textarea>
+
+                    <div class="thesis-counter">
+                        <span id="thesisAbstractCount">0</span>
+                        /1200
+                    </div>
+
+                </div>
+
+
+                <!-- THESIS TYPE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Thesis Type
+                        <span>*</span>
+                    </label>
+
+                    <div
+                            class="thesis-select-grid"
+                            id="thesisTypeOptions">
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Undergraduate">
+
+                            <i class="fa-solid fa-user-graduate"></i>
+                            Undergraduate
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Postgraduate">
+
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            Postgraduate
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Research Paper">
+
+                            <i class="fa-solid fa-book-open"></i>
+                            Research Paper
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Dissertation">
+
+                            <i class="fa-solid fa-file-signature"></i>
+                            Dissertation
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="PhD Thesis">
+
+                            <i class="fa-solid fa-microscope"></i>
+                            PhD Thesis
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Technical Report">
+
+                            <i class="fa-solid fa-file-code"></i>
+                            Technical Report
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Case Study">
+
+                            <i class="fa-solid fa-chart-pie"></i>
+                            Case Study
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                class="thesis-select-option"
+                                data-value="Other">
+
+                            <i class="fa-solid fa-ellipsis"></i>
+                            Other
+
+                        </button>
+
+                    </div>
+
+                    <input
+                            type="hidden"
+                            id="thesisType"
+                    >
+
+                </div>
+
+
+                <!-- DOMAIN -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Field / Domain
+                        <span>*</span>
+                    </label>
+
+                    <div class="thesis-search-wrapper">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                                type="text"
+                                id="thesisDomainInput"
+                                placeholder="Search domain e.g. Artificial Intelligence..."
+                                autocomplete="off"
+                        >
+
+                        <div
+                                class="thesis-suggestions"
+                                id="domainSuggestions">
+                        </div>
+
+                    </div>
+
+                    <div
+                            class="selected-domain"
+                            id="selectedDomain">
+                    </div>
+
+                </div>
+
+
+                <!-- TAGS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Tags
+                        <span>*</span>
+                    </label>
+
+                    <div class="thesis-tags-wrapper">
+
+                        <div
+                                class="selected-tags"
+                                id="selectedThesisTags">
+                        </div>
+
+                        <input
+                                type="text"
+                                id="thesisTagInput"
+                                placeholder="Type tags..."
+                                autocomplete="off"
+                        >
+
+                        <div
+                                class="thesis-suggestions"
+                                id="tagSuggestions">
+                        </div>
+
+                    </div>
+
+                    <small class="thesis-hint">
+                        Add multiple tags. Start typing to get suggestions.
+                    </small>
+
+                </div>
+
+
+                <!-- COVER IMAGE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Cover Image
+                    </label>
+
+                    <div
+                            class="thesis-image-upload"
+                            id="thesisCoverUpload">
+
+                        <input
+                                type="file"
+                                id="thesisCoverImage"
+                                accept="image/*"
+                                hidden
+                        >
+
+                        <div class="thesis-upload-content">
+
+                            <i class="fa-solid fa-image"></i>
+
+                            <strong>
+                                Upload Cover Image
+                            </strong>
+
+                            <small>
+                                PNG, JPG or WEBP
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                            id="thesisCoverPreview"
+                            class="thesis-cover-preview">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 2 — FILES
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step"
+                    data-thesis-content="2">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+
+                        <i class="fa-solid fa-folder-open"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Thesis Documents</h3>
+
+                        <p>
+                            Upload your thesis and supporting files.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN PDF -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Thesis / Report PDF
+                        <span>*</span>
+                    </label>
+
+                    <div
+                            class="thesis-drop-zone primary"
+                            id="thesisPdfDropZone">
+
+                        <input
+                                type="file"
+                                id="thesisPdf"
+                                accept=".pdf,application/pdf"
+                                hidden
+                        >
+
+                        <div>
+
+                            <div class="thesis-drop-icon">
+
+                                <i class="fa-solid fa-file-pdf"></i>
+
+                            </div>
+
+                            <strong>
+                                Drag & Drop Thesis PDF
+                            </strong>
+
+                            <small>
+                                or click to browse
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                            id="thesisPdfPreview"
+                            class="thesis-file-preview">
+                    </div>
+
+                </div>
+
+
+                <!-- ADDITIONAL DOCUMENT -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Additional Documents
+                    </label>
+
+                    <div
+                            class="thesis-mini-file-row"
+                            id="additionalDocumentZone">
+
+                        <i class="fa-solid fa-file-word"></i>
+
+                        <div>
+
+                            <strong>
+                                DOCX / PDF
+                            </strong>
+
+                            <small>
+                                Additional research documents
+                            </small>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                id="additionalDocumentBtn">
+
+                            Choose
+
+                        </button>
+
+                        <input
+                                type="file"
+                                id="additionalDocument"
+                                accept=".pdf,.doc,.docx"
+                                multiple
+                                hidden
+                        >
+
+                    </div>
+
+                    <div
+                            id="additionalDocumentPreview"
+                            class="thesis-file-list">
+                    </div>
+
+                </div>
+
+
+                <!-- PRESENTATION -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Presentation
+                    </label>
+
+                    <div
+                            class="thesis-mini-file-row">
+
+                        <i class="fa-solid fa-file-powerpoint"></i>
+
+                        <div>
+
+                            <strong>
+                                PPT / PPTX
+                            </strong>
+
+                            <small>
+                                Upload your thesis presentation
+                            </small>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                id="presentationBtn">
+
+                            Choose
+
+                        </button>
+
+                        <input
+                                type="file"
+                                id="thesisPresentation"
+                                accept=".ppt,.pptx"
+                                hidden
+                        >
+
+                    </div>
+
+                    <div
+                            id="presentationPreview"
+                            class="thesis-file-list">
+                    </div>
+
+                </div>
+
+
+                <!-- DATASET -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Research Dataset
+                    </label>
+
+                    <div
+                            class="thesis-mini-file-row">
+
+                        <i class="fa-solid fa-database"></i>
+
+                        <div>
+
+                            <strong>
+                                Dataset
+                            </strong>
+
+                            <small>
+                                CSV, XLSX, JSON, ZIP or other data
+                            </small>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                id="datasetBtn">
+
+                            Choose
+
+                        </button>
+
+                        <input
+                                type="file"
+                                id="thesisDataset"
+                                multiple
+                                hidden
+                        >
+
+                    </div>
+
+                    <div
+                            id="datasetPreview"
+                            class="thesis-file-list">
+                    </div>
+
+                </div>
+
+
+                <!-- SOURCE CODE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Project ZIP / Source Code
+                    </label>
+
+                    <div
+                            class="thesis-mini-file-row">
+
+                        <i class="fa-solid fa-file-zipper"></i>
+
+                        <div>
+
+                            <strong>
+                                Source Code
+                            </strong>
+
+                            <small>
+                                Upload ZIP project files
+                            </small>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                id="sourceCodeBtn">
+
+                            Choose
+
+                        </button>
+
+                        <input
+                                type="file"
+                                id="thesisSourceCode"
+                                accept=".zip"
+                                hidden
+                        >
+
+                    </div>
+
+                    <div
+                            id="sourceCodePreview"
+                            class="thesis-file-list">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 3 — RESEARCH OVERVIEW
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step"
+                    data-thesis-content="3">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+
+                        <i class="fa-solid fa-flask"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Research Overview</h3>
+
+                        <p>
+                            Explain your research clearly.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROBLEM -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Problem Statement
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisProblem"
+                            rows="5"
+                            placeholder="What problem does your research address?"
+                            required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- OBJECTIVE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Research Objective
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisObjective"
+                            rows="5"
+                            placeholder="What are the main objectives of your research?"
+                            required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- SOLUTION -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Proposed Solution / Methodology
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisSolution"
+                            rows="6"
+                            placeholder="Explain your proposed solution or approach..."
+                            required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- RESEARCH QUESTIONS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Research Questions
+                    </label>
+
+                    <div
+                            id="researchQuestionList"
+                            class="dynamic-question-list">
+                    </div>
+
+                    <button
+                            type="button"
+                            class="thesis-add-btn"
+                            id="addResearchQuestion">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Research Question
+
+                    </button>
+
+                </div>
+
+
+                <!-- FINDINGS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Key Findings / Results
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisFindings"
+                            rows="6"
+                            placeholder="What are the most important findings?"
+                            required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- CONCLUSION -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Conclusion
+                    </label>
+
+                    <textarea
+                            id="thesisConclusion"
+                            rows="4"
+                            placeholder="Summarize the conclusion..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- FUTURE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Future Scope
+                    </label>
+
+                    <textarea
+                            id="thesisFutureScope"
+                            rows="4"
+                            placeholder="What can be improved or explored in future?"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- LIMITATIONS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Limitations
+                    </label>
+
+                    <textarea
+                            id="thesisLimitations"
+                            rows="4"
+                            placeholder="What were the limitations of this research?"
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 4 — METHODOLOGY
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step"
+                    data-thesis-content="4">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+
+                        <i class="fa-solid fa-microscope"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Methodology & Technology</h3>
+
+                        <p>
+                            Tell readers how the research was performed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESEARCH METHOD -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Research Method
+                    </label>
+
+                    <div
+                            class="method-option-grid"
+                            id="researchMethodOptions">
+
+                        <button
+                                type="button"
+                                data-value="Experimental">
+
+                            <i class="fa-solid fa-vial"></i>
+                            Experimental
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Survey">
+
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                            Survey
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Case Study">
+
+                            <i class="fa-solid fa-chart-line"></i>
+                            Case Study
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Simulation">
+
+                            <i class="fa-solid fa-cubes"></i>
+                            Simulation
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Literature Review">
+
+                            <i class="fa-solid fa-book"></i>
+                            Literature Review
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Prototype Development">
+
+                            <i class="fa-solid fa-code"></i>
+                            Prototype Development
+
+                        </button>
+
+
+                        <button
+                                type="button"
+                                data-value="Other">
+
+                            <i class="fa-solid fa-ellipsis"></i>
+                            Other
+
+                        </button>
+
+                    </div>
+
+                    <input
+                            type="hidden"
+                            id="researchMethod"
+                    >
+
+                </div>
+
+
+                <!-- TECHNOLOGIES -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Technologies / Tools Used
+                    </label>
+
+                    <div class="thesis-tags-wrapper">
+
+                        <div
+                                class="selected-tags"
+                                id="selectedTechnologies">
+                        </div>
+
+                        <input
+                                type="text"
+                                id="technologyInput"
+                                placeholder="Search technologies..."
+                                autocomplete="off"
+                        >
+
+                        <div
+                                class="thesis-suggestions"
+                                id="technologySuggestions">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HARDWARE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Hardware Used
+                    </label>
+
+                    <input
+                            type="text"
+                            id="thesisHardware"
+                            placeholder="e.g. Arduino, Raspberry Pi, ESP32..."
+                    >
+
+                </div>
+
+
+                <!-- SOFTWARE -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Software Used
+                    </label>
+
+                    <input
+                            type="text"
+                            id="thesisSoftware"
+                            placeholder="e.g. MATLAB, VS Code, Android Studio..."
+                    >
+
+                </div>
+
+
+                <!-- DATASET -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Dataset Used
+                    </label>
+
+                    <input
+                            type="text"
+                            id="thesisDatasetName"
+                            placeholder="e.g. MNIST, Kaggle dataset..."
+                    >
+
+                </div>
+
+
+                <!-- ALGORITHMS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Algorithms / Models
+                    </label>
+
+                    <div class="thesis-tags-wrapper">
+
+                        <div
+                                class="selected-tags"
+                                id="selectedAlgorithms">
+                        </div>
+
+                        <input
+                                type="text"
+                                id="algorithmInput"
+                                placeholder="Search algorithms or models..."
+                                autocomplete="off"
+                        >
+
+                        <div
+                                class="thesis-suggestions"
+                                id="algorithmSuggestions">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FRAMEWORKS -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Frameworks
+                    </label>
+
+                    <div class="thesis-tags-wrapper">
+
+                        <div
+                                class="selected-tags"
+                                id="selectedFrameworks">
+                        </div>
+
+                        <input
+                                type="text"
+                                id="frameworkInput"
+                                placeholder="Search frameworks..."
+                                autocomplete="off"
+                        >
+
+                        <div
+                                class="thesis-suggestions"
+                                id="frameworkSuggestions">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 5 — RESULTS
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step"
+                    data-thesis-content="5">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Research Results</h3>
+
+                        <p>
+                            Add your research performance and findings.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULT SUMMARY -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Result Summary
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="thesisResultSummary"
+                            rows="5"
+                            placeholder="Summarize the results of your research..."
+                            required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- METRICS -->
+
+                <div class="thesis-field">
+
+                    <div class="thesis-label-row">
+
+                        <label>
+                            Result Metrics
+                        </label>
+
+                        <button
+                                type="button"
+                                class="thesis-add-btn small"
+                                id="addResultMetric">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Metric
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                            class="result-metric-grid"
+                            id="resultMetricList">
+
+                        <!-- JS adds predefined metrics -->
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXTRA FINDING -->
+
+                <div class="thesis-field">
+
+                    <label>
+                        Other Metrics / Findings
+                    </label>
+
+                    <textarea
+                            id="otherMetrics"
+                            rows="4"
+                            placeholder="Add any other important measurements or findings..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 6 — PREVIEW
+            ================================================== -->
+
+            <section
+                    class="thesis-form-step"
+                    data-thesis-content="6">
+
+                <div class="thesis-section-heading">
+
+                    <div class="thesis-section-icon">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Preview Thesis Post</h3>
+
+                        <p>
+                            Review your research before sharing.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="thesis-preview-card">
+
+                    <div class="thesis-preview-cover">
+
+                        <div id="previewCoverPlaceholder">
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                        </div>
+
+                        <img
+                                id="previewCoverImage"
+                                style="display:none;"
+                        >
+
+                    </div>
+
+
+                    <div class="thesis-preview-body">
+
+                        <span class="preview-thesis-type"
+                              id="previewThesisType">
+
+                            THESIS
+
+                        </span>
+
+
+                        <h2 id="previewThesisTitle">
+
+                            Thesis Title
+
+                        </h2>
+
+
+                        <p
+                                id="previewThesisAbstract">
+
+                            Abstract
+
+                        </p>
+
+
+                        <div
+                                class="preview-domain"
+                                id="previewDomain">
+                        </div>
+
+
+                        <div
+                                class="preview-tags"
+                                id="previewTags">
+                        </div>
+
+
+                        <div class="preview-research">
+
+                            <div>
+
+                                <span>
+                                    PROBLEM
+                                </span>
+
+                                <p
+                                        id="previewProblem">
+                                </p>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    FINDINGS
+                                </span>
+
+                                <p
+                                        id="previewFindings">
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                                class="preview-metrics"
+                                id="previewMetrics">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
+
+            <div class="thesis-modal-footer">
+
+                <button
+                        type="button"
+                        class="thesis-secondary-btn"
+                        id="thesisPreviousBtn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Previous
+
+                </button>
+
+
+                <div class="thesis-step-counter">
+
+                    <span id="currentThesisStep">
+                        1
+                    </span>
+
+                    /
+
+                    6
+
+                </div>
+
+
+                <button
+                        type="button"
+                        class="thesis-primary-btn"
+                        id="thesisNextBtn">
+
+                    Next
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <button
+                        type="submit"
+                        class="thesis-publish-btn"
+                        id="thesisPublishBtn">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Publish Thesis
+
                 </button>
 
             </div>
@@ -10546,6 +16409,3876 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 </script>
+
+<script>
+
+    /* =========================================================
+       ACHIEVEMENT POST SYSTEM
+       FRONTEND ONLY
+    ========================================================= */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const achievementOption =
+            document.querySelector(
+                ".achievement-create-option"
+            );
+
+
+        const achievementModal =
+            document.getElementById(
+                "achievementModal"
+            );
+
+
+        const achievementOverlay =
+            document.querySelector(
+                ".achievement-modal-overlay"
+            );
+
+
+        const achievementCloseBtn =
+            document.getElementById(
+                "achievementCloseBtn"
+            );
+
+
+        const achievementForm =
+            document.getElementById(
+                "achievementForm"
+            );
+
+
+        /* =====================================================
+           OPEN ACHIEVEMENT
+        ===================================================== */
+
+        if (achievementOption) {
+
+            achievementOption.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    openAchievementModal();
+
+                }
+            );
+
+        }
+
+
+        function openAchievementModal() {
+
+            achievementModal.classList.add(
+                "show"
+            );
+
+            document.body.style.overflow =
+                "hidden";
+
+            currentAchievementStep = 1;
+
+            updateAchievementStep();
+
+        }
+
+
+        /* =====================================================
+           CLOSE
+        ===================================================== */
+
+        function closeAchievementModal() {
+
+            achievementModal.classList.remove(
+                "show"
+            );
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+
+        achievementCloseBtn.addEventListener(
+            "click",
+            closeAchievementModal
+        );
+
+
+        achievementOverlay.addEventListener(
+            "click",
+            closeAchievementModal
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape" &&
+                    achievementModal.classList.contains(
+                        "show"
+                    )
+                ) {
+
+                    closeAchievementModal();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           STEPS
+        ===================================================== */
+
+        let currentAchievementStep = 1;
+
+        const totalAchievementSteps = 5;
+
+
+        const achievementNextBtn =
+            document.getElementById(
+                "achievementNextBtn"
+            );
+
+
+        const achievementPreviousBtn =
+            document.getElementById(
+                "achievementPreviousBtn"
+            );
+
+
+        const achievementPublishBtn =
+            document.getElementById(
+                "achievementPublishBtn"
+            );
+
+
+        const achievementProgressBar =
+            document.getElementById(
+                "achievementProgressBar"
+            );
+
+
+        const currentAchievementStepText =
+            document.getElementById(
+                "currentAchievementStep"
+            );
+
+
+        function updateAchievementStep() {
+
+
+            /* Form sections */
+
+            document
+                .querySelectorAll(
+                    ".achievement-form-step"
+                )
+                .forEach(function (section) {
+
+                    const number =
+                        Number(
+                            section.dataset
+                                .achievementContent
+                        );
+
+
+                    section.classList.toggle(
+                        "active",
+                        number ===
+                        currentAchievementStep
+                    );
+
+                });
+
+
+            /* Progress */
+
+            const progress =
+                (
+                    (currentAchievementStep - 1) /
+                    (totalAchievementSteps - 1)
+                ) * 100;
+
+
+            achievementProgressBar.style.width =
+                progress + "%";
+
+
+            /* Circles */
+
+            document
+                .querySelectorAll(
+                    ".achievement-step"
+                )
+                .forEach(function (step) {
+
+                    const number =
+                        Number(
+                            step.dataset
+                                .achievementStep
+                        );
+
+
+                    step.classList.toggle(
+                        "active",
+                        number ===
+                        currentAchievementStep
+                    );
+
+
+                    step.classList.toggle(
+                        "completed",
+                        number <
+                        currentAchievementStep
+                    );
+
+                });
+
+
+            /* Footer */
+
+            currentAchievementStepText.textContent =
+                currentAchievementStep;
+
+
+            achievementPreviousBtn.disabled =
+                currentAchievementStep === 1;
+
+
+            if (
+                currentAchievementStep ===
+                totalAchievementSteps
+            ) {
+
+                achievementNextBtn.style.display =
+                    "none";
+
+
+                achievementPublishBtn.style.display =
+                    "flex";
+
+
+                buildAchievementPreview();
+
+            }
+
+            else {
+
+                achievementNextBtn.style.display =
+                    "flex";
+
+
+                achievementPublishBtn.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           NEXT
+        ===================================================== */
+
+        achievementNextBtn.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    !validateAchievementStep()
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    currentAchievementStep <
+                    totalAchievementSteps
+                ) {
+
+                    currentAchievementStep++;
+
+                    updateAchievementStep();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           PREVIOUS
+        ===================================================== */
+
+        achievementPreviousBtn.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    currentAchievementStep > 1
+                ) {
+
+                    currentAchievementStep--;
+
+                    updateAchievementStep();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           VALIDATION
+        ===================================================== */
+
+        function validateAchievementStep() {
+
+
+            if (
+                currentAchievementStep === 1
+            ) {
+
+                const title =
+                    document
+                        .getElementById(
+                            "achievementTitle"
+                        )
+                        .value
+                        .trim();
+
+
+                const provider =
+                    document
+                        .getElementById(
+                            "achievementProvider"
+                        )
+                        .value
+                        .trim();
+
+
+                const description =
+                    document
+                        .getElementById(
+                            "achievementDescription"
+                        )
+                        .value
+                        .trim();
+
+
+                if (!title) {
+
+                    alert(
+                        "Please enter your achievement title."
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!provider) {
+
+                    alert(
+                        "Please enter the provider or issuer."
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!description) {
+
+                    alert(
+                        "Please describe your achievement."
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =====================================================
+           DESCRIPTION COUNTER
+        ===================================================== */
+
+        const achievementDescription =
+            document.getElementById(
+                "achievementDescription"
+            );
+
+
+        const achievementDescriptionCount =
+            document.getElementById(
+                "achievementDescriptionCount"
+            );
+
+
+        achievementDescription.addEventListener(
+            "input",
+            function () {
+
+                achievementDescriptionCount.textContent =
+                    this.value.length;
+
+            }
+        );
+
+
+        /* =====================================================
+           PROOF UPLOAD
+        ===================================================== */
+
+        const achievementProofUpload =
+            document.getElementById(
+                "achievementProofUpload"
+            );
+
+
+        const achievementProof =
+            document.getElementById(
+                "achievementProof"
+            );
+
+
+        const achievementProofPreview =
+            document.getElementById(
+                "achievementProofPreview"
+            );
+
+
+        achievementProofUpload.addEventListener(
+            "click",
+            function () {
+
+                achievementProof.click();
+
+            }
+        );
+
+
+        achievementProof.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) return;
+
+
+                if (
+                    file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            achievementProofPreview.innerHTML = `
+
+                                <img
+                                    src="${event.target.result}"
+                                    style="
+                                        width:100%;
+                                        max-height:220px;
+                                        object-fit:contain;
+                                        margin-top:10px;
+                                        border-radius:12px;
+                                    "
+                                >
+
+                            `;
+
+                        };
+
+
+                    reader.readAsDataURL(file);
+
+                }
+
+                else {
+
+                    achievementProofPreview.innerHTML = `
+
+                        <div class="file-selected">
+
+                            <i class="fa-solid fa-file-pdf"></i>
+
+                            ${file.name}
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           SKILL DATABASE
+        ===================================================== */
+
+        const skillDatabase = [
+
+            "Java",
+            "JavaScript",
+            "Jaklin",
+            "JDBC",
+            "JPA",
+            "JSP",
+            "JUnit",
+
+            "Spring",
+            "Spring Boot",
+            "Spring AI",
+            "Spring Cloud",
+            "Spring Security",
+            "Spring Data",
+            "Spring MVC",
+
+            "Python",
+            "PyTorch",
+            "Pandas",
+            "NumPy",
+            "FastAPI",
+            "Django",
+            "Flask",
+
+            "React",
+            "React Native",
+            "Angular",
+            "Vue.js",
+            "Next.js",
+            "Node.js",
+            "Express.js",
+
+            "HTML",
+            "CSS",
+            "Tailwind CSS",
+            "Bootstrap",
+
+            "SQL",
+            "MySQL",
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+
+            "Git",
+            "GitHub",
+            "GitLab",
+            "Docker",
+            "Kubernetes",
+
+            "AWS",
+            "Azure",
+            "Google Cloud",
+
+            "Machine Learning",
+            "Deep Learning",
+            "Artificial Intelligence",
+            "Generative AI",
+            "Natural Language Processing",
+            "Computer Vision",
+
+            "REST API",
+            "Microservices",
+            "System Design",
+
+            "Data Structures",
+            "Algorithms",
+
+            "Problem Solving",
+            "Communication",
+            "Leadership",
+            "Teamwork"
+
+        ];
+
+
+        let selectedSkills = [];
+
+
+        const skillInput =
+            document.getElementById(
+                "skillInput"
+            );
+
+
+        const skillSuggestions =
+            document.getElementById(
+                "skillSuggestions"
+            );
+
+
+        const selectedSkillsContainer =
+            document.getElementById(
+                "selectedSkills"
+            );
+
+
+        /* =====================================================
+           SKILL INPUT
+        ===================================================== */
+
+        skillInput.addEventListener(
+            "input",
+            function () {
+
+                const query =
+                    this.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (!query) {
+
+                    skillSuggestions.classList.remove(
+                        "show"
+                    );
+
+                    return;
+
+                }
+
+
+                const matches =
+                    skillDatabase
+                        .filter(function (skill) {
+
+                            return skill
+                                .toLowerCase()
+                                .includes(query);
+
+                        })
+                        .filter(function (skill) {
+
+                            return !selectedSkills
+                                .includes(skill);
+
+                        })
+                        .slice(0, 8);
+
+
+                renderSkillSuggestions(
+                    matches
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           SUGGESTIONS
+        ===================================================== */
+
+        function renderSkillSuggestions(
+            matches
+        ) {
+
+            if (!matches.length) {
+
+                skillSuggestions.innerHTML = `
+
+                    <div
+                        class="skill-suggestion"
+                        data-custom-skill="true">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add "${skillInput.value.trim()}"
+
+                    </div>
+
+                `;
+
+                skillSuggestions.classList.add(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            skillSuggestions.innerHTML =
+                matches.map(function (skill) {
+
+                    return `
+
+                        <div
+                            class="skill-suggestion"
+                            data-skill="${skill}">
+
+                            <i class="fa-solid fa-lightbulb"></i>
+
+                            ${skill}
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+
+            skillSuggestions.classList.add(
+                "show"
+            );
+
+        }
+
+
+        /* =====================================================
+           CHOOSE SUGGESTION
+        ===================================================== */
+
+        skillSuggestions.addEventListener(
+            "click",
+            function (event) {
+
+                const item =
+                    event.target.closest(
+                        ".skill-suggestion"
+                    );
+
+
+                if (!item) return;
+
+
+                const customSkill =
+                    item.dataset.customSkill;
+
+
+                const skill =
+                    item.dataset.skill ||
+                    (
+                        customSkill
+                            ? skillInput.value.trim()
+                            : ""
+                    );
+
+
+                if (skill) {
+
+                    addSkill(skill);
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ADD SKILL
+        ===================================================== */
+
+        function addSkill(skill) {
+
+            skill = skill.trim();
+
+
+            if (!skill) return;
+
+
+            const exists =
+                selectedSkills.some(
+                    function (item) {
+
+                        return item.toLowerCase() ===
+                            skill.toLowerCase();
+
+                    }
+                );
+
+
+            if (exists) {
+
+                skillInput.value = "";
+
+                return;
+
+            }
+
+
+            selectedSkills.push(skill);
+
+
+            renderSelectedSkills();
+
+
+            skillInput.value = "";
+
+
+            skillSuggestions.classList.remove(
+                "show"
+            );
+
+
+            skillInput.focus();
+
+        }
+
+
+        /* =====================================================
+           REMOVE SKILL
+        ===================================================== */
+
+        function removeSkill(skill) {
+
+            selectedSkills =
+                selectedSkills.filter(
+                    function (item) {
+
+                        return item !== skill;
+
+                    }
+                );
+
+
+            renderSelectedSkills();
+
+        }
+
+
+        /* =====================================================
+           RENDER SKILLS
+        ===================================================== */
+
+        function renderSelectedSkills() {
+
+            selectedSkillsContainer.innerHTML =
+                selectedSkills.map(
+                    function (skill) {
+
+                        return `
+
+                            <div class="skill-chip">
+
+                                ${escapeHTML(skill)}
+
+                                <button
+                                    type="button"
+                                    data-remove-skill="${escapeHTML(skill)}">
+
+                                    <i class="fa-solid fa-xmark"></i>
+
+                                </button>
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("");
+
+        }
+
+
+        selectedSkillsContainer.addEventListener(
+            "click",
+            function (event) {
+
+                const button =
+                    event.target.closest(
+                        "[data-remove-skill]"
+                    );
+
+
+                if (!button) return;
+
+
+                removeSkill(
+                    button.dataset.removeSkill
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           POPULAR SKILLS
+        ===================================================== */
+
+        document
+            .querySelectorAll(
+                ".popular-skill-list button"
+            )
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        addSkill(
+                            this.dataset.skill
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================================
+           CLICK OUTSIDE SUGGESTIONS
+        ===================================================== */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".skills-input-wrapper"
+                    )
+                ) {
+
+                    skillSuggestions.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ENTER TO ADD CUSTOM SKILL
+        ===================================================== */
+
+        skillInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    event.preventDefault();
+
+
+                    const value =
+                        this.value.trim();
+
+
+                    if (value) {
+
+                        addSkill(value);
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           FEEDBACK TOGGLE
+        ===================================================== */
+
+        const feedbackToggle =
+            document.getElementById(
+                "enableProviderFeedback"
+            );
+
+
+        const feedbackInput =
+            document.getElementById(
+                "providerFeedbackInput"
+            );
+
+
+        feedbackToggle.addEventListener(
+            "change",
+            function () {
+
+                feedbackInput.classList.toggle(
+                    "show",
+                    this.checked
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           QUESTIONS
+        ===================================================== */
+
+        const achievementQuestions = [
+
+            "What was the most valuable thing you learned from this achievement?",
+
+            "What was the most challenging part of completing this achievement?",
+
+            "How will you apply what you learned in your future projects or career?"
+
+        ];
+
+
+        const achievementAnswers = [
+            "",
+            "",
+            ""
+        ];
+
+
+        let achievementQuestionIndex = 0;
+
+
+        const questionText =
+            document.getElementById(
+                "achievementQuestionText"
+            );
+
+
+        const questionAnswer =
+            document.getElementById(
+                "achievementQuestionAnswer"
+            );
+
+
+        const questionCounter =
+            document.getElementById(
+                "achievementQuestionCounter"
+            );
+
+
+        const questionPrevious =
+            document.getElementById(
+                "achievementPreviousQuestion"
+            );
+
+
+        const questionNext =
+            document.getElementById(
+                "achievementNextQuestion"
+            );
+
+
+        const questionDots =
+            document.querySelectorAll(
+                "#achievementQuestionDots span"
+            );
+
+
+        function updateAchievementQuestion() {
+
+            questionText.textContent =
+                achievementQuestions[
+                    achievementQuestionIndex
+                ];
+
+
+            questionAnswer.value =
+                achievementAnswers[
+                    achievementQuestionIndex
+                ];
+
+
+            questionCounter.textContent =
+                `${achievementQuestionIndex + 1} / ${achievementQuestions.length}`;
+
+
+            questionPrevious.disabled =
+                achievementQuestionIndex === 0;
+
+
+            questionNext.disabled =
+                achievementQuestionIndex ===
+                achievementQuestions.length - 1;
+
+
+            questionDots.forEach(
+                function (dot, index) {
+
+                    dot.classList.toggle(
+                        "active",
+                        index ===
+                        achievementQuestionIndex
+                    );
+
+                }
+            );
+
+        }
+
+
+        questionAnswer.addEventListener(
+            "input",
+            function () {
+
+                achievementAnswers[
+                    achievementQuestionIndex
+                ] = this.value;
+
+            }
+        );
+
+
+        questionPrevious.addEventListener(
+            "click",
+            function () {
+
+                achievementAnswers[
+                    achievementQuestionIndex
+                ] = questionAnswer.value;
+
+
+                if (
+                    achievementQuestionIndex > 0
+                ) {
+
+                    achievementQuestionIndex--;
+
+                    updateAchievementQuestion();
+
+                }
+
+            }
+        );
+
+
+        questionNext.addEventListener(
+            "click",
+            function () {
+
+                achievementAnswers[
+                    achievementQuestionIndex
+                ] = questionAnswer.value;
+
+
+                if (
+                    achievementQuestionIndex <
+                    achievementQuestions.length - 1
+                ) {
+
+                    achievementQuestionIndex++;
+
+                    updateAchievementQuestion();
+
+                }
+
+            }
+        );
+
+
+        updateAchievementQuestion();
+
+
+        /* =====================================================
+           PREVIEW
+        ===================================================== */
+
+        function buildAchievementPreview() {
+
+
+            const title =
+                document
+                    .getElementById(
+                        "achievementTitle"
+                    )
+                    .value ||
+                    "Your Achievement";
+
+
+            const provider =
+                document
+                    .getElementById(
+                        "achievementProvider"
+                    )
+                    .value ||
+                    "Provider";
+
+
+            const description =
+                document
+                    .getElementById(
+                        "achievementDescription"
+                    )
+                    .value ||
+                    "";
+
+
+            document.getElementById(
+                "previewAchievementTitle"
+            ).textContent = title;
+
+
+            document.getElementById(
+                "previewProvider"
+            ).textContent = provider;
+
+
+            document.getElementById(
+                "previewDescription"
+            ).textContent = description;
+
+
+            /* Skills */
+
+            const previewSkills =
+                document.getElementById(
+                    "previewSkills"
+                );
+
+
+            previewSkills.innerHTML =
+                selectedSkills.map(
+                    function (skill) {
+
+                        return `
+
+                            <span class="preview-skill">
+
+                                ${escapeHTML(skill)}
+
+                            </span>
+
+                        `;
+
+                    }
+                ).join("");
+
+
+            /* Scores */
+
+            const scores = [];
+
+
+            addPreviewScore(
+                scores,
+                "Accuracy",
+                document.getElementById(
+                    "accuracy"
+                ).value,
+                "%"
+            );
+
+
+            const marks =
+                document.getElementById(
+                    "marks"
+                ).value;
+
+
+            const totalMarks =
+                document.getElementById(
+                    "totalMarks"
+                ).value;
+
+
+            if (marks) {
+
+                addPreviewScore(
+                    scores,
+                    "Marks",
+                    `${marks}${totalMarks ? "/" + totalMarks : ""}`,
+                    ""
+                );
+
+            }
+
+
+            addPreviewScore(
+                scores,
+                "Percentage",
+                document.getElementById(
+                    "percentage"
+                ).value,
+                "%"
+            );
+
+
+            addPreviewScore(
+                scores,
+                "Rank",
+                document.getElementById(
+                    "rank"
+                ).value,
+                ""
+            );
+
+
+            addPreviewScore(
+                scores,
+                "Grade",
+                document.getElementById(
+                    "grade"
+                ).value,
+                ""
+            );
+
+
+            addPreviewScore(
+                scores,
+                "Duration",
+                document.getElementById(
+                    "duration"
+                ).value,
+                ""
+            );
+
+
+            document.getElementById(
+                "previewScores"
+            ).innerHTML = scores.join("");
+
+
+            /* Provider link */
+
+            const providerLink =
+                document.getElementById(
+                    "achievementProviderLink"
+                ).value;
+
+
+            const previewLink =
+                document.getElementById(
+                    "previewProviderLink"
+                );
+
+
+            if (providerLink) {
+
+                previewLink.href =
+                    providerLink;
+
+                previewLink.style.display =
+                    "inline-flex";
+
+            }
+
+            else {
+
+                previewLink.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        function addPreviewScore(
+            scores,
+            label,
+            value,
+            suffix
+        ) {
+
+            if (!value) return;
+
+
+            scores.push(`
+
+                <div class="preview-score">
+
+                    <strong>
+                        ${escapeHTML(
+                            String(value)
+                        )}${suffix}
+                    </strong>
+
+                    <small>
+                        ${escapeHTML(label)}
+                    </small>
+
+                </div>
+
+            `);
+
+        }
+
+
+        /* =====================================================
+           SUBMIT
+        ===================================================== */
+
+        achievementForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const achievementData = {
+
+                    type: "achievement",
+
+                    title:
+                        document
+                            .getElementById(
+                                "achievementTitle"
+                            )
+                            .value,
+
+
+                    provider:
+                        document
+                            .getElementById(
+                                "achievementProvider"
+                            )
+                            .value,
+
+
+                    providerLink:
+                        document
+                            .getElementById(
+                                "achievementProviderLink"
+                            )
+                            .value,
+
+
+                    description:
+                        document
+                            .getElementById(
+                                "achievementDescription"
+                            )
+                            .value,
+
+
+                    skills:
+                        [...selectedSkills],
+
+
+                    learning:
+                        document
+                            .getElementById(
+                                "learningDescription"
+                            )
+                            .value,
+
+
+                    score: {
+
+                        accuracy:
+                            document
+                                .getElementById(
+                                    "accuracy"
+                                )
+                                .value,
+
+                        marks:
+                            document
+                                .getElementById(
+                                    "marks"
+                                )
+                                .value,
+
+                        totalMarks:
+                            document
+                                .getElementById(
+                                    "totalMarks"
+                                )
+                                .value,
+
+                        percentage:
+                            document
+                                .getElementById(
+                                    "percentage"
+                                )
+                                .value,
+
+                        rank:
+                            document
+                                .getElementById(
+                                    "rank"
+                                )
+                                .value,
+
+                        grade:
+                            document
+                                .getElementById(
+                                    "grade"
+                                )
+                                .value,
+
+                        duration:
+                            document
+                                .getElementById(
+                                    "duration"
+                                )
+                                .value
+
+                    },
+
+
+                    additionalResult:
+                        document
+                            .getElementById(
+                                "additionalResult"
+                            )
+                            .value,
+
+
+                    resultDescription:
+                        document
+                            .getElementById(
+                                "resultDescription"
+                            )
+                            .value,
+
+
+                    questions:
+                        [...achievementAnswers],
+
+
+                    providerFeedbackEnabled:
+                        feedbackToggle.checked,
+
+
+                    providerFeedback:
+                        feedbackToggle.checked
+                            ? document
+                                .getElementById(
+                                    "providerFeedback"
+                                )
+                                .value
+                            : ""
+
+                };
+
+
+                /*
+                 * FRONTEND ONLY
+                 *
+                 * No API request is made.
+                 *
+                 * Later you can send this object
+                 * together with the uploaded file
+                 * to your backend.
+                 */
+
+                console.log(
+                    "ACHIEVEMENT POST DATA:",
+                    achievementData
+                );
+
+
+                alert(
+                    "Achievement is ready to share!"
+                );
+
+
+                closeAchievementModal();
+
+            }
+        );
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function escapeHTML(value) {
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =====================================================
+           INITIALIZE
+        ===================================================== */
+
+        updateAchievementStep();
+
+    });
+
+</script>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const thesisModal =
+            document.getElementById("thesisModal");
+
+        const thesisOption =
+            document.querySelector(
+                '.create-option[data-type="thesis"]'
+            );
+
+        const thesisCloseBtn =
+            document.getElementById("thesisCloseBtn");
+
+        const thesisOverlay =
+            document.querySelector(
+                ".thesis-modal-overlay"
+            );
+
+
+        /* =====================================================
+           OPEN
+        ===================================================== */
+
+        if (thesisOption) {
+
+            thesisOption.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    openThesisModal();
+
+                }
+            );
+
+        }
+
+
+        function openThesisModal() {
+
+            thesisModal.classList.add("show");
+
+            document.body.style.overflow = "hidden";
+
+            currentThesisStep = 1;
+
+            updateThesisStep();
+
+        }
+
+
+        /* =====================================================
+           CLOSE
+        ===================================================== */
+
+        function closeThesisModal() {
+
+            thesisModal.classList.remove("show");
+
+            document.body.style.overflow = "";
+
+        }
+
+
+        thesisCloseBtn.addEventListener(
+            "click",
+            closeThesisModal
+        );
+
+
+        thesisOverlay.addEventListener(
+            "click",
+            closeThesisModal
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape" &&
+                    thesisModal.classList.contains("show")
+                ) {
+
+                    closeThesisModal();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           STEPS
+        ===================================================== */
+
+        let currentThesisStep = 1;
+
+        const totalThesisSteps = 6;
+
+
+        const nextBtn =
+            document.getElementById(
+                "thesisNextBtn"
+            );
+
+
+        const previousBtn =
+            document.getElementById(
+                "thesisPreviousBtn"
+            );
+
+
+        const publishBtn =
+            document.getElementById(
+                "thesisPublishBtn"
+            );
+
+
+        const progressBar =
+            document.getElementById(
+                "thesisProgressBar"
+            );
+
+
+        function updateThesisStep() {
+
+            document
+                .querySelectorAll(
+                    ".thesis-form-step"
+                )
+                .forEach(function (section) {
+
+                    const number =
+                        Number(
+                            section.dataset.thesisContent
+                        );
+
+                    section.classList.toggle(
+                        "active",
+                        number === currentThesisStep
+                    );
+
+                });
+
+
+            const progress =
+                ((currentThesisStep - 1) /
+                    (totalThesisSteps - 1)) * 100;
+
+
+            progressBar.style.width =
+                progress + "%";
+
+
+            document
+                .querySelectorAll(
+                    ".thesis-step"
+                )
+                .forEach(function (step) {
+
+                    const number =
+                        Number(
+                            step.dataset.thesisStep
+                        );
+
+                    step.classList.toggle(
+                        "active",
+                        number === currentThesisStep
+                    );
+
+                    step.classList.toggle(
+                        "completed",
+                        number < currentThesisStep
+                    );
+
+                });
+
+
+            document.getElementById(
+                "currentThesisStep"
+            ).textContent =
+                currentThesisStep;
+
+
+            previousBtn.disabled =
+                currentThesisStep === 1;
+
+
+            if (
+                currentThesisStep === totalThesisSteps
+            ) {
+
+                nextBtn.style.display = "none";
+
+                publishBtn.style.display = "flex";
+
+                buildThesisPreview();
+
+            } else {
+
+                nextBtn.style.display = "flex";
+
+                publishBtn.style.display = "none";
+
+            }
+
+        }
+
+
+        nextBtn.addEventListener(
+            "click",
+            function () {
+
+                if (!validateThesisStep()) {
+
+                    return;
+
+                }
+
+
+                if (
+                    currentThesisStep <
+                    totalThesisSteps
+                ) {
+
+                    currentThesisStep++;
+
+                    updateThesisStep();
+
+                }
+
+            }
+        );
+
+
+        previousBtn.addEventListener(
+            "click",
+            function () {
+
+                if (currentThesisStep > 1) {
+
+                    currentThesisStep--;
+
+                    updateThesisStep();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           VALIDATION
+        ===================================================== */
+
+        function validateThesisStep() {
+
+            if (currentThesisStep === 1) {
+
+                const title =
+                    document
+                        .getElementById("thesisTitle")
+                        .value.trim();
+
+                const abstract =
+                    document
+                        .getElementById("thesisAbstract")
+                        .value.trim();
+
+                const type =
+                    document
+                        .getElementById("thesisType")
+                        .value;
+
+                const domain =
+                    selectedDomain;
+
+
+                if (!title) {
+
+                    alert(
+                        "Please enter the thesis title."
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!abstract) {
+
+                    alert(
+                        "Please enter a short description or abstract."
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!type) {
+
+                    alert(
+                        "Please select a thesis type."
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!domain) {
+
+                    alert(
+                        "Please select a field or domain."
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            if (currentThesisStep === 2) {
+
+                if (!thesisPdfFile) {
+
+                    alert(
+                        "Please upload the main thesis PDF."
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            if (currentThesisStep === 3) {
+
+                const problem =
+                    document
+                        .getElementById("thesisProblem")
+                        .value.trim();
+
+                const objective =
+                    document
+                        .getElementById("thesisObjective")
+                        .value.trim();
+
+                const solution =
+                    document
+                        .getElementById("thesisSolution")
+                        .value.trim();
+
+                const findings =
+                    document
+                        .getElementById("thesisFindings")
+                        .value.trim();
+
+
+                if (
+                    !problem ||
+                    !objective ||
+                    !solution ||
+                    !findings
+                ) {
+
+                    alert(
+                        "Please complete all required research fields."
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            if (currentThesisStep === 5) {
+
+                const summary =
+                    document
+                        .getElementById("thesisResultSummary")
+                        .value.trim();
+
+
+                if (!summary) {
+
+                    alert(
+                        "Please add a result summary."
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =====================================================
+           ABSTRACT COUNTER
+        ===================================================== */
+
+        document
+            .getElementById("thesisAbstract")
+            .addEventListener(
+                "input",
+                function () {
+
+                    document.getElementById(
+                        "thesisAbstractCount"
+                    ).textContent =
+                        this.value.length;
+
+                }
+            );
+
+
+        /* =====================================================
+           THESIS TYPE
+        ===================================================== */
+
+        let selectedThesisType = "";
+
+
+        document
+            .querySelectorAll(
+                ".thesis-select-option"
+            )
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        document
+                            .querySelectorAll(
+                                ".thesis-select-option"
+                            )
+                            .forEach(
+                                btn =>
+                                    btn.classList.remove(
+                                        "selected"
+                                    )
+                            );
+
+
+                        this.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedThesisType =
+                            this.dataset.value;
+
+
+                        document.getElementById(
+                            "thesisType"
+                        ).value =
+                            selectedThesisType;
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================================
+           DOMAIN SUGGESTIONS
+        ===================================================== */
+
+        const domainDatabase = [
+
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Deep Learning",
+            "Generative AI",
+            "Natural Language Processing",
+            "Computer Vision",
+
+            "Computer Science",
+            "Software Engineering",
+            "Information Technology",
+            "Data Science",
+            "Cybersecurity",
+
+            "Electronics and Communication Engineering",
+            "Electronics",
+            "Embedded Systems",
+            "Internet of Things",
+            "VLSI",
+            "Robotics",
+
+            "Electrical Engineering",
+            "Mechanical Engineering",
+            "Civil Engineering",
+
+            "Healthcare",
+            "Biomedical Engineering",
+            "Finance",
+            "Education",
+            "Environmental Science",
+
+            "Cloud Computing",
+            "Distributed Systems",
+            "System Design",
+
+            "Web Development",
+            "Mobile Application Development",
+
+            "Human Computer Interaction",
+            "Blockchain",
+            "Computer Networks",
+            "Database Systems"
+
+        ];
+
+
+        let selectedDomain = "";
+
+
+        const domainInput =
+            document.getElementById(
+                "thesisDomainInput"
+            );
+
+
+        const domainSuggestions =
+            document.getElementById(
+                "domainSuggestions"
+            );
+
+
+        domainInput.addEventListener(
+            "input",
+            function () {
+
+                const query =
+                    this.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (!query) {
+
+                    domainSuggestions.classList.remove(
+                        "show"
+                    );
+
+                    return;
+
+                }
+
+
+                const matches =
+                    domainDatabase
+                        .filter(
+                            domain =>
+                                domain
+                                    .toLowerCase()
+                                    .includes(query)
+                        )
+                        .slice(0, 8);
+
+
+                domainSuggestions.innerHTML =
+                    matches.map(
+                        domain => `
+
+                            <div
+                                class="thesis-suggestion-item"
+                                data-domain="${escapeHTML(domain)}">
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                ${escapeHTML(domain)}
+
+                            </div>
+
+                        `
+                    ).join("");
+
+
+                domainSuggestions.classList.add(
+                    "show"
+                );
+
+            }
+        );
+
+
+        domainSuggestions.addEventListener(
+            "click",
+            function (event) {
+
+                const item =
+                    event.target.closest(
+                        ".thesis-suggestion-item"
+                    );
+
+
+                if (!item) return;
+
+
+                selectedDomain =
+                    item.dataset.domain;
+
+
+                domainInput.value = "";
+
+
+                document.getElementById(
+                    "selectedDomain"
+                ).innerHTML = `
+
+                    <span class="domain-chip">
+
+                        ${escapeHTML(selectedDomain)}
+
+                        <button
+                            type="button"
+                            id="removeDomain">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </span>
+
+                `;
+
+
+                domainSuggestions.classList.remove(
+                    "show"
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".thesis-search-wrapper"
+                    )
+                ) {
+
+                    domainSuggestions.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target.closest(
+                        "#removeDomain"
+                    )
+                ) {
+
+                    selectedDomain = "";
+
+                    document.getElementById(
+                        "selectedDomain"
+                    ).innerHTML = "";
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           TAG SYSTEM
+        ===================================================== */
+
+        const tagDatabase = [
+
+            "AI",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Deep Learning",
+            "IoT",
+            "Healthcare",
+            "Blockchain",
+            "Cybersecurity",
+            "Cloud Computing",
+            "Web Development",
+            "Mobile Development",
+            "Spring Boot",
+            "Java",
+            "Python",
+            "JavaScript",
+            "React",
+            "Node.js",
+            "Microservices",
+            "System Design",
+            "Data Science",
+            "Computer Vision",
+            "NLP",
+            "Embedded Systems",
+            "Robotics"
+
+        ];
+
+
+        let thesisTags = [];
+
+
+        setupTagSystem(
+            "thesisTagInput",
+            "tagSuggestions",
+            "selectedThesisTags",
+            tagDatabase,
+            thesisTags,
+            function (values) {
+
+                thesisTags = values;
+
+            }
+        );
+
+
+        /* =====================================================
+           TECHNOLOGIES
+        ===================================================== */
+
+        const technologyDatabase = [
+
+            "Java",
+            "Python",
+            "C",
+            "C++",
+            "JavaScript",
+            "TypeScript",
+
+            "Spring Boot",
+            "Spring AI",
+            "Spring Cloud",
+            "Spring Security",
+
+            "React",
+            "Angular",
+            "Vue.js",
+            "Node.js",
+
+            "TensorFlow",
+            "PyTorch",
+            "OpenCV",
+            "Scikit-learn",
+
+            "MATLAB",
+            "Arduino",
+            "Raspberry Pi",
+            "ESP32",
+
+            "Docker",
+            "Kubernetes",
+            "AWS",
+            "Azure",
+
+            "MySQL",
+            "PostgreSQL",
+            "MongoDB",
+
+            "Git",
+            "GitHub"
+
+        ];
+
+
+        let technologies = [];
+
+
+        setupTagSystem(
+            "technologyInput",
+            "technologySuggestions",
+            "selectedTechnologies",
+            technologyDatabase,
+            technologies,
+            function (values) {
+
+                technologies = values;
+
+            }
+        );
+
+
+        /* =====================================================
+           ALGORITHMS
+        ===================================================== */
+
+        const algorithmDatabase = [
+
+            "Linear Regression",
+            "Logistic Regression",
+            "Decision Tree",
+            "Random Forest",
+            "SVM",
+            "K-Means",
+            "KNN",
+            "Naive Bayes",
+
+            "CNN",
+            "RNN",
+            "LSTM",
+            "GRU",
+            "Transformer",
+            "BERT",
+
+            "Dijkstra",
+            "BFS",
+            "DFS",
+            "Binary Search",
+            "Merge Sort",
+            "Quick Sort"
+
+        ];
+
+
+        let algorithms = [];
+
+
+        setupTagSystem(
+            "algorithmInput",
+            "algorithmSuggestions",
+            "selectedAlgorithms",
+            algorithmDatabase,
+            algorithms,
+            function (values) {
+
+                algorithms = values;
+
+            }
+        );
+
+
+        /* =====================================================
+           FRAMEWORKS
+        ===================================================== */
+
+        const frameworkDatabase = [
+
+            "Spring Boot",
+            "Spring AI",
+            "Spring Cloud",
+
+            "React",
+            "Angular",
+            "Vue.js",
+
+            "Django",
+            "Flask",
+            "FastAPI",
+
+            "TensorFlow",
+            "PyTorch",
+
+            "Flutter",
+            "React Native",
+
+            "Express.js"
+
+        ];
+
+
+        let frameworks = [];
+
+
+        setupTagSystem(
+            "frameworkInput",
+            "frameworkSuggestions",
+            "selectedFrameworks",
+            frameworkDatabase,
+            frameworks,
+            function (values) {
+
+                frameworks = values;
+
+            }
+        );
+
+
+        /* =====================================================
+           GENERIC TAG SYSTEM
+        ===================================================== */
+
+        function setupTagSystem(
+            inputId,
+            suggestionsId,
+            containerId,
+            database,
+            values,
+            updateValues
+        ) {
+
+            const input =
+                document.getElementById(inputId);
+
+            const suggestions =
+                document.getElementById(
+                    suggestionsId
+                );
+
+            const container =
+                document.getElementById(
+                    containerId
+                );
+
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    const query =
+                        this.value
+                            .trim()
+                            .toLowerCase();
+
+
+                    if (!query) {
+
+                        suggestions.classList.remove(
+                            "show"
+                        );
+
+                        return;
+
+                    }
+
+
+                    const matches =
+                        database
+                            .filter(
+                                item =>
+                                    item
+                                        .toLowerCase()
+                                        .includes(query)
+                            )
+                            .filter(
+                                item =>
+                                    !values.includes(item)
+                            )
+                            .slice(0, 8);
+
+
+                    suggestions.innerHTML =
+                        matches.map(
+                            item => `
+
+                                <div
+                                    class="thesis-suggestion-item"
+                                    data-value="${escapeHTML(item)}">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                    ${escapeHTML(item)}
+
+                                </div>
+
+                            `
+                        ).join("");
+
+
+                    if (matches.length) {
+
+                        suggestions.classList.add(
+                            "show"
+                        );
+
+                    } else {
+
+                        suggestions.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            suggestions.addEventListener(
+                "click",
+                function (event) {
+
+                    const item =
+                        event.target.closest(
+                            ".thesis-suggestion-item"
+                        );
+
+
+                    if (!item) return;
+
+
+                    const value =
+                        item.dataset.value;
+
+
+                    if (
+                        !values.includes(value)
+                    ) {
+
+                        values.push(value);
+
+                    }
+
+
+                    renderTags(
+                        container,
+                        values,
+                        function (removeValue) {
+
+                            const index =
+                                values.indexOf(
+                                    removeValue
+                                );
+
+                            if (index !== -1) {
+
+                                values.splice(
+                                    index,
+                                    1
+                                );
+
+                            }
+
+                            renderTags(
+                                container,
+                                values
+                            );
+
+                            updateValues(values);
+
+                        }
+                    );
+
+
+                    updateValues(values);
+
+
+                    input.value = "";
+
+
+                    suggestions.classList.remove(
+                        "show"
+                    );
+
+
+                    input.focus();
+
+                }
+            );
+
+
+            input.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+
+                        const value =
+                            input.value.trim();
+
+
+                        if (
+                            value &&
+                            !values.includes(value)
+                        ) {
+
+                            values.push(value);
+
+                            renderTags(
+                                container,
+                                values,
+                                function (removeValue) {
+
+                                    const index =
+                                        values.indexOf(
+                                            removeValue
+                                        );
+
+                                    if (index !== -1) {
+
+                                        values.splice(
+                                            index,
+                                            1
+                                        );
+
+                                    }
+
+                                    renderTags(
+                                        container,
+                                        values
+                                    );
+
+                                    updateValues(
+                                        values
+                                    );
+
+                                }
+                            );
+
+
+                            updateValues(values);
+
+                            input.value = "";
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        function renderTags(
+            container,
+            values,
+            removeCallback
+        ) {
+
+            container.innerHTML =
+                values.map(
+                    value => `
+
+                        <span class="thesis-tag-chip">
+
+                            ${escapeHTML(value)}
+
+                            <button
+                                type="button"
+                                data-remove="${escapeHTML(value)}">
+
+                                <i class="fa-solid fa-xmark"></i>
+
+                            </button>
+
+                        </span>
+
+                    `
+                ).join("");
+
+
+            container
+                .querySelectorAll(
+                    "[data-remove]"
+                )
+                .forEach(function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            removeCallback(
+                                this.dataset.remove
+                            );
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* =====================================================
+           COVER IMAGE
+        ===================================================== */
+
+        let thesisCoverFile = null;
+
+
+        const coverUpload =
+            document.getElementById(
+                "thesisCoverUpload"
+            );
+
+
+        const coverInput =
+            document.getElementById(
+                "thesisCoverImage"
+            );
+
+
+        coverUpload.addEventListener(
+            "click",
+            function () {
+
+                coverInput.click();
+
+            }
+        );
+
+
+        coverInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) return;
+
+
+                thesisCoverFile = file;
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function (event) {
+
+                        document.getElementById(
+                            "thesisCoverPreview"
+                        ).innerHTML = `
+
+                            <img
+                                src="${event.target.result}"
+                                alt="Thesis cover"
+                            >
+
+                        `;
+
+                    };
+
+
+                reader.readAsDataURL(file);
+
+            }
+        );
+
+
+        /* =====================================================
+           MAIN PDF
+        ===================================================== */
+
+        let thesisPdfFile = null;
+
+
+        const pdfDropZone =
+            document.getElementById(
+                "thesisPdfDropZone"
+            );
+
+
+        const pdfInput =
+            document.getElementById(
+                "thesisPdf"
+            );
+
+
+        pdfDropZone.addEventListener(
+            "click",
+            function () {
+
+                pdfInput.click();
+
+            }
+        );
+
+
+        pdfInput.addEventListener(
+            "change",
+            function () {
+
+                if (this.files[0]) {
+
+                    handlePdf(
+                        this.files[0]
+                    );
+
+                }
+
+            }
+        );
+
+
+        pdfDropZone.addEventListener(
+            "dragover",
+            function (event) {
+
+                event.preventDefault();
+
+                this.classList.add(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        pdfDropZone.addEventListener(
+            "dragleave",
+            function () {
+
+                this.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        pdfDropZone.addEventListener(
+            "drop",
+            function (event) {
+
+                event.preventDefault();
+
+                this.classList.remove(
+                    "dragging"
+                );
+
+
+                const file =
+                    event.dataTransfer.files[0];
+
+
+                if (
+                    file &&
+                    file.type === "application/pdf"
+                ) {
+
+                    handlePdf(file);
+
+                } else {
+
+                    alert(
+                        "Please upload a PDF file."
+                    );
+
+                }
+
+            }
+        );
+
+
+        function handlePdf(file) {
+
+            thesisPdfFile = file;
+
+
+            document.getElementById(
+                "thesisPdfPreview"
+            ).innerHTML = `
+
+                <div class="thesis-file-card">
+
+                    <i class="fa-solid fa-file-pdf"></i>
+
+                    <strong>
+                        ${escapeHTML(file.name)}
+                    </strong>
+
+                    <small>
+                        ${formatFileSize(file.size)}
+                    </small>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =====================================================
+           GENERIC FILE PICKERS
+        ===================================================== */
+
+        setupFilePicker(
+            "additionalDocumentBtn",
+            "additionalDocument",
+            "additionalDocumentPreview"
+        );
+
+
+        setupFilePicker(
+            "presentationBtn",
+            "thesisPresentation",
+            "presentationPreview"
+        );
+
+
+        setupFilePicker(
+            "datasetBtn",
+            "thesisDataset",
+            "datasetPreview"
+        );
+
+
+        setupFilePicker(
+            "sourceCodeBtn",
+            "thesisSourceCode",
+            "sourceCodePreview"
+        );
+
+
+        function setupFilePicker(
+            buttonId,
+            inputId,
+            previewId
+        ) {
+
+            const button =
+                document.getElementById(buttonId);
+
+            const input =
+                document.getElementById(inputId);
+
+            const preview =
+                document.getElementById(previewId);
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    input.click();
+
+                }
+            );
+
+
+            input.addEventListener(
+                "change",
+                function () {
+
+                    preview.innerHTML =
+                        "";
+
+
+                    Array.from(
+                        this.files
+                    ).forEach(
+                        function (file) {
+
+                            preview.innerHTML += `
+
+                                <div class="thesis-file-card">
+
+                                    <i class="fa-solid fa-file"></i>
+
+                                    <strong>
+                                        ${escapeHTML(file.name)}
+                                    </strong>
+
+                                    <small>
+                                        ${formatFileSize(file.size)}
+                                    </small>
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        function formatFileSize(bytes) {
+
+            if (!bytes) return "0 KB";
+
+
+            const units = [
+                "B",
+                "KB",
+                "MB",
+                "GB"
+            ];
+
+
+            const index =
+                Math.floor(
+                    Math.log(bytes) /
+                    Math.log(1024)
+                );
+
+
+            return (
+                bytes /
+                Math.pow(1024, index)
+            ).toFixed(1)
+            + " "
+            + units[index];
+
+        }
+
+
+        /* =====================================================
+           RESEARCH QUESTIONS
+        ===================================================== */
+
+        const researchQuestionList =
+            document.getElementById(
+                "researchQuestionList"
+            );
+
+
+        document.getElementById(
+            "addResearchQuestion"
+        ).addEventListener(
+            "click",
+            function () {
+
+                addResearchQuestion();
+
+            }
+        );
+
+
+        function addResearchQuestion() {
+
+            const wrapper =
+                document.createElement("div");
+
+
+            wrapper.className =
+                "dynamic-question";
+
+
+            wrapper.innerHTML = `
+
+                <input
+                    type="text"
+                    placeholder="Enter your research question..."
+                >
+
+                <button
+                    type="button"
+                    title="Remove">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            `;
+
+
+            wrapper
+                .querySelector("button")
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        wrapper.remove();
+
+                    }
+                );
+
+
+            researchQuestionList.appendChild(
+                wrapper
+            );
+
+        }
+
+
+        /* =====================================================
+           RESEARCH METHOD
+        ===================================================== */
+
+        let selectedResearchMethod = "";
+
+
+        document
+            .querySelectorAll(
+                "#researchMethodOptions button"
+            )
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        document
+                            .querySelectorAll(
+                                "#researchMethodOptions button"
+                            )
+                            .forEach(
+                                btn =>
+                                    btn.classList.remove(
+                                        "selected"
+                                    )
+                            );
+
+
+                        this.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedResearchMethod =
+                            this.dataset.value;
+
+
+                        document.getElementById(
+                            "researchMethod"
+                        ).value =
+                            selectedResearchMethod;
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================================
+           RESULT METRICS
+        ===================================================== */
+
+        const predefinedMetrics = [
+
+            "Accuracy",
+            "Precision",
+            "Recall",
+            "F1 Score",
+            "Performance",
+            "Error Rate"
+
+        ];
+
+
+        const resultMetricList =
+            document.getElementById(
+                "resultMetricList"
+            );
+
+
+        let metricCounter = 0;
+
+
+        predefinedMetrics.forEach(
+            metric =>
+                addResultMetric(metric)
+        );
+
+
+        document.getElementById(
+            "addResultMetric"
+        ).addEventListener(
+            "click",
+            function () {
+
+                addResultMetric("");
+
+            }
+        );
+
+
+        function addResultMetric(
+            name
+        ) {
+
+            const id =
+                "metric-" +
+                metricCounter++;
+
+
+            const metric =
+                document.createElement(
+                    "div"
+                );
+
+
+            metric.className =
+                "result-metric";
+
+
+            metric.dataset.metricId =
+                id;
+
+
+            metric.innerHTML = `
+
+                <button
+                    type="button"
+                    class="remove-metric">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+
+                <label>
+                    ${name || "Custom Metric"}
+                </label>
+
+
+                <input
+                    type="text"
+                    class="metric-value"
+                    data-metric-name="${escapeHTML(name)}"
+                    placeholder="Value"
+                >
+
+            `;
+
+
+            metric
+                .querySelector(
+                    ".remove-metric"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        metric.remove();
+
+                    }
+                );
+
+
+            resultMetricList.appendChild(
+                metric
+            );
+
+        }
+
+
+        /* =====================================================
+           PREVIEW
+        ===================================================== */
+
+        function buildThesisPreview() {
+
+            document.getElementById(
+                "previewThesisTitle"
+            ).textContent =
+                document.getElementById(
+                    "thesisTitle"
+                ).value ||
+                "Thesis Title";
+
+
+            document.getElementById(
+                "previewThesisAbstract"
+            ).textContent =
+                document.getElementById(
+                    "thesisAbstract"
+                ).value ||
+                "Abstract";
+
+
+            document.getElementById(
+                "previewThesisType"
+            ).textContent =
+                selectedThesisType ||
+                "THESIS";
+
+
+            document.getElementById(
+                "previewDomain"
+            ).textContent =
+                selectedDomain ||
+                "";
+
+
+            document.getElementById(
+                "previewProblem"
+            ).textContent =
+                document.getElementById(
+                    "thesisProblem"
+                ).value ||
+                "";
+
+
+            document.getElementById(
+                "previewFindings"
+            ).textContent =
+                document.getElementById(
+                    "thesisFindings"
+                ).value ||
+                "";
+
+
+            /* Tags */
+
+            document.getElementById(
+                "previewTags"
+            ).innerHTML =
+                thesisTags.map(
+                    tag => `
+
+                        <span class="preview-tag">
+
+                            ${escapeHTML(tag)}
+
+                        </span>
+
+                    `
+                ).join("");
+
+
+            /* Metrics */
+
+            const previewMetrics =
+                document.getElementById(
+                    "previewMetrics"
+                );
+
+
+            previewMetrics.innerHTML = "";
+
+
+            document
+                .querySelectorAll(
+                    "#resultMetricList .result-metric"
+                )
+                .forEach(function (metric) {
+
+                    const label =
+                        metric.querySelector(
+                            "label"
+                        ).textContent;
+
+
+                    const value =
+                        metric.querySelector(
+                            ".metric-value"
+                        ).value;
+
+
+                    if (!value) return;
+
+
+                    previewMetrics.innerHTML += `
+
+                        <div class="preview-metric">
+
+                            <strong>
+                                ${escapeHTML(value)}
+                            </strong>
+
+                            <small>
+                                ${escapeHTML(label)}
+                            </small>
+
+                        </div>
+
+                    `;
+
+                });
+
+
+            /* Cover */
+
+            if (thesisCoverFile) {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function (event) {
+
+                        const image =
+                            document.getElementById(
+                                "previewCoverImage"
+                            );
+
+
+                        const placeholder =
+                            document.getElementById(
+                                "previewCoverPlaceholder"
+                            );
+
+
+                        image.src =
+                            event.target.result;
+
+
+                        image.style.display =
+                            "block";
+
+
+                        placeholder.style.display =
+                            "none";
+
+                    };
+
+
+                reader.readAsDataURL(
+                    thesisCoverFile
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SUBMIT
+        ===================================================== */
+
+        document.getElementById(
+            "thesisForm"
+        ).addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const researchQuestions =
+                    Array.from(
+                        document.querySelectorAll(
+                            "#researchQuestionList input"
+                        )
+                    )
+                    .map(
+                        input =>
+                            input.value.trim()
+                    )
+                    .filter(Boolean);
+
+
+                const metrics = [];
+
+
+                document
+                    .querySelectorAll(
+                        "#resultMetricList .result-metric"
+                    )
+                    .forEach(function (metric) {
+
+                        const name =
+                            metric.querySelector(
+                                "label"
+                            ).textContent;
+
+
+                        const value =
+                            metric.querySelector(
+                                ".metric-value"
+                            ).value;
+
+
+                        if (value) {
+
+                            metrics.push({
+
+                                name: name,
+
+                                value: value
+
+                            });
+
+                        }
+
+                    });
+
+
+                const thesisPost = {
+
+                    type: "thesis",
+
+                    basicInformation: {
+
+                        title:
+                            document
+                                .getElementById(
+                                    "thesisTitle"
+                                )
+                                .value,
+
+                        abstract:
+                            document
+                                .getElementById(
+                                    "thesisAbstract"
+                                )
+                                .value,
+
+                        thesisType:
+                            selectedThesisType,
+
+                        domain:
+                            selectedDomain,
+
+                        tags:
+                            [...thesisTags]
+
+                    },
+
+
+                    research: {
+
+                        problemStatement:
+                            document
+                                .getElementById(
+                                    "thesisProblem"
+                                )
+                                .value,
+
+                        objective:
+                            document
+                                .getElementById(
+                                    "thesisObjective"
+                                )
+                                .value,
+
+                        proposedSolution:
+                            document
+                                .getElementById(
+                                    "thesisSolution"
+                                )
+                                .value,
+
+                        researchQuestions:
+                            researchQuestions,
+
+                        keyFindings:
+                            document
+                                .getElementById(
+                                    "thesisFindings"
+                                )
+                                .value,
+
+                        conclusion:
+                            document
+                                .getElementById(
+                                    "thesisConclusion"
+                                )
+                                .value,
+
+                        futureScope:
+                            document
+                                .getElementById(
+                                    "thesisFutureScope"
+                                )
+                                .value,
+
+                        limitations:
+                            document
+                                .getElementById(
+                                    "thesisLimitations"
+                                )
+                                .value
+
+                    },
+
+
+                    methodology: {
+
+                        researchMethod:
+                            selectedResearchMethod,
+
+                        technologies:
+                            [...technologies],
+
+                        hardware:
+                            document
+                                .getElementById(
+                                    "thesisHardware"
+                                )
+                                .value,
+
+                        software:
+                            document
+                                .getElementById(
+                                    "thesisSoftware"
+                                )
+                                .value,
+
+                        dataset:
+                            document
+                                .getElementById(
+                                    "thesisDatasetName"
+                                )
+                                .value,
+
+                        algorithms:
+                            [...algorithms],
+
+                        frameworks:
+                            [...frameworks]
+
+                    },
+
+
+                    results: {
+
+                        summary:
+                            document
+                                .getElementById(
+                                    "thesisResultSummary"
+                                )
+                                .value,
+
+                        metrics:
+                            metrics,
+
+                        other:
+                            document
+                                .getElementById(
+                                    "otherMetrics"
+                                )
+                                .value
+
+                    },
+
+
+                    files: {
+
+                        thesisPdf:
+                            thesisPdfFile
+                                ? thesisPdfFile.name
+                                : null,
+
+                        coverImage:
+                            thesisCoverFile
+                                ? thesisCoverFile.name
+                                : null
+
+                    }
+
+                };
+
+
+                /*
+                 * FRONTEND ONLY
+                 *
+                 * No backend/API request.
+                 */
+
+                console.log(
+                    "THESIS POST:",
+                    thesisPost
+                );
+
+
+                alert(
+                    "Thesis post is ready to publish!"
+                );
+
+
+                closeThesisModal();
+
+            }
+        );
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function escapeHTML(value) {
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =====================================================
+           INITIALIZE
+        ===================================================== */
+
+        updateThesisStep();
+
+    });
+
+</script>
+
+
 
 
 
