@@ -61,12 +61,30 @@
             z-index: 100;
         }
 
-        .logo {
-            font-weight: 800; font-size: 1.6rem; margin-bottom: 2.5rem;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            display: flex; align-items: center; gap: 12px;
-        }
+        /* Exact Landing Page Logo Style */
+.logo {
+    font-weight: 800;
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff; /* Solid white text */
+    letter-spacing: 1.5px;
+}
+
+.logo-box {
+    width: 11px;
+    height: 11px;
+    border: 2.5px solid;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.red { border-color: #E30613; }
+.green { border-color: #4CAF50; }
+.blue { border-color: #2196F3; }
+.yellow { border-color: #FFC107; }
 
         .nav-links { list-style: none; flex: 1; }
         .nav-item {
@@ -1891,7 +1909,13 @@
 <div class="app-container">
     <!-- Sidebar -->
     <nav class="sidebar">
-        <div class="logo"><i class="fa-solid fa-bolt"></i> ConnectPro</div>
+        <div class="logo">
+            <div class="logo-box red"></div>
+            <div class="logo-box green"></div>
+            <div class="logo-box blue"></div>
+            <div class="logo-box yellow"></div>
+            <span>FLEXUS</span>
+        </div>
         <ul class="nav-links">
             <li class="nav-item active"><i class="fa-solid fa-house"></i> <span>Feed</span></li>
             <li class="nav-item"><i class="fa-solid fa-compass"></i> <span>Explore</span></li>
