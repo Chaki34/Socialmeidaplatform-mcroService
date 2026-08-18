@@ -1901,13 +1901,1259 @@
    }
     </style>
 
+    <style>
+        /* =========================================================
+   STORY UPLOAD MODAL
+   MATCHES CURRENT LIGHT FEED / POST POPUP THEME
+========================================================= */
+
+.story-upload-modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 99999;
+}
+
+.story-upload-modal.show {
+    display: flex;
+}
 
 
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+.story-upload-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(15, 23, 42, 0.42);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    animation: storyBackdropIn 0.22s ease;
+}
 
 
+/* =========================================================
+   MAIN MODAL
+========================================================= */
+
+.story-upload-dialog {
+    position: relative;
+
+    width: min(920px, calc(100vw - 30px));
+
+    max-height: calc(100vh - 40px);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.18),
+        0 0 30px rgba(227, 6, 19, 0.05);
+
+    overflow: hidden;
+
+    animation: storyModalIn 0.25s ease;
+}
 
 
+/* =========================================================
+   HEADER
+========================================================= */
 
+.story-upload-header {
+    min-height: 64px;
+
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border-color);
+
+    background: #ffffff;
+}
+
+
+.story-upload-title {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.story-title-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(227, 6, 19, 0.07);
+
+    color: var(--primary);
+
+    font-size: 17px;
+}
+
+
+.story-upload-title h2 {
+    margin: 0;
+
+    color: var(--text-dark);
+
+    font-size: 18px;
+    font-weight: 650;
+}
+
+
+.story-upload-title p {
+    margin: 3px 0 0;
+
+    color: var(--text-dim);
+
+    font-size: 11px;
+}
+
+
+.story-close-btn {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #8a94a3;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.2s ease;
+}
+
+
+.story-close-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+
+    color: var(--text-dark);
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.story-upload-body {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(280px, 0.75fr);
+
+    gap: 22px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   SECTION LABEL
+========================================================= */
+
+.story-section-label {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+
+    color: var(--text-dark);
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
+
+.story-section-label i {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   DROP ZONE
+========================================================= */
+
+.story-drop-zone {
+    min-height: 215px;
+
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #fafbfc;
+
+    border:
+        1.5px dashed
+        #d7dce3;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.story-drop-zone:hover,
+.story-drop-zone.drag-over {
+    background: rgba(227, 6, 19, 0.025);
+
+    border-color: rgba(227, 6, 19, 0.55);
+
+    transform: translateY(-1px);
+}
+
+
+.story-drop-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background: rgba(227, 6, 19, 0.07);
+
+    color: var(--primary);
+
+    font-size: 22px;
+}
+
+
+.story-drop-zone h3 {
+    margin: 0 0 6px;
+
+    color: var(--text-dark);
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+
+.story-drop-zone p {
+    margin: 0;
+
+    color: var(--text-dim);
+
+    font-size: 11px;
+}
+
+
+.story-drop-zone p button {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: var(--primary);
+
+    cursor: pointer;
+
+    font: inherit;
+    font-weight: 650;
+}
+
+
+.story-drop-zone p button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   SUPPORTED TYPES
+========================================================= */
+
+.story-supported {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 14px;
+}
+
+
+.story-supported span {
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #f1f3f6;
+
+    color: #737d8c;
+
+    font-size: 9px;
+}
+
+
+.story-supported i {
+    margin-right: 3px;
+
+    color: #8a94a3;
+}
+
+
+/* =========================================================
+   STORY LIMIT
+========================================================= */
+
+.story-limit {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 11px;
+
+    color: #8a94a3;
+
+    font-size: 9px;
+}
+
+
+.story-limit i {
+    color: #d99a00;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+========================================================= */
+
+.story-selected-file {
+    margin-top: 10px;
+
+    padding: 10px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    background: #fafbfc;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 10px;
+}
+
+
+.story-file-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(227, 6, 19, 0.07);
+
+    color: var(--primary);
+
+    font-size: 15px;
+}
+
+
+.story-file-info {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.story-file-info strong {
+    overflow: hidden;
+
+    color: var(--text-dark);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+.story-file-info span {
+    color: var(--text-dim);
+
+    font-size: 9px;
+}
+
+
+.story-remove-file {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(227, 6, 19, 0.06);
+
+    color: var(--primary);
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.story-remove-file:hover {
+    background: rgba(227, 6, 19, 0.12);
+}
+
+
+/* =========================================================
+   VIDEO INFORMATION
+========================================================= */
+
+.story-video-info {
+    margin-top: 10px;
+
+    padding: 11px;
+
+    background: #fafbfc;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 10px;
+}
+
+
+.story-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 4px 0;
+
+    color: var(--text-dim);
+
+    font-size: 10px;
+}
+
+
+.story-info-row span {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.story-info-row i {
+    color: var(--primary);
+}
+
+
+.story-info-row strong {
+    color: var(--text-dark);
+}
+
+
+.story-duration-green {
+    color: #16a34a !important;
+}
+
+
+.story-trim-notice {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 6px;
+
+    margin-top: 7px;
+    padding-top: 8px;
+
+    border-top:
+        1px solid
+        var(--border-color);
+
+    color: var(--text-dim);
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+
+.story-trim-notice i {
+    margin-top: 1px;
+
+    color: #d99a00;
+}
+
+
+/* =========================================================
+   CAPTION
+========================================================= */
+
+.story-caption-section {
+    position: relative;
+
+    margin-top: 14px;
+}
+
+
+.story-caption-section label {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 7px;
+
+    color: var(--text-dark);
+
+    font-size: 11px;
+    font-weight: 650;
+}
+
+
+.story-caption-section label i {
+    color: var(--primary);
+}
+
+
+.story-caption-section label span {
+    margin-left: auto;
+
+    color: #9aa3af;
+
+    font-size: 9px;
+
+    font-weight: 400;
+}
+
+
+#storyCaption {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    min-height: 72px;
+
+    padding: 10px 11px;
+
+    resize: vertical;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    transition: 0.2s ease;
+}
+
+
+#storyCaption::placeholder {
+    color: #a3aab5;
+}
+
+
+#storyCaption:focus {
+    border-color: rgba(227, 6, 19, 0.45);
+
+    box-shadow:
+        0 0 0 3px rgba(227, 6, 19, 0.05);
+}
+
+
+.story-character-count {
+    position: absolute;
+
+    right: 9px;
+    bottom: 7px;
+
+    color: #9aa3af;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   PREVIEW PANEL
+========================================================= */
+
+.story-preview-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.story-preview-wrapper {
+    min-height: 390px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: #f7f8fa;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 14px;
+}
+
+
+/* =========================================================
+   PHONE / STORY FRAME
+========================================================= */
+
+.story-preview-device {
+    position: relative;
+
+    width: 185px;
+
+    aspect-ratio: 9 / 16;
+
+    overflow: hidden;
+
+    background: #eef0f3;
+
+    border:
+        4px solid
+        #ffffff;
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(0, 0, 0, 0.08);
+
+    isolation: isolate;
+}
+
+
+.story-preview-device::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    border-radius: 15px;
+
+    box-shadow:
+        inset 0 0 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   EMPTY PREVIEW
+========================================================= */
+
+.story-preview-empty {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    text-align: center;
+
+    color: #8a94a3;
+}
+
+
+.story-empty-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: #a0a8b3;
+
+    font-size: 17px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+
+.story-preview-empty strong {
+    color: #667085;
+
+    font-size: 11px;
+}
+
+
+.story-preview-empty span {
+    margin-top: 4px;
+
+    color: #9aa3af;
+
+    font-size: 8px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   MEDIA PREVIEW
+========================================================= */
+
+.story-media-preview {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    background: #111827;
+}
+
+
+/* =========================================================
+   STORY PREVIEW OVERLAY
+========================================================= */
+
+.story-preview-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 4;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 10px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.48),
+            transparent 24%,
+            transparent 68%,
+            rgba(0, 0, 0, 0.45)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PREVIEW USER
+========================================================= */
+
+.story-preview-top {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    color: #ffffff;
+}
+
+
+.story-preview-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.story-preview-avatar {
+    width: 25px;
+    height: 25px;
+
+    padding: 2px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e30613,
+            #ff4d67,
+            #ff9f43
+        );
+}
+
+
+.story-preview-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 2px solid #ffffff;
+}
+
+
+.story-preview-user div:last-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+
+.story-preview-user strong {
+    color: #ffffff;
+
+    font-size: 8px;
+}
+
+
+.story-preview-user span {
+    color: rgba(255,255,255,.72);
+
+    font-size: 6px;
+}
+
+
+.story-preview-top > i {
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CAPTION PREVIEW
+========================================================= */
+
+.story-preview-caption {
+    margin-top: auto;
+
+    margin-bottom: 15px;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    line-height: 1.35;
+
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.7);
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.story-preview-bottom {
+    width: 100%;
+}
+
+
+.story-progress {
+    width: 100%;
+
+    height: 2px;
+
+    overflow: hidden;
+
+    border-radius: 99px;
+
+    background:
+        rgba(255,255,255,.4);
+}
+
+
+.story-progress-fill {
+    width: 0;
+
+    height: 100%;
+
+    background: #ffffff;
+
+    border-radius: inherit;
+}
+
+
+/* =========================================================
+   PREVIEW HINT
+========================================================= */
+
+.story-preview-hint {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 8px;
+
+    color: var(--text-dim);
+
+    font-size: 8px;
+}
+
+
+.story-preview-hint i {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.story-upload-footer {
+    min-height: 62px;
+
+    padding: 11px 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    background: #ffffff;
+
+    border-top:
+        1px solid
+        var(--border-color);
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.story-cancel-btn {
+    height: 36px;
+
+    padding: 0 16px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: var(--text-dim);
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+
+.story-cancel-btn:hover {
+    background: #f5f6f8;
+
+    color: var(--text-dark);
+}
+
+
+/* =========================================================
+   SHARE BUTTON
+========================================================= */
+
+.story-share-btn {
+    height: 36px;
+
+    padding: 0 17px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+    box-shadow:
+        0 6px 18px rgba(227, 6, 19, 0.16);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.story-share-btn:hover:not(:disabled) {
+    background: #c90511;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 22px rgba(227, 6, 19, 0.22);
+}
+
+
+.story-share-btn:disabled {
+    opacity: 0.4;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes storyBackdropIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes storyModalIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .story-upload-modal {
+        padding: 10px;
+    }
+
+
+    .story-upload-dialog {
+        width: 100%;
+
+        max-height:
+            calc(100vh - 20px);
+
+        border-radius: 15px;
+    }
+
+
+    .story-upload-body {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        padding: 15px;
+    }
+
+
+    .story-preview-panel {
+        order: -1;
+    }
+
+
+    .story-preview-wrapper {
+        min-height: 330px;
+    }
+
+
+    .story-preview-device {
+        width: 150px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .story-upload-title p {
+        display: none;
+    }
+
+
+    .story-upload-title h2 {
+        font-size: 16px;
+    }
+
+
+    .story-upload-body {
+        padding: 12px;
+    }
+
+
+    .story-drop-zone {
+        min-height: 190px;
+    }
+
+
+    .story-upload-footer {
+        padding: 10px 12px;
+    }
+
+
+    .story-cancel-btn,
+    .story-share-btn {
+        flex: 1;
+    }
+
+}
+    </style>
     <!-- =====================================================
          FLEXUS LIGHT THEME OVERRIDES
          Re-skins the dark glass UI into the landing page's
@@ -2101,6 +3347,1315 @@
             border-radius: 50%; overflow: hidden;
         }
     </style>
+
+
+   <style>/* =========================================================
+   PROJECT POST MODAL
+========================================================= */
+
+.project-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.project-modal.show {
+    display: flex;
+}
+
+.project-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 10, 20, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.project-modal-container {
+    position: relative;
+    z-index: 2;
+
+    width: min(900px, 96vw);
+    max-height: 92vh;
+
+    background: var(--card-bg, #ffffff);
+    color: var(--text-color, #172033);
+
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.35);
+
+    animation: projectModalIn 0.25s ease;
+}
+
+@keyframes projectModalIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.project-modal-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 26px 30px 20px;
+
+    border-bottom: 1px solid
+        var(--border-color, #e8ebf0);
+}
+
+.project-modal-badge {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 11px;
+
+    border-radius: 8px;
+
+    background: rgba(79, 70, 229, .10);
+
+    color: #4f46e5;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+
+.project-modal-header h2 {
+
+    margin: 10px 0 4px;
+
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.project-modal-header p {
+
+    margin: 0;
+
+    color: #7a8497;
+
+    font-size: 13px;
+}
+
+.project-close-btn {
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #667085;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s;
+}
+
+.project-close-btn:hover {
+
+    background: #e7eaf0;
+    color: #111827;
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.project-progress {
+
+    padding: 20px 30px 8px;
+}
+
+.project-progress-line {
+
+    height: 3px;
+
+    background: #edf0f4;
+
+    position: relative;
+
+    margin: 0 45px -23px;
+}
+
+.project-progress-line div {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #4f46e5;
+
+    transition: width .3s ease;
+}
+
+.project-steps {
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.project-step {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+
+    position: relative;
+    z-index: 2;
+
+    color: #98a1b2;
+
+    font-size: 11px;
+}
+
+.project-step span {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef0f4;
+
+    color: #778094;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: .25s;
+}
+
+.project-step.active span,
+.project-step.completed span {
+
+    background: #4f46e5;
+    color: white;
+}
+
+.project-step.active,
+.project-step.completed {
+
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#projectForm {
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+.project-form-step {
+
+    display: none;
+
+    overflow-y: auto;
+
+    padding: 25px 30px;
+
+    max-height: 57vh;
+}
+
+.project-form-step.active {
+
+    display: block;
+
+    animation: projectStepIn .2s ease;
+}
+
+@keyframes projectStepIn {
+
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.project-section-title {
+
+    display: flex;
+    gap: 13px;
+
+    margin-bottom: 24px;
+}
+
+.section-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(79, 70, 229, .10);
+
+    color: #4f46e5;
+}
+
+.project-section-title h3 {
+
+    margin: 0 0 3px;
+
+    font-size: 17px;
+}
+
+.project-section-title p {
+
+    margin: 0;
+
+    color: #8992a4;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.project-field {
+
+    margin-bottom: 21px;
+
+    position: relative;
+}
+
+.project-field label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.project-field label > span {
+
+    color: #ef4444;
+}
+
+.project-field input,
+.project-field textarea,
+.project-field select {
+
+    width: 100%;
+
+    border: 1px solid #e0e4ea;
+
+    background: #fafbfc;
+
+    color: #172033;
+
+    border-radius: 11px;
+
+    padding: 12px 14px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition: .2s;
+
+    box-sizing: border-box;
+}
+
+.project-field textarea {
+
+    resize: vertical;
+    min-height: 90px;
+}
+
+.project-field input:focus,
+.project-field textarea:focus,
+.project-field select:focus {
+
+    border-color: #4f46e5;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, .08);
+}
+
+.field-hint {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #929aaa;
+
+    font-size: 11px;
+}
+
+.character-count {
+
+    position: absolute;
+
+    right: 12px;
+    bottom: 10px;
+
+    color: #9aa2b1;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.project-upload-box {
+
+    min-height: 145px;
+
+    border: 1.5px dashed #cdd3dd;
+
+    border-radius: 14px;
+
+    background: #fafbfc;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.project-upload-box:hover {
+
+    border-color: #4f46e5;
+
+    background: #f8f7ff;
+}
+
+.upload-placeholder {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #8992a4;
+
+    text-align: center;
+}
+
+.upload-icon {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(79, 70, 229, .10);
+
+    color: #4f46e5;
+
+    font-size: 19px;
+
+    margin-bottom: 3px;
+}
+
+.upload-placeholder strong {
+
+    color: #344054;
+
+    font-size: 13px;
+}
+
+.upload-placeholder small {
+
+    font-size: 11px;
+}
+
+
+/* IMAGE PREVIEW */
+
+.project-image-preview img {
+
+    width: 100%;
+
+    max-height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   SOLUTION OPTIONS
+========================================================= */
+
+.solution-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+.solution-option input,
+.status-option input {
+
+    display: none;
+}
+
+.solution-option span {
+
+    min-height: 65px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    border: 1px solid #e1e5eb;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    color: #697386;
+
+    transition: .2s;
+}
+
+.solution-option span i {
+
+    font-size: 16px;
+}
+
+.solution-option input:checked + span {
+
+    border-color: #4f46e5;
+
+    background: rgba(79, 70, 229, .07);
+
+    color: #4f46e5;
+
+    box-shadow:
+        0 0 0 1px #4f46e5;
+}
+
+
+/* =========================================================
+   FINDINGS
+========================================================= */
+
+.findings-container {
+
+    margin-top: 28px;
+
+    border: 1px solid #e3e6eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background: #fafbfc;
+}
+
+.findings-header {
+
+    padding: 17px 18px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #e6e9ee;
+}
+
+.findings-header h4 {
+
+    margin: 0 0 3px;
+
+    font-size: 13px;
+}
+
+.findings-header h4 i {
+
+    color: #4f46e5;
+
+    margin-right: 5px;
+}
+
+.findings-header p {
+
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #8a93a3;
+}
+
+#findingCounter {
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    background: #eef0ff;
+
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.finding-question {
+
+    padding: 22px 18px;
+}
+
+.question-number {
+
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+}
+
+.finding-question h4 {
+
+    margin: 8px 0 14px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.finding-question textarea {
+
+    width: 100%;
+
+    border: 1px solid #e0e4ea;
+
+    border-radius: 11px;
+
+    padding: 12px;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+    outline: none;
+
+    font-family: inherit;
+
+    background: white;
+}
+
+.finding-navigation {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 13px 18px;
+
+    border-top: 1px solid #e6e9ee;
+}
+
+.finding-nav-btn {
+
+    width: 34px;
+    height: 34px;
+
+    border: 1px solid #dce1e8;
+
+    background: white;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    color: #4f46e5;
+}
+
+.finding-nav-btn:disabled {
+
+    opacity: .35;
+
+    cursor: not-allowed;
+}
+
+.finding-dots {
+
+    display: flex;
+
+    gap: 6px;
+}
+
+.finding-dots span {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #d7dce4;
+}
+
+.finding-dots span.active {
+
+    width: 18px;
+
+    border-radius: 5px;
+
+    background: #4f46e5;
+}
+
+
+/* =========================================================
+   GITHUB
+========================================================= */
+
+.input-with-icon {
+
+    position: relative;
+}
+
+.input-with-icon i {
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 17px;
+
+    color: #475467;
+}
+
+.input-with-icon input {
+
+    padding-left: 43px;
+}
+
+.github-note {
+
+    margin-top: 9px;
+
+    padding: 10px 12px;
+
+    display: flex;
+
+    gap: 8px;
+
+    background: #f5f7ff;
+
+    border: 1px solid #e3e6ff;
+
+    border-radius: 10px;
+
+    color: #667085;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.github-note i {
+
+    color: #4f46e5;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+.status-option span {
+
+    padding: 13px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px solid #e0e4ea;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.status-option input:checked + span {
+
+    border-color: #4f46e5;
+
+    background: #f5f3ff;
+
+    color: #4f46e5;
+}
+
+
+/* =========================================================
+   TEAM
+========================================================= */
+
+.field-label-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 9px;
+}
+
+.field-label-row label {
+
+    margin: 0;
+}
+
+.add-member-btn {
+
+    border: none;
+
+    background: #eef0ff;
+
+    color: #4f46e5;
+
+    padding: 6px 10px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.team-member-row {
+
+    display: grid;
+
+    grid-template-columns:
+        38px 1.2fr 1fr 1fr 35px;
+
+    gap: 7px;
+
+    align-items: center;
+
+    margin-bottom: 9px;
+}
+
+.team-member-row input {
+
+    min-width: 0;
+}
+
+.member-avatar {
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef0ff;
+
+    color: #4f46e5;
+
+    font-size: 13px;
+}
+
+.remove-member-btn {
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #fff0f0;
+
+    color: #ef4444;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   FILE UPLOAD
+========================================================= */
+
+.project-file-upload,
+.project-video-upload {
+
+    border: 1.5px dashed #d0d5dd;
+
+    border-radius: 14px;
+
+    padding: 22px;
+
+    background: #fafbfc;
+
+    text-align: center;
+}
+
+.file-upload-content,
+.video-upload-content {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.file-upload-content > i,
+.video-upload-content > i {
+
+    font-size: 27px;
+
+    color: #4f46e5;
+
+    margin-bottom: 4px;
+}
+
+.file-upload-content strong,
+.video-upload-content strong {
+
+    font-size: 13px;
+}
+
+.file-upload-content small,
+.video-upload-content small {
+
+    color: #8992a4;
+
+    font-size: 10px;
+}
+
+.choose-file-btn {
+
+    margin-top: 8px;
+
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.file-selected {
+
+    margin-top: 9px;
+
+    padding: 9px 12px;
+
+    background: #f4f5f7;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    color: #475467;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+/* VIDEO PREVIEW */
+
+#projectVideoPreview video {
+
+    width: 100%;
+
+    max-height: 260px;
+
+    margin-top: 10px;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   FINAL NOTE
+========================================================= */
+
+.project-final-note {
+
+    display: flex;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    color: #166534;
+}
+
+.project-final-note > i {
+
+    font-size: 20px;
+}
+
+.project-final-note strong {
+
+    font-size: 13px;
+}
+
+.project-final-note p {
+
+    margin: 3px 0 0;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.project-modal-footer {
+
+    padding: 16px 30px;
+
+    border-top: 1px solid #e7eaf0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: var(--card-bg, white);
+}
+
+.project-footer-step {
+
+    margin-left: auto;
+
+    color: #929aaa;
+
+    font-size: 11px;
+}
+
+.project-secondary-btn,
+.project-primary-btn,
+.project-publish-btn {
+
+    border: none;
+
+    padding: 10px 16px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    transition: .2s;
+}
+
+.project-secondary-btn {
+
+    background: #f1f3f6;
+
+    color: #667085;
+}
+
+.project-secondary-btn:hover {
+
+    background: #e7e9ed;
+}
+
+.project-primary-btn {
+
+    background: #4f46e5;
+
+    color: white;
+}
+
+.project-primary-btn:hover {
+
+    background: #4338ca;
+
+    transform: translateY(-1px);
+}
+
+.project-publish-btn {
+
+    background: #16a34a;
+
+    color: white;
+}
+
+.project-publish-btn:hover {
+
+    background: #15803d;
+}
+
+
+/* =========================================================
+   DARK THEME SUPPORT
+========================================================= */
+
+.dark .project-modal-container,
+[data-theme="dark"] .project-modal-container {
+
+    background: #171a21;
+
+    color: #f1f5f9;
+}
+
+.dark .project-modal-header,
+[data-theme="dark"] .project-modal-header {
+
+    border-color: #2b303b;
+}
+
+.dark .project-field input,
+.dark .project-field textarea,
+.dark .project-field select,
+[data-theme="dark"] .project-field input,
+[data-theme="dark"] .project-field textarea,
+[data-theme="dark"] .project-field select {
+
+    background: #1e222b;
+
+    border-color: #343a46;
+
+    color: #f1f5f9;
+}
+
+.dark .project-modal-footer,
+[data-theme="dark"] .project-modal-footer {
+
+    background: #171a21;
+
+    border-color: #2b303b;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .project-modal {
+
+        padding: 0;
+    }
+
+    .project-modal-container {
+
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+
+        border-radius: 0;
+    }
+
+    .project-modal-header {
+
+        padding: 20px;
+    }
+
+    .project-progress {
+
+        padding: 16px 20px 6px;
+    }
+
+    .project-form-step {
+
+        padding: 20px;
+
+        max-height: none;
+    }
+
+    .solution-options,
+    .status-options {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .team-member-row {
+
+        grid-template-columns:
+            35px 1fr 35px;
+    }
+
+    .team-member-row input:nth-child(3),
+    .team-member-row input:nth-child(4) {
+
+        grid-column: 2 / 4;
+    }
+
+    .project-modal-footer {
+
+        padding: 13px 20px;
+    }
+
+    .project-footer-step {
+
+        display: none;
+    }
+
+}</style>
 </head>
 <body>
 
@@ -2168,7 +4723,8 @@
             </div>
 
 
-            <div class="create-option" data-type="project">
+            <div class="create-option project-create-option" data-type="project">
+
                 <div class="create-icon project-icon">
                     <i class="fa-solid fa-code"></i>
                 </div>
@@ -2177,6 +4733,7 @@
                     <strong>Project Post</strong>
                     <small>Showcase your project</small>
                 </div>
+
             </div>
 
 
@@ -2902,6 +5459,1291 @@
         </form>
     </div>
 </div>
+
+
+<!-- =========================================================
+     STORY UPLOAD MODAL
+========================================================= -->
+<div id="storyUploadModal" class="story-upload-modal">
+
+    <div class="story-upload-backdrop" id="storyUploadBackdrop"></div>
+
+    <div class="story-upload-dialog">
+
+        <!-- Header -->
+        <div class="story-upload-header">
+            <div class="story-upload-title">
+                <div class="story-title-icon">
+                    <i class="fa-solid fa-circle-plus"></i>
+                </div>
+
+                <div>
+                    <h2>Create Story</h2>
+                    <p>Share a photo or video with your story</p>
+                </div>
+            </div>
+
+            <button
+                    type="button"
+                    class="story-close-btn"
+                    id="storyCloseBtn"
+                    aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+
+        <!-- Main Content -->
+        <div class="story-upload-body">
+
+            <!-- LEFT: Upload -->
+            <div class="story-upload-panel">
+
+                <div class="story-section-label">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Add to your story</span>
+                </div>
+
+
+                <!-- Drop Zone -->
+                <div
+                        class="story-drop-zone"
+                        id="storyDropZone">
+
+                    <input
+                            type="file"
+                            id="storyFileInput"
+                            accept="image/*,video/*"
+                            hidden>
+
+                    <div class="story-drop-icon">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+
+                    <h3>Drag & Drop your media</h3>
+
+                    <p>
+                        or
+                        <button
+                                type="button"
+                                id="storyBrowseBtn">
+                            browse files
+                        </button>
+                    </p>
+
+                    <div class="story-supported">
+                        <span>
+                            <i class="fa-regular fa-image"></i>
+                            Images
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-video"></i>
+                            Videos
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            9:16 recommended
+                        </span>
+                    </div>
+
+                    <div class="story-limit">
+                        <i class="fa-solid fa-clock"></i>
+                        Videos are limited to 15 seconds
+                    </div>
+
+                </div>
+
+
+                <!-- Selected File -->
+                <div
+                        class="story-selected-file"
+                        id="storySelectedFile"
+                        style="display:none;">
+
+                    <div class="story-file-icon" id="storyFileIcon">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+
+                    <div class="story-file-info">
+
+                        <strong id="storyFileName">
+                            filename.jpg
+                        </strong>
+
+                        <span id="storyFileDetails">
+                            Image
+                        </span>
+
+                    </div>
+
+                    <button
+                            type="button"
+                            class="story-remove-file"
+                            id="storyRemoveFile"
+                            title="Remove">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- Video Information -->
+                <div
+                        class="story-video-info"
+                        id="storyVideoInfo"
+                        style="display:none;">
+
+                    <div class="story-info-row">
+
+                        <span>
+                            <i class="fa-solid fa-video"></i>
+                            Video duration
+                        </span>
+
+                        <strong id="storyOriginalDuration">
+                            0s
+                        </strong>
+
+                    </div>
+
+                    <div class="story-info-row">
+
+                        <span>
+                            <i class="fa-solid fa-scissors"></i>
+                            Story duration
+                        </span>
+
+                        <strong class="story-duration-green">
+                            15s maximum
+                        </strong>
+
+                    </div>
+
+                    <div
+                            class="story-trim-notice"
+                            id="storyTrimNotice">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            Only the first 15 seconds will be used
+                            for this frontend preview.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Caption -->
+                <div class="story-caption-section">
+
+                    <label for="storyCaption">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        Caption
+                        <span>Optional</span>
+                    </label>
+
+                    <textarea
+                            id="storyCaption"
+                            maxlength="150"
+                            rows="3"
+                            placeholder="Write something about your story..."></textarea>
+
+                    <div class="story-character-count">
+                        <span id="storyCharacterCount">0</span>/150
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT: Preview -->
+            <div class="story-preview-panel">
+
+                <div class="story-section-label">
+                    <i class="fa-regular fa-eye"></i>
+                    <span>Preview</span>
+                </div>
+
+
+                <div class="story-preview-wrapper">
+
+                    <div
+                            class="story-preview-device"
+                            id="storyPreviewDevice">
+
+                        <!-- Empty Preview -->
+                        <div
+                                class="story-preview-empty"
+                                id="storyPreviewEmpty">
+
+                            <div class="story-empty-icon">
+                                <i class="fa-regular fa-image"></i>
+                            </div>
+
+                            <strong>Your Story</strong>
+
+                            <span>
+                                Your preview will appear here
+                            </span>
+
+                        </div>
+
+
+                        <!-- Image Preview -->
+                        <img
+                                id="storyImagePreview"
+                                class="story-media-preview"
+                                alt="Story preview"
+                                style="display:none;">
+
+
+                        <!-- Video Preview -->
+                        <video
+                                id="storyVideoPreview"
+                                class="story-media-preview"
+                                muted
+                                playsinline
+                                preload="metadata"
+                                style="display:none;">
+                        </video>
+
+
+                        <!-- Preview Overlay -->
+                        <div
+                                class="story-preview-overlay"
+                                id="storyPreviewOverlay"
+                                style="display:none;">
+
+                            <div class="story-preview-top">
+
+                                <div class="story-preview-user">
+
+                                    <div class="story-preview-avatar">
+                                        <img
+                                                src="https://ui-avatars.com/api/?name=You&background=0095ff&color=fff"
+                                                alt="You">
+                                    </div>
+
+                                    <div>
+                                        <strong>Your Story</strong>
+                                        <span>Just now</span>
+                                    </div>
+
+                                </div>
+
+                                <i class="fa-solid fa-ellipsis"></i>
+
+                            </div>
+
+
+                            <div class="story-preview-caption"
+                                 id="storyPreviewCaption">
+                            </div>
+
+
+                            <div class="story-preview-bottom">
+
+                                <div class="story-progress">
+                                    <div
+                                            class="story-progress-fill"
+                                            id="storyProgressFill">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="story-preview-hint">
+
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                    <span>
+                        Story preview • 9:16
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="story-upload-footer">
+
+            <button
+                    type="button"
+                    class="story-cancel-btn"
+                    id="storyCancelBtn">
+
+                Cancel
+
+            </button>
+
+            <button
+                    type="button"
+                    class="story-share-btn"
+                    id="storyShareBtn"
+                    disabled>
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+                <span>Share Story</span>
+
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     PROJECT POST MODAL
+========================================================= -->
+
+<!-- =========================================================
+     PROJECT POST MODAL
+========================================================= -->
+
+<div class="project-modal" id="projectModal">
+
+    <div class="project-modal-overlay"></div>
+
+    <div class="project-modal-container">
+
+        <!-- HEADER -->
+        <div class="project-modal-header">
+
+            <div>
+                <span class="project-modal-badge">
+                    <i class="fa-solid fa-code"></i>
+                    PROJECT
+                </span>
+
+                <h2>Create Project Post</h2>
+
+                <p>
+                    Showcase your project, solution, team and resources.
+                </p>
+            </div>
+
+            <button type="button"
+                    class="project-close-btn"
+                    id="projectCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+        <div class="project-progress">
+
+            <div class="project-progress-line">
+                <div id="projectProgressBar"></div>
+            </div>
+
+            <div class="project-steps">
+
+                <div class="project-step active" data-step="1">
+                    <span>1</span>
+                    <small>Basic Info</small>
+                </div>
+
+                <div class="project-step" data-step="2">
+                    <span>2</span>
+                    <small>Problem & Solution</small>
+                </div>
+
+                <div class="project-step" data-step="3">
+                    <span>3</span>
+                    <small>Team & Links</small>
+                </div>
+
+                <div class="project-step" data-step="4">
+                    <span>4</span>
+                    <small>Resources</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+        <form id="projectForm">
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="project-form-step active"
+                     data-step-content="1">
+
+                <div class="project-section-title">
+                    <span class="section-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </span>
+
+                    <div>
+                        <h3>Project Information</h3>
+                        <p>Tell people about your project.</p>
+                    </div>
+                </div>
+
+
+                <!-- PROJECT TITLE -->
+                <div class="project-field">
+
+                    <label>
+                        Project Title
+                        <span>*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="projectTitle"
+                            name="projectTitle"
+                            placeholder="Enter your project title"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- SHORT DESCRIPTION -->
+                <div class="project-field">
+
+                    <label>
+                        Short Description
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                            id="projectDescription"
+                            name="projectDescription"
+                            rows="4"
+                            maxlength="500"
+                            placeholder="Briefly describe what your project does..."
+                            required
+                    ></textarea>
+
+                    <div class="character-count">
+                        <span id="projectDescriptionCount">0</span>/500
+                    </div>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+                <div class="project-field">
+
+                    <label>
+                        Project Category
+                        <span>*</span>
+                    </label>
+
+                    <select id="projectCategory"
+                            name="projectCategory"
+                            required>
+
+                        <option value="">Select category</option>
+
+                        <option value="web-development">
+                            Web Development
+                        </option>
+
+                        <option value="mobile-development">
+                            Mobile Development
+                        </option>
+
+                        <option value="ai-ml">
+                            AI / Machine Learning
+                        </option>
+
+                        <option value="data-science">
+                            Data Science
+                        </option>
+
+                        <option value="cyber-security">
+                            Cyber Security
+                        </option>
+
+                        <option value="iot">
+                            IoT
+                        </option>
+
+                        <option value="blockchain">
+                            Blockchain
+                        </option>
+
+                        <option value="cloud">
+                            Cloud / DevOps
+                        </option>
+
+                        <option value="software">
+                            Software Development
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- TAGS -->
+                <div class="project-field">
+
+                    <label>
+                        Tags
+                        <span>*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="projectTags"
+                            name="projectTags"
+                            placeholder="Java, Spring Boot, React, AI..."
+                    >
+
+                    <small class="field-hint">
+                        Separate tags using commas.
+                    </small>
+
+                </div>
+
+
+                <!-- COVER IMAGE -->
+                <div class="project-field">
+
+                    <label>Cover Image</label>
+
+                    <div class="project-upload-box"
+                         id="projectCoverUpload">
+
+                        <input
+                                type="file"
+                                id="projectCover"
+                                name="projectCover"
+                                accept="image/*"
+                                hidden
+                        >
+
+                        <div class="upload-placeholder">
+
+                            <div class="upload-icon">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+
+                            <strong>Upload Cover Image</strong>
+
+                            <small>
+                                PNG, JPG or WEBP
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="project-image-preview"
+                         id="projectCoverPreview"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="project-form-step"
+                     data-step-content="2">
+
+                <div class="project-section-title">
+
+                    <span class="section-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </span>
+
+                    <div>
+                        <h3>Problem & Solution</h3>
+                        <p>Explain what problem your project solves.</p>
+                    </div>
+
+                </div>
+
+
+                <!-- PROBLEM STATEMENT -->
+                <div class="project-field">
+
+                    <label>Problem Statement</label>
+
+                    <textarea
+                            id="problemStatement"
+                            name="problemStatement"
+                            rows="6"
+                            placeholder="What problem are you trying to solve?"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- SOLUTION -->
+                <div class="project-field">
+
+                    <label>Solution</label>
+
+                    <textarea
+                            id="projectSolution"
+                            name="projectSolution"
+                            rows="6"
+                            placeholder="Explain your proposed solution..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- SOLUTION TYPE -->
+                <div class="project-field">
+
+                    <label>
+                        What type of solution is this?
+                    </label>
+
+                    <div class="solution-options">
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="automation"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-gears"></i>
+                                Automation
+                            </span>
+
+                        </label>
+
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="ai"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-brain"></i>
+                                AI / ML
+                            </span>
+
+                        </label>
+
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="platform"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-layer-group"></i>
+                                Platform
+                            </span>
+
+                        </label>
+
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="social"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-users"></i>
+                                Social
+                            </span>
+
+                        </label>
+
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="productivity"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-bolt"></i>
+                                Productivity
+                            </span>
+
+                        </label>
+
+
+                        <label class="solution-option">
+
+                            <input
+                                    type="checkbox"
+                                    name="solutionType"
+                                    value="security"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-shield-halved"></i>
+                                Security
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FINDINGS QUESTIONS -->
+
+                <div class="findings-container">
+
+                    <div class="findings-header">
+
+                        <div>
+                            <h4>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Project Findings
+                            </h4>
+
+                            <p>
+                                Answer a few questions about your project.
+                            </p>
+                        </div>
+
+                        <span id="findingCounter">
+                            1 / 3
+                        </span>
+
+                    </div>
+
+
+                    <div class="finding-question"
+                         id="findingQuestion">
+
+                        <span class="question-number">
+                            Question 01
+                        </span>
+
+                        <h4 id="findingQuestionText">
+                            What was the main reason for creating this project?
+                        </h4>
+
+                        <textarea
+                                id="findingAnswer"
+                                rows="5"
+                                placeholder="Write your professional answer..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="finding-navigation">
+
+                        <button
+                                type="button"
+                                id="previousFinding"
+                                class="finding-nav-btn"
+                                disabled
+                        >
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+
+                        <div class="finding-dots"
+                             id="findingDots">
+
+                            <span class="active"></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                id="nextFinding"
+                                class="finding-nav-btn"
+                        >
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="project-form-step"
+                     data-step-content="3">
+
+                <div class="project-section-title">
+
+                    <span class="section-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+
+                    <div>
+                        <h3>Team & Links</h3>
+                        <p>Add your project team and online resources.</p>
+                    </div>
+
+                </div>
+
+
+                <!-- GITHUB -->
+                <div class="project-field">
+
+                    <label>
+                        GitHub Repository
+                    </label>
+
+                    <div class="input-with-icon">
+
+                        <i class="fa-brands fa-github"></i>
+
+                        <input
+                                type="url"
+                                id="githubLink"
+                                name="githubLink"
+                                placeholder="https://github.com/username/project"
+                        >
+
+                    </div>
+
+                    <div class="github-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            Please make your repository public so we can
+                            extract project information such as technologies,
+                            files, commits and repository details.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT STATUS -->
+                <div class="project-field">
+
+                    <label>Project Status</label>
+
+                    <div class="status-options">
+
+                        <label class="status-option">
+
+                            <input
+                                    type="radio"
+                                    name="projectStatus"
+                                    value="idea"
+                            >
+
+                            <span>
+                                <i class="fa-regular fa-lightbulb"></i>
+                                Idea
+                            </span>
+
+                        </label>
+
+
+                        <label class="status-option">
+
+                            <input
+                                    type="radio"
+                                    name="projectStatus"
+                                    value="development"
+                                    checked
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-code"></i>
+                                In Development
+                            </span>
+
+                        </label>
+
+
+                        <label class="status-option">
+
+                            <input
+                                    type="radio"
+                                    name="projectStatus"
+                                    value="completed"
+                            >
+
+                            <span>
+                                <i class="fa-solid fa-circle-check"></i>
+                                Completed
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEAM MEMBERS -->
+                <div class="project-field">
+
+                    <div class="field-label-row">
+
+                        <label>Team Members</label>
+
+                        <button
+                                type="button"
+                                class="add-member-btn"
+                                id="addTeamMember"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                            Add Member
+                        </button>
+
+                    </div>
+
+
+                    <div id="teamMembersContainer">
+
+                        <div class="team-member-row">
+
+                            <div class="member-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <input
+                                    type="text"
+                                    name="memberName[]"
+                                    placeholder="Member name"
+                            >
+
+                            <input
+                                    type="text"
+                                    name="memberAccount[]"
+                                    placeholder="@account"
+                            >
+
+                            <input
+                                    type="text"
+                                    name="memberRole[]"
+                                    placeholder="Role"
+                            >
+
+                            <button
+                                    type="button"
+                                    class="remove-member-btn"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ARTICLE LINK -->
+                <div class="project-field">
+
+                    <label>Article Link</label>
+
+                    <input
+                            type="url"
+                            name="articleLink"
+                            placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <!-- OTHER LINKS -->
+                <div class="project-field">
+
+                    <label>Other Links</label>
+
+                    <textarea
+                            name="otherLinks"
+                            rows="3"
+                            placeholder="Documentation, website, demo, etc..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="project-form-step"
+                     data-step-content="4">
+
+                <div class="project-section-title">
+
+                    <span class="section-icon">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </span>
+
+                    <div>
+                        <h3>Project Resources</h3>
+                        <p>Add files and demonstration material.</p>
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT PDF -->
+                <div class="project-field">
+
+                    <label>
+                        Project Report / Documentation
+                    </label>
+
+                    <div class="project-file-upload">
+
+                        <input
+                                type="file"
+                                id="projectPdf"
+                                name="projectPdf"
+                                accept=".pdf,.doc,.docx,.ppt,.pptx"
+                                hidden
+                        >
+
+                        <div class="file-upload-content">
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                            <strong>
+                                Upload Project Report
+                            </strong>
+
+                            <small>
+                                PDF, DOC, DOCX, PPT or PPTX
+                            </small>
+
+                            <button
+                                    type="button"
+                                    class="choose-file-btn"
+                                    id="chooseProjectPdf"
+                            >
+                                Choose File
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="projectPdfPreview"></div>
+
+                </div>
+
+
+                <!-- ZIP -->
+                <div class="project-field">
+
+                    <label>
+                        Project ZIP
+                    </label>
+
+                    <div class="project-file-upload">
+
+                        <input
+                                type="file"
+                                id="projectZip"
+                                name="projectZip"
+                                accept=".zip"
+                                hidden
+                        >
+
+                        <div class="file-upload-content">
+
+                            <i class="fa-solid fa-file-zipper"></i>
+
+                            <strong>
+                                Upload Project ZIP
+                            </strong>
+
+                            <small>
+                                Upload source code as ZIP
+                            </small>
+
+                            <button
+                                    type="button"
+                                    class="choose-file-btn"
+                                    id="chooseProjectZip"
+                            >
+                                Choose ZIP
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="projectZipPreview"></div>
+
+                </div>
+
+
+                <!-- DEMO VIDEO -->
+                <div class="project-field">
+
+                    <label>
+                        Demo Video
+                    </label>
+
+                    <div class="project-video-upload">
+
+                        <input
+                                type="file"
+                                id="projectDemoVideo"
+                                name="projectDemoVideo"
+                                accept="video/*"
+                                hidden
+                        >
+
+                        <div class="video-upload-content">
+
+                            <i class="fa-solid fa-video"></i>
+
+                            <strong>
+                                Upload Demo Video
+                            </strong>
+
+                            <small>
+                                MP4, WebM or MOV
+                            </small>
+
+                            <button
+                                    type="button"
+                                    class="choose-file-btn"
+                                    id="chooseDemoVideo"
+                            >
+                                Choose Video
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="projectVideoPreview"></div>
+
+                </div>
+
+
+                <!-- FINAL PREVIEW -->
+                <div class="project-final-note">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+                        <strong>
+                            Ready to publish?
+                        </strong>
+
+                        <p>
+                            Your project will be published as a Project Post.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="project-modal-footer">
+
+                <button
+                        type="button"
+                        class="project-secondary-btn"
+                        id="projectPreviousBtn"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Previous
+                </button>
+
+
+                <div class="project-footer-step">
+                    <span id="currentProjectStep">1</span>
+                    /
+                    <span>4</span>
+                </div>
+
+
+                <button
+                        type="button"
+                        class="project-primary-btn"
+                        id="projectNextBtn"
+                >
+                    Next
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+
+                <button
+                        type="submit"
+                        class="project-publish-btn"
+                        id="projectPublishBtn"
+                        style="display:none;"
+                >
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Publish Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 
 <script>
 
@@ -4670,6 +8512,2041 @@ document.addEventListener("DOMContentLoaded", function() {
     closeBtn.onclick = () => editModal.style.display = "none";
 });
 </script>
+
+<script>
+
+/* =========================================================
+   STORY UPLOAD SYSTEM
+   FRONTEND ONLY
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const storyModal =
+        document.getElementById("storyUploadModal");
+
+    const storyBackdrop =
+        document.getElementById("storyUploadBackdrop");
+
+    const storyCloseBtn =
+        document.getElementById("storyCloseBtn");
+
+    const storyCancelBtn =
+        document.getElementById("storyCancelBtn");
+
+    const storyDropZone =
+        document.getElementById("storyDropZone");
+
+    const storyFileInput =
+        document.getElementById("storyFileInput");
+
+    const storyBrowseBtn =
+        document.getElementById("storyBrowseBtn");
+
+    const storySelectedFile =
+        document.getElementById("storySelectedFile");
+
+    const storyFileName =
+        document.getElementById("storyFileName");
+
+    const storyFileDetails =
+        document.getElementById("storyFileDetails");
+
+    const storyFileIcon =
+        document.getElementById("storyFileIcon");
+
+    const storyRemoveFile =
+        document.getElementById("storyRemoveFile");
+
+    const storyVideoInfo =
+        document.getElementById("storyVideoInfo");
+
+    const storyOriginalDuration =
+        document.getElementById("storyOriginalDuration");
+
+    const storyImagePreview =
+        document.getElementById("storyImagePreview");
+
+    const storyVideoPreview =
+        document.getElementById("storyVideoPreview");
+
+    const storyPreviewEmpty =
+        document.getElementById("storyPreviewEmpty");
+
+    const storyPreviewOverlay =
+        document.getElementById("storyPreviewOverlay");
+
+    const storyPreviewCaption =
+        document.getElementById("storyPreviewCaption");
+
+    const storyProgressFill =
+        document.getElementById("storyProgressFill");
+
+    const storyCaption =
+        document.getElementById("storyCaption");
+
+    const storyCharacterCount =
+        document.getElementById("storyCharacterCount");
+
+    const storyShareBtn =
+        document.getElementById("storyShareBtn");
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let selectedStoryFile = null;
+
+    let storyObjectUrl = null;
+
+    let storyVideoDuration = 0;
+
+    const MAX_VIDEO_DURATION = 15;
+
+
+    /* =====================================================
+       EXISTING CREATE → STORY BUTTON
+    ===================================================== */
+
+    const storyCreateOption =
+        document.querySelector(
+            '.create-option[data-type="story"]'
+        );
+
+
+    if (storyCreateOption) {
+
+        storyCreateOption.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                /*
+                 * Close existing Create popup
+                 */
+                const createPopup =
+                    document.getElementById("createPopup");
+
+                if (createPopup) {
+                    createPopup.classList.remove("show");
+                }
+
+
+                /*
+                 * Open Story Modal
+                 */
+                openStoryModal();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       OPEN MODAL
+    ===================================================== */
+
+    function openStoryModal() {
+
+        storyModal.classList.add("show");
+
+        document.body.style.overflow = "hidden";
+
+        /*
+         * Small reset when opening
+         */
+        resetStoryUpload();
+
+    }
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
+
+    function closeStoryModal() {
+
+        storyModal.classList.remove("show");
+
+        document.body.style.overflow = "";
+
+        resetStoryUpload();
+
+    }
+
+
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
+    storyCloseBtn.addEventListener(
+        "click",
+        closeStoryModal
+    );
+
+
+    storyCancelBtn.addEventListener(
+        "click",
+        closeStoryModal
+    );
+
+
+    storyBackdrop.addEventListener(
+        "click",
+        closeStoryModal
+    );
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                storyModal.classList.contains("show")
+            ) {
+
+                closeStoryModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       BROWSE BUTTON
+    ===================================================== */
+
+    storyBrowseBtn.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            storyFileInput.click();
+
+        }
+    );
+
+
+    /* =====================================================
+       DROP ZONE CLICK
+    ===================================================== */
+
+    storyDropZone.addEventListener(
+        "click",
+        function (event) {
+
+            /*
+             * Don't trigger twice when clicking
+             * the Browse button.
+             */
+
+            if (
+                event.target.closest(
+                    "#storyBrowseBtn"
+                )
+            ) {
+                return;
+            }
+
+            storyFileInput.click();
+
+        }
+    );
+
+
+    /* =====================================================
+       FILE INPUT
+    ===================================================== */
+
+    storyFileInput.addEventListener(
+        "change",
+        function () {
+
+            if (
+                this.files &&
+                this.files.length > 0
+            ) {
+
+                handleStoryFile(
+                    this.files[0]
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       DRAG ENTER
+    ===================================================== */
+
+    storyDropZone.addEventListener(
+        "dragenter",
+        function (event) {
+
+            event.preventDefault();
+
+            storyDropZone.classList.add(
+                "drag-over"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       DRAG OVER
+    ===================================================== */
+
+    storyDropZone.addEventListener(
+        "dragover",
+        function (event) {
+
+            event.preventDefault();
+
+            storyDropZone.classList.add(
+                "drag-over"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       DRAG LEAVE
+    ===================================================== */
+
+    storyDropZone.addEventListener(
+        "dragleave",
+        function (event) {
+
+            event.preventDefault();
+
+            storyDropZone.classList.remove(
+                "drag-over"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       DROP
+    ===================================================== */
+
+    storyDropZone.addEventListener(
+        "drop",
+        function (event) {
+
+            event.preventDefault();
+
+            storyDropZone.classList.remove(
+                "drag-over"
+            );
+
+
+            const files =
+                event.dataTransfer.files;
+
+
+            if (
+                files &&
+                files.length > 0
+            ) {
+
+                handleStoryFile(
+                    files[0]
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       HANDLE FILE
+    ===================================================== */
+
+    function handleStoryFile(file) {
+
+        if (!file) {
+            return;
+        }
+
+
+        /*
+         * Validate image/video
+         */
+
+        const isImage =
+            file.type.startsWith("image/");
+
+        const isVideo =
+            file.type.startsWith("video/");
+
+
+        if (!isImage && !isVideo) {
+
+            alert(
+                "Please select an image or video file."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Clean old object URL
+         */
+
+        if (storyObjectUrl) {
+
+            URL.revokeObjectURL(
+                storyObjectUrl
+            );
+
+            storyObjectUrl = null;
+
+        }
+
+
+        selectedStoryFile = file;
+
+        storyObjectUrl =
+            URL.createObjectURL(file);
+
+
+        /*
+         * Update file information
+         */
+
+        storySelectedFile.style.display =
+            "flex";
+
+
+        storyFileName.textContent =
+            file.name;
+
+
+        storyFileDetails.textContent =
+            isVideo
+                ? "Video"
+                : "Image";
+
+
+        /*
+         * File icon
+         */
+
+        if (isVideo) {
+
+            storyFileIcon.innerHTML =
+                '<i class="fa-solid fa-video"></i>';
+
+        } else {
+
+            storyFileIcon.innerHTML =
+                '<i class="fa-regular fa-image"></i>';
+
+        }
+
+
+        /*
+         * Hide empty preview
+         */
+
+        storyPreviewEmpty.style.display =
+            "none";
+
+
+        /*
+         * Reset previews
+         */
+
+        storyImagePreview.style.display =
+            "none";
+
+        storyVideoPreview.style.display =
+            "none";
+
+        storyPreviewOverlay.style.display =
+            "none";
+
+
+        /*
+         * IMAGE
+         */
+
+        if (isImage) {
+
+            handleImageStory();
+
+        }
+
+
+        /*
+         * VIDEO
+         */
+
+        if (isVideo) {
+
+            handleVideoStory();
+
+        }
+
+
+        /*
+         * Enable share
+         */
+
+        storyShareBtn.disabled = false;
+
+    }
+
+
+    /* =====================================================
+       IMAGE STORY
+    ===================================================== */
+
+    function handleImageStory() {
+
+        storyVideoInfo.style.display =
+            "none";
+
+
+        storyImagePreview.src =
+            storyObjectUrl;
+
+
+        storyImagePreview.style.display =
+            "block";
+
+
+        storyPreviewOverlay.style.display =
+            "flex";
+
+
+        updateStoryCaption();
+
+
+        storyProgressFill.style.width =
+            "100%";
+
+    }
+
+
+    /* =====================================================
+       VIDEO STORY
+    ===================================================== */
+
+    function handleVideoStory() {
+
+        storyVideoInfo.style.display =
+            "block";
+
+
+        storyVideoPreview.src =
+            storyObjectUrl;
+
+
+        storyVideoPreview.style.display =
+            "block";
+
+
+        storyPreviewOverlay.style.display =
+            "flex";
+
+
+        storyVideoPreview.currentTime =
+            0;
+
+
+        /*
+         * Metadata loaded
+         */
+
+        storyVideoPreview.onloadedmetadata =
+            function () {
+
+                storyVideoDuration =
+                    storyVideoPreview.duration;
+
+
+                storyOriginalDuration.textContent =
+                    formatDuration(
+                        storyVideoDuration
+                    );
+
+
+                /*
+                 * If video is longer than 15 sec,
+                 * only first 15 sec are previewed.
+                 */
+
+                if (
+                    storyVideoDuration >
+                    MAX_VIDEO_DURATION
+                ) {
+
+                    storyVideoPreview.dataset.maxDuration =
+                        MAX_VIDEO_DURATION;
+
+                } else {
+
+                    storyVideoPreview.dataset.maxDuration =
+                        storyVideoDuration;
+
+                }
+
+
+                /*
+                 * Start preview
+                 */
+
+                storyVideoPreview.currentTime =
+                    0;
+
+                storyVideoPreview.play()
+                    .catch(function () {});
+
+            };
+
+
+        /*
+         * Time update
+         */
+
+        storyVideoPreview.ontimeupdate =
+            function () {
+
+                const current =
+                    storyVideoPreview.currentTime;
+
+
+                const maxDuration =
+                    Math.min(
+                        storyVideoDuration,
+                        MAX_VIDEO_DURATION
+                    );
+
+
+                /*
+                 * Progress bar
+                 */
+
+                if (maxDuration > 0) {
+
+                    const percentage =
+                        Math.min(
+                            100,
+                            (current / maxDuration) * 100
+                        );
+
+
+                    storyProgressFill.style.width =
+                        percentage + "%";
+
+                }
+
+
+                /*
+                 * Stop at 15 seconds
+                 */
+
+                if (
+                    current >=
+                    MAX_VIDEO_DURATION
+                    &&
+                    storyVideoDuration >
+                    MAX_VIDEO_DURATION
+                ) {
+
+                    storyVideoPreview.pause();
+
+                    storyVideoPreview.currentTime =
+                        0;
+
+                }
+
+
+                /*
+                 * If shorter than 15 seconds,
+                 * loop the preview.
+                 */
+
+                if (
+                    storyVideoDuration <=
+                    MAX_VIDEO_DURATION
+                    &&
+                    current >=
+                    storyVideoDuration - 0.05
+                ) {
+
+                    storyVideoPreview.currentTime =
+                        0;
+
+                    storyVideoPreview.play()
+                        .catch(function () {});
+
+                }
+
+            };
+
+
+        updateStoryCaption();
+
+    }
+
+
+    /* =====================================================
+       FORMAT DURATION
+    ===================================================== */
+
+    function formatDuration(seconds) {
+
+        if (!isFinite(seconds)) {
+            return "0s";
+        }
+
+
+        seconds =
+            Math.floor(seconds);
+
+
+        const minutes =
+            Math.floor(seconds / 60);
+
+
+        const remainingSeconds =
+            seconds % 60;
+
+
+        if (minutes > 0) {
+
+            return (
+                minutes +
+                "m " +
+                remainingSeconds +
+                "s"
+            );
+
+        }
+
+
+        return seconds + "s";
+
+    }
+
+
+    /* =====================================================
+       REMOVE FILE
+    ===================================================== */
+
+    storyRemoveFile.addEventListener(
+        "click",
+        function () {
+
+            clearSelectedStory();
+
+        }
+    );
+
+
+    function clearSelectedStory() {
+
+        selectedStoryFile = null;
+
+        storyVideoDuration = 0;
+
+
+        if (storyObjectUrl) {
+
+            URL.revokeObjectURL(
+                storyObjectUrl
+            );
+
+            storyObjectUrl = null;
+
+        }
+
+
+        storyFileInput.value = "";
+
+
+        storySelectedFile.style.display =
+            "none";
+
+
+        storyVideoInfo.style.display =
+            "none";
+
+
+        storyImagePreview.style.display =
+            "none";
+
+
+        storyVideoPreview.pause();
+
+        storyVideoPreview.removeAttribute(
+            "src"
+        );
+
+        storyVideoPreview.load();
+
+
+        storyVideoPreview.style.display =
+            "none";
+
+
+        storyPreviewOverlay.style.display =
+            "none";
+
+
+        storyPreviewEmpty.style.display =
+            "flex";
+
+
+        storyProgressFill.style.width =
+            "0%";
+
+
+        storyShareBtn.disabled =
+            true;
+
+    }
+
+
+    /* =====================================================
+       CAPTION
+    ===================================================== */
+
+    storyCaption.addEventListener(
+        "input",
+        function () {
+
+            storyCharacterCount.textContent =
+                this.value.length;
+
+
+            updateStoryCaption();
+
+        }
+    );
+
+
+    function updateStoryCaption() {
+
+        const caption =
+            storyCaption.value.trim();
+
+
+        if (caption) {
+
+            storyPreviewCaption.textContent =
+                caption;
+
+        } else {
+
+            storyPreviewCaption.textContent =
+                "";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SHARE STORY
+       FRONTEND DEMO ONLY
+    ===================================================== */
+
+    storyShareBtn.addEventListener(
+        "click",
+        function () {
+
+            if (!selectedStoryFile) {
+                return;
+            }
+
+
+            /*
+             * No backend.
+             *
+             * This only demonstrates the
+             * frontend interaction.
+             */
+
+            storyShareBtn.disabled = true;
+
+
+            storyShareBtn.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i>' +
+                '<span>Preparing Story...</span>';
+
+
+            setTimeout(
+                function () {
+
+                    storyShareBtn.innerHTML =
+                        '<i class="fa-solid fa-check"></i>' +
+                        '<span>Story Ready</span>';
+
+
+                    /*
+                     * Demo success state
+                     */
+
+                    setTimeout(
+                        function () {
+
+                            closeStoryModal();
+
+                        },
+                        700
+                    );
+
+                },
+                700
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    function resetStoryUpload() {
+
+        /*
+         * Stop video
+         */
+
+        if (
+            storyVideoPreview &&
+            !storyVideoPreview.paused
+        ) {
+
+            storyVideoPreview.pause();
+
+        }
+
+
+        /*
+         * Revoke URL
+         */
+
+        if (storyObjectUrl) {
+
+            URL.revokeObjectURL(
+                storyObjectUrl
+            );
+
+            storyObjectUrl = null;
+
+        }
+
+
+        selectedStoryFile = null;
+
+        storyVideoDuration = 0;
+
+
+        /*
+         * Input
+         */
+
+        storyFileInput.value = "";
+
+
+        /*
+         * File
+         */
+
+        storySelectedFile.style.display =
+            "none";
+
+
+        /*
+         * Video info
+         */
+
+        storyVideoInfo.style.display =
+            "none";
+
+
+        /*
+         * Preview
+         */
+
+        storyImagePreview.src = "";
+
+        storyImagePreview.style.display =
+            "none";
+
+
+        storyVideoPreview.removeAttribute(
+            "src"
+        );
+
+        storyVideoPreview.load();
+
+        storyVideoPreview.style.display =
+            "none";
+
+
+        storyPreviewOverlay.style.display =
+            "none";
+
+
+        storyPreviewEmpty.style.display =
+            "flex";
+
+
+        /*
+         * Caption
+         */
+
+        storyCaption.value = "";
+
+        storyCharacterCount.textContent =
+            "0";
+
+
+        storyPreviewCaption.textContent =
+            "";
+
+
+        /*
+         * Progress
+         */
+
+        storyProgressFill.style.width =
+            "0%";
+
+
+        /*
+         * Button
+         */
+
+        storyShareBtn.disabled =
+            true;
+
+        storyShareBtn.innerHTML =
+            '<i class="fa-solid fa-paper-plane"></i>' +
+            '<span>Share Story</span>';
+
+    }
+
+});
+</script>
+
+<script>
+    /* =========================================================
+       PROJECT POST FRONTEND
+    ========================================================= */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* -------------------------------------------------------
+           ELEMENTS
+        ------------------------------------------------------- */
+
+        const projectOption =
+            document.querySelector(".project-create-option");
+
+        const projectModal =
+            document.getElementById("projectModal");
+
+        const projectCloseBtn =
+            document.getElementById("projectCloseBtn");
+
+        const projectOverlay =
+            document.querySelector(".project-modal-overlay");
+
+        const projectForm =
+            document.getElementById("projectForm");
+
+        const nextBtn =
+            document.getElementById("projectNextBtn");
+
+        const previousBtn =
+            document.getElementById("projectPreviousBtn");
+
+        const publishBtn =
+            document.getElementById("projectPublishBtn");
+
+        const progressBar =
+            document.getElementById("projectProgressBar");
+
+        const currentStepText =
+            document.getElementById("currentProjectStep");
+
+
+        /* -------------------------------------------------------
+           STATE
+        ------------------------------------------------------- */
+
+        let currentStep = 1;
+
+        const totalSteps = 4;
+
+
+        /* -------------------------------------------------------
+           OPEN PROJECT MODAL
+        ------------------------------------------------------- */
+
+        if (projectOption) {
+
+            projectOption.addEventListener("click", function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openProjectModal();
+
+            });
+
+        }
+
+
+        /* -------------------------------------------------------
+           OPEN
+        ------------------------------------------------------- */
+
+        function openProjectModal() {
+
+            if (!projectModal) return;
+
+            projectModal.classList.add("show");
+
+            document.body.style.overflow = "hidden";
+
+            currentStep = 1;
+
+            updateProjectStep();
+
+        }
+
+
+        /* -------------------------------------------------------
+           CLOSE
+        ------------------------------------------------------- */
+
+        function closeProjectModal() {
+
+            if (!projectModal) return;
+
+            projectModal.classList.remove("show");
+
+            document.body.style.overflow = "";
+
+        }
+
+
+        if (projectCloseBtn) {
+
+            projectCloseBtn.addEventListener(
+                "click",
+                closeProjectModal
+            );
+
+        }
+
+
+        if (projectOverlay) {
+
+            projectOverlay.addEventListener(
+                "click",
+                closeProjectModal
+            );
+
+        }
+
+
+        /* -------------------------------------------------------
+           ESC KEY
+        ------------------------------------------------------- */
+
+        document.addEventListener("keydown", function (event) {
+
+            if (
+                event.key === "Escape" &&
+                projectModal.classList.contains("show")
+            ) {
+
+                closeProjectModal();
+
+            }
+
+        });
+
+
+        /* -------------------------------------------------------
+           STEP NAVIGATION
+        ------------------------------------------------------- */
+
+        function updateProjectStep() {
+
+            const steps =
+                document.querySelectorAll(
+                    ".project-form-step"
+                );
+
+            steps.forEach(function (step) {
+
+                const stepNumber =
+                    Number(
+                        step.dataset.stepContent
+                    );
+
+                step.classList.toggle(
+                    "active",
+                    stepNumber === currentStep
+                );
+
+            });
+
+
+            /* Progress */
+
+            const progress =
+                ((currentStep - 1) /
+                    (totalSteps - 1)) * 100;
+
+            progressBar.style.width =
+                progress + "%";
+
+
+            /* Step circles */
+
+            document
+                .querySelectorAll(".project-step")
+                .forEach(function (step) {
+
+                    const number =
+                        Number(step.dataset.step);
+
+                    step.classList.toggle(
+                        "active",
+                        number === currentStep
+                    );
+
+                    step.classList.toggle(
+                        "completed",
+                        number < currentStep
+                    );
+
+                });
+
+
+            /* Footer */
+
+            currentStepText.textContent =
+                currentStep;
+
+
+            /* Previous */
+
+            previousBtn.disabled =
+                currentStep === 1;
+
+
+            /* Buttons */
+
+            if (currentStep === totalSteps) {
+
+                nextBtn.style.display = "none";
+
+                publishBtn.style.display =
+                    "flex";
+
+            } else {
+
+                nextBtn.style.display =
+                    "flex";
+
+                publishBtn.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* -------------------------------------------------------
+           NEXT
+        ------------------------------------------------------- */
+
+        nextBtn.addEventListener(
+            "click",
+            function () {
+
+                if (!validateCurrentStep()) {
+                    return;
+                }
+
+                if (currentStep < totalSteps) {
+
+                    currentStep++;
+
+                    updateProjectStep();
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------------------------------------
+           PREVIOUS
+        ------------------------------------------------------- */
+
+        previousBtn.addEventListener(
+            "click",
+            function () {
+
+                if (currentStep > 1) {
+
+                    currentStep--;
+
+                    updateProjectStep();
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------------------------------------
+           VALIDATION
+        ------------------------------------------------------- */
+
+        function validateCurrentStep() {
+
+            if (currentStep === 1) {
+
+                const title =
+                    document
+                        .getElementById("projectTitle")
+                        .value
+                        .trim();
+
+                const description =
+                    document
+                        .getElementById("projectDescription")
+                        .value
+                        .trim();
+
+                const category =
+                    document
+                        .getElementById("projectCategory")
+                        .value;
+
+                if (!title) {
+
+                    alert(
+                        "Please enter your project title."
+                    );
+
+                    return false;
+                }
+
+                if (!description) {
+
+                    alert(
+                        "Please enter a short description."
+                    );
+
+                    return false;
+                }
+
+                if (!category) {
+
+                    alert(
+                        "Please select a project category."
+                    );
+
+                    return false;
+                }
+
+            }
+
+            return true;
+
+        }
+
+
+        /* =======================================================
+           DESCRIPTION COUNTER
+        ======================================================= */
+
+        const description =
+            document.getElementById(
+                "projectDescription"
+            );
+
+        const descriptionCount =
+            document.getElementById(
+                "projectDescriptionCount"
+            );
+
+        if (description) {
+
+            description.addEventListener(
+                "input",
+                function () {
+
+                    descriptionCount.textContent =
+                        this.value.length;
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           COVER IMAGE
+        ======================================================= */
+
+        const coverUpload =
+            document.getElementById(
+                "projectCoverUpload"
+            );
+
+        const coverInput =
+            document.getElementById(
+                "projectCover"
+            );
+
+        const coverPreview =
+            document.getElementById(
+                "projectCoverPreview"
+            );
+
+
+        if (coverUpload && coverInput) {
+
+            coverUpload.addEventListener(
+                "click",
+                function () {
+
+                    coverInput.click();
+
+                }
+            );
+
+
+            coverInput.addEventListener(
+                "change",
+                function () {
+
+                    const file = this.files[0];
+
+                    if (!file) return;
+
+                    if (!file.type.startsWith("image/")) {
+
+                        alert(
+                            "Please select an image file."
+                        );
+
+                        this.value = "";
+
+                        return;
+                    }
+
+
+                    const reader =
+                        new FileReader();
+
+                    reader.onload =
+                        function (event) {
+
+                            coverPreview.innerHTML = `
+                                <img
+                                    src="${event.target.result}"
+                                    alt="Project Cover Preview"
+                                >
+                            `;
+
+                        };
+
+                    reader.readAsDataURL(file);
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           FINDINGS QUESTIONS
+        ======================================================= */
+
+        const findings = [
+
+            "What was the main reason for creating this project?",
+
+            "What is the most important finding or insight from this project?",
+
+            "What would you improve or develop in the next version?"
+
+        ];
+
+
+        const answers = [
+            "",
+            "",
+            ""
+        ];
+
+
+        let findingIndex = 0;
+
+
+        const findingQuestionText =
+            document.getElementById(
+                "findingQuestionText"
+            );
+
+        const findingAnswer =
+            document.getElementById(
+                "findingAnswer"
+            );
+
+        const findingCounter =
+            document.getElementById(
+                "findingCounter"
+            );
+
+        const findingDots =
+            document.querySelectorAll(
+                "#findingDots span"
+            );
+
+        const previousFinding =
+            document.getElementById(
+                "previousFinding"
+            );
+
+        const nextFinding =
+            document.getElementById(
+                "nextFinding"
+            );
+
+
+        function updateFinding() {
+
+            findingQuestionText.textContent =
+                findings[findingIndex];
+
+            findingAnswer.value =
+                answers[findingIndex];
+
+            findingCounter.textContent =
+                `${findingIndex + 1} / ${findings.length}`;
+
+
+            findingDots.forEach(
+                function (dot, index) {
+
+                    dot.classList.toggle(
+                        "active",
+                        index === findingIndex
+                    );
+
+                }
+            );
+
+
+            previousFinding.disabled =
+                findingIndex === 0;
+
+
+            nextFinding.disabled =
+                findingIndex === findings.length - 1;
+
+        }
+
+
+        findingAnswer.addEventListener(
+            "input",
+            function () {
+
+                answers[findingIndex] =
+                    this.value;
+
+            }
+        );
+
+
+        previousFinding.addEventListener(
+            "click",
+            function () {
+
+                answers[findingIndex] =
+                    findingAnswer.value;
+
+                if (findingIndex > 0) {
+
+                    findingIndex--;
+
+                    updateFinding();
+
+                }
+
+            }
+        );
+
+
+        nextFinding.addEventListener(
+            "click",
+            function () {
+
+                answers[findingIndex] =
+                    findingAnswer.value;
+
+                if (
+                    findingIndex <
+                    findings.length - 1
+                ) {
+
+                    findingIndex++;
+
+                    updateFinding();
+
+                }
+
+            }
+        );
+
+
+        updateFinding();
+
+
+        /* =======================================================
+           TEAM MEMBERS
+        ======================================================= */
+
+        const addTeamMember =
+            document.getElementById(
+                "addTeamMember"
+            );
+
+        const teamMembersContainer =
+            document.getElementById(
+                "teamMembersContainer"
+            );
+
+
+        addTeamMember.addEventListener(
+            "click",
+            function () {
+
+                const row =
+                    document.createElement("div");
+
+                row.className =
+                    "team-member-row";
+
+                row.innerHTML = `
+
+                    <div class="member-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <input
+                        type="text"
+                        name="memberName[]"
+                        placeholder="Member name"
+                    >
+
+                    <input
+                        type="text"
+                        name="memberAccount[]"
+                        placeholder="@account"
+                    >
+
+                    <input
+                        type="text"
+                        name="memberRole[]"
+                        placeholder="Role"
+                    >
+
+                    <button
+                        type="button"
+                        class="remove-member-btn"
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                `;
+
+
+                teamMembersContainer.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        teamMembersContainer.addEventListener(
+            "click",
+            function (event) {
+
+                const removeButton =
+                    event.target.closest(
+                        ".remove-member-btn"
+                    );
+
+                if (!removeButton) return;
+
+
+                const rows =
+                    teamMembersContainer
+                        .querySelectorAll(
+                            ".team-member-row"
+                        );
+
+
+                if (rows.length <= 1) {
+
+                    return;
+
+                }
+
+
+                removeButton
+                    .closest(".team-member-row")
+                    .remove();
+
+            }
+        );
+
+
+        /* =======================================================
+           FILE UPLOAD HELPER
+        ======================================================= */
+
+        function setupFileUpload(
+            inputId,
+            buttonId,
+            previewId
+        ) {
+
+            const input =
+                document.getElementById(inputId);
+
+            const button =
+                document.getElementById(buttonId);
+
+            const preview =
+                document.getElementById(previewId);
+
+
+            if (!input || !button) return;
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    input.click();
+
+                }
+            );
+
+
+            input.addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files[0];
+
+                    if (!file) return;
+
+
+                    preview.innerHTML = `
+
+                        <div class="file-selected">
+
+                            <i class="fa-solid fa-file"></i>
+
+                            <span>
+                                ${file.name}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        /* PDF / DOC / PPT */
+
+        setupFileUpload(
+            "projectPdf",
+            "chooseProjectPdf",
+            "projectPdfPreview"
+        );
+
+
+        /* ZIP */
+
+        setupFileUpload(
+            "projectZip",
+            "chooseProjectZip",
+            "projectZipPreview"
+        );
+
+
+        /* =======================================================
+           DEMO VIDEO
+        ======================================================= */
+
+        const demoVideo =
+            document.getElementById(
+                "projectDemoVideo"
+            );
+
+        const chooseDemoVideo =
+            document.getElementById(
+                "chooseDemoVideo"
+            );
+
+        const videoPreview =
+            document.getElementById(
+                "projectVideoPreview"
+            );
+
+
+        chooseDemoVideo.addEventListener(
+            "click",
+            function () {
+
+                demoVideo.click();
+
+            }
+        );
+
+
+        demoVideo.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files[0];
+
+                if (!file) return;
+
+
+                if (!file.type.startsWith("video/")) {
+
+                    alert(
+                        "Please select a video file."
+                    );
+
+                    this.value = "";
+
+                    return;
+
+                }
+
+
+                const videoURL =
+                    URL.createObjectURL(file);
+
+
+                videoPreview.innerHTML = `
+
+                    <video
+                        controls
+                        src="${videoURL}"
+                    ></video>
+
+                `;
+
+            }
+        );
+
+
+        /* =======================================================
+           FORM SUBMIT
+        ======================================================= */
+
+        projectForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                /*
+                 * FRONTEND ONLY
+                 *
+                 * No backend request is made here.
+                 *
+                 * When you connect your backend later,
+                 * collect the form data using:
+                 *
+                 * const formData = new FormData(projectForm);
+                 *
+                 * and send it to your Project Post API.
+                 */
+
+
+                const projectData = {
+
+                    type: "project",
+
+                    title:
+                        document
+                            .getElementById(
+                                "projectTitle"
+                            )
+                            .value,
+
+                    description:
+                        document
+                            .getElementById(
+                                "projectDescription"
+                            )
+                            .value,
+
+                    category:
+                        document
+                            .getElementById(
+                                "projectCategory"
+                            )
+                            .value,
+
+                    tags:
+                        document
+                            .getElementById(
+                                "projectTags"
+                            )
+                            .value,
+
+                    problem:
+                        document
+                            .getElementById(
+                                "problemStatement"
+                            )
+                            .value,
+
+                    solution:
+                        document
+                            .getElementById(
+                                "projectSolution"
+                            )
+                            .value,
+
+                    github:
+                        document
+                            .getElementById(
+                                "githubLink"
+                            )
+                            .value,
+
+                    status:
+                        document
+                            .querySelector(
+                                'input[name="projectStatus"]:checked'
+                            )
+                            ?.value || "",
+
+                    findings: answers
+
+                };
+
+
+                console.log(
+                    "PROJECT POST DATA:",
+                    projectData
+                );
+
+
+                alert(
+                    "Project Post is ready to publish!"
+                );
+
+
+                closeProjectModal();
+
+            }
+        );
+
+
+        /* =======================================================
+           PROJECT STEP CLICKS
+        ======================================================= */
+
+        document
+            .querySelectorAll(".project-step")
+            .forEach(function (step) {
+
+                step.addEventListener(
+                    "click",
+                    function () {
+
+                        const targetStep =
+                            Number(
+                                this.dataset.step
+                            );
+
+
+                        /*
+                         * Allow going backwards
+                         * directly.
+                         */
+
+                        if (
+                            targetStep <
+                            currentStep
+                        ) {
+
+                            currentStep =
+                                targetStep;
+
+                            updateProjectStep();
+
+                        }
+
+                    }
+                );
+
+            });
+
+    });
+</script>
+
 
 
 
